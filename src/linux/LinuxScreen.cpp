@@ -20,6 +20,7 @@ LinuxScreen::LinuxScreen()
 	nativeHeight = XHeightOfScreen(XDefaultScreenOfDisplay(display));
 }
 ///////////////////////////////////////////////////////////
+typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
 void LinuxScreen::__createGLXContext(uint bites){
 	///////////////////////////////////////////////////////////
     //SETUP openGL
@@ -48,8 +49,26 @@ void LinuxScreen::__createGLXContext(uint bites){
 	int glxMajor, glxMinor;
     glXQueryVersion(display, &glxMajor, &glxMinor);
 	DEBUG_MESSAGE("openGL rendering :"<<glxMajor<<"."<<glxMinor);
+    ///////////////////////////////////////////////////////////////////////
     // create a GLX context
-    context = glXCreateContext(display, visual , 0, GL_TRUE);
+    glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
+    glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc)
+    glXGetProcAddressARB( (const GLubyte *) "glXCreateContextAttribsARB" );
+    ///////////////////////////////////////////////////////////////////////
+    int n = 0, modeNum = 0;
+    //Get a framebuffer config using the default attributes
+    GLXFBConfig framebufferConfig = (*glXChooseFBConfig(display, DefaultScreen(display), 0, &n));
+    ///////////////////////////////////////////////////////////////////////
+    int context_attribs[] = {
+        GLX_CONTEXT_MAJOR_VERSION_ARB, 2,
+        GLX_CONTEXT_MINOR_VERSION_ARB, 1,
+        None
+    };
+    context = glXCreateContextAttribsARB( display,
+                                          framebufferConfig ,
+                                          0,
+                                          GL_TRUE,
+                                          context_attribs);
     DEBUG_ASSERT(context);
 	///////////////////////////////////////////////////////////
     //COLOR MAP WINDOW

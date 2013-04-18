@@ -28,14 +28,16 @@ LinuxApp::~LinuxApp(){
 bool LinuxApp::loadData(const String& path,void*& ptr,size_t &len){
 	//open
 	FILE *pfile=fopen(path,"rb");
-	DEBUG_ASSERT_MSG(pfile,"load file: "<<path);
+	DEBUG_MESSAGE("load file: "<<path);
+	DEBUG_ASSERT_MSG(pfile,"error load file: "<<path);
 		//get size
 		fseek(pfile,0,SEEK_END);
 		len=ftell(pfile);
 		fseek(pfile,0,SEEK_SET);
 		//read
-		ptr=malloc(len*sizeof(char));
+		ptr=malloc(len*sizeof(char)+1);
 		fread(ptr,len,1,pfile);
+		(*((char*)ptr+len))='\0';
 	//close
 	fclose(pfile);
 	return pfile!=NULL;
