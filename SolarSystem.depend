@@ -333,10 +333,10 @@
 	<Planet.h>
 	<Debug.h>
 
-1366565368 /home/gabriele/github/SolarSystem//stdafx.h
+1366285416 /home/gabriele/github/SolarSystem//stdafx.h
 	<Config.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Config.h
+1366285414 /home/gabriele/github/SolarSystem/include/Config.h
 	<cmath>
 	<cassert>
 	<cstdlib>
@@ -377,16 +377,16 @@
 	<tr1/functional>
 	<tr1/memory>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Types.h
+1366285414 /home/gabriele/github/SolarSystem/include/Types.h
 
-1366565367 /home/gabriele/github/SolarSystem/include/window/OpenGLWindow.h
+1366285414 /home/gabriele/github/SolarSystem/include/window/OpenGLWindow.h
 	<gletx_header.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/linux/OpenGLLinux.h
+1366285414 /home/gabriele/github/SolarSystem/include/linux/OpenGLLinux.h
 	<GL/glx.h>
 	<GL/glext.h>
 
-1366566640 /home/gabriele/github/SolarSystem/SolarSystem/Planet.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/Planet.h
 	<Config.h>
 	<Utility.h>
 	<Object.h>
@@ -394,27 +394,27 @@
 	<Camera.h>
 	<SolarRender.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Utility.h
+1366285414 /home/gabriele/github/SolarSystem/include/Utility.h
 	<Config.h>
 	<EString.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/EString.h
+1366285414 /home/gabriele/github/SolarSystem/include/EString.h
 	<Config.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Object.h
+1366285414 /home/gabriele/github/SolarSystem/include/Object.h
 	<Config.h>
 	<Math2D.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Math2D.h
+1366288709 /home/gabriele/github/SolarSystem/include/Math2D.h
 	<Config.h>
 	<EString.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Texture.h
+1366288709 /home/gabriele/github/SolarSystem/include/Texture.h
 	<Config.h>
 	<Math2D.h>
 	<Utility.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Camera.h
+1366288709 /home/gabriele/github/SolarSystem/include/Camera.h
 	<Config.h>
 	<Object.h>
 
@@ -423,7 +423,7 @@
 	<PlanetsManager.h>
 	<Application.h>
 
-1366565367 /home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.h
 	<Config.h>
 	<Utility.h>
 	<Object.h>
@@ -435,49 +435,49 @@
 	<SolarRender.h>
 	<SolarSky.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Shader.h
+1366285414 /home/gabriele/github/SolarSystem/include/Shader.h
 	<Config.h>
 	<Math2D.h>
 	<Utility.h>
 	<Texture.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Table.h
+1366285414 /home/gabriele/github/SolarSystem/include/Table.h
 	<Config.h>
 	<Math2D.h>
 	<EString.h>
 	<iostream>
 	<Utility.h>
 
-1366565367 /home/gabriele/github/SolarSystem/SolarSystem/SolarRender.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/SolarRender.h
 	<Config.h>
 	<Math2D.h>
 	<Texture.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Application.h
+1366285414 /home/gabriele/github/SolarSystem/include/Application.h
 	<Config.h>
 	<MainInstance.h>
 	<EString.h>
 	<Screen.h>
 	<Input.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/MainInstance.h
+1366285414 /home/gabriele/github/SolarSystem/include/MainInstance.h
 	<Config.h>
 	<Types.h>
 	<Screen.h>
 	<EString.h>
 
-1367712784 /home/gabriele/github/SolarSystem/include/Screen.h
+1366288709 /home/gabriele/github/SolarSystem/include/Screen.h
 	<Config.h>
 	<MainInstance.h>
 	<Application.h>
 	<Math2D.h>
 
-1367707100 /home/gabriele/github/SolarSystem/include/Input.h
+1366288709 /home/gabriele/github/SolarSystem/include/Input.h
 	<Config.h>
 	<Debug.h>
 	<Math2D.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Debug.h
+1366285414 /home/gabriele/github/SolarSystem/include/Debug.h
 	<Config.h>
 	<ostream>
 
@@ -486,12 +486,12 @@
 	<SolarRender.h>
 	<Application.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/main.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/main.cpp
 	<stdafx.h>
 	<Application.h>
 	<SolarMain.h>
 
-1367712784 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
@@ -504,18 +504,18 @@
 	<PlanetsManager.h>
 	<SolarFly.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Application.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/Application.cpp
 	<stdafx.h>
 	<Application.h>
 	<ETime.h>
 	<WindowsApp.h>
 	<LinuxApp.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/ETime.h
+1366285414 /home/gabriele/github/SolarSystem/include/ETime.h
 	<Config.h>
 	<Types.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/linux/LinuxApp.h
+1366285414 /home/gabriele/github/SolarSystem/include/linux/LinuxApp.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
@@ -525,31 +525,31 @@
 	<Camera.h>
 	<Application.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Debug.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/Debug.cpp
 	<stdafx.h>
 	<Debug.h>
 	<EString.h>
 	<iostream>
 	<signal.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/EString.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/EString.cpp
 	<stdafx.h>
 	<stdafx.h>
 	<EString.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/ETime.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/ETime.cpp
 	<stdafx.h>
 	<ETime.h>
 	<sys/time.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Image/lodepng.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/Image/lodepng.cpp
 	<stdafx.h>
 	"lodepng.h"
 	<stdio.h>
 	<stdlib.h>
 	<fstream>
 
-1366565367 /home/gabriele/github/SolarSystem/src/Image/lodepng.h
+1366285414 /home/gabriele/github/SolarSystem/src/Image/lodepng.h
 	<string.h>
 	<vector>
 	<string>
@@ -557,11 +557,11 @@
 	<iostream>
 	"lodepng.h"
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Input.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/Input.cpp
 	<stdafx.h>
 	<Input.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/MainInstance.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/MainInstance.cpp
 	<stdafx.h>
 	<MainInstance.h>
 
@@ -573,7 +573,7 @@
 	<stdafx.h>
 	<Object.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Screen.cpp
+1366285414 source:/home/gabriele/github/SolarSystem/src/Screen.cpp
 	<stdafx.h>
 	<Screen.h>
 
@@ -605,16 +605,16 @@
 	"lodepng.h"
 	"lodepng.h"
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Timer.cpp
+1366285415 source:/home/gabriele/github/SolarSystem/src/Timer.cpp
 	<stdafx.h>
 	<Timer.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Timer.h
+1366285414 /home/gabriele/github/SolarSystem/include/Timer.h
 	<Config.h>
 	<Types.h>
 	<ETime.h>
 
-1366565367 source:/home/gabriele/github/SolarSystem/src/Utility.cpp
+1366285415 source:/home/gabriele/github/SolarSystem/src/Utility.cpp
 	<stdafx.h>
 	<Utility.h>
 	<Application.h>
@@ -665,7 +665,7 @@
 	<OpenGLLinux.h>
 	<Debug.h>
 
-1366565367 /home/gabriele/github/SolarSystem/SolarSystem/SolarSky.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/SolarSky.h
 	<Config.h>
 	<Texture.h>
 	<Utility.h>
@@ -677,7 +677,7 @@
 	<SolarSky.h>
 	<Debug.h>
 
-1367712784 /home/gabriele/github/SolarSystem/SolarSystem/SolarFly.h
+1366288709 /home/gabriele/github/SolarSystem/SolarSystem/SolarFly.h
 	<Config.h>
 	<Application.h>
 	<Math2D.h>
