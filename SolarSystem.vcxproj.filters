@@ -87,6 +87,9 @@
     <ClCompile Include="main.cpp">
       <Filter>File di risorse</Filter>
     </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>File di risorse</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Texture.h">
+      <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

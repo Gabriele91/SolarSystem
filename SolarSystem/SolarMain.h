@@ -1,43 +1,85 @@
 #include <Config.h>
 #include <Application.h>
 #include <MainInstance.h>
+#include <Math2D.h>
 #include <Camera.h>
+#include <Texture.h>
 
 namespace SolarSystem {
+
+	class SolidSphere{
+	protected:
+		std::vector<GLfloat> vertices;
+		std::vector<GLfloat> normals;
+		std::vector<GLfloat> texcoords;
+		std::vector<GLushort> indices;
+
+	public:
+
+		SolidSphere(float radius, unsigned int rings, unsigned int sectors){
+			float const R = 1./(float)(rings-1);
+			float const S = 1./(float)(sectors-1);
+			int r, s;
+
+			vertices.resize(rings * sectors * 3);
+			normals.resize(rings * sectors * 3);
+			texcoords.resize(rings * sectors * 2);
+			std::vector<GLfloat>::iterator v = vertices.begin();
+			std::vector<GLfloat>::iterator n = normals.begin();
+			std::vector<GLfloat>::iterator t = texcoords.begin();
+			for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
+					float const y = sin( -0.5*Math::PI + Math::PI * r * R );
+					float const x = cos(  2*Math::PI * s * S) * sin( Math::PI * r * R );
+					float const z = sin(  2*Math::PI * s * S) * sin( Math::PI * r * R );
+
+					*t++ = s*S;
+					*t++ = r*R;
+
+					*v++ = x * radius;
+					*v++ = y * radius;
+					*v++ = z * radius;
+
+					*n++ = x;
+					*n++ = y;
+					*n++ = z;
+			}
+			
+			indices.resize(rings * sectors * 6);
+			int i = -1;
+			for(int r = 0; r < rings-1; r++) {
+				for(int s = 0; s < sectors-1; s++) {
+					//1 2 3
+					indices[++i] = r * sectors + s;
+					indices[++i] = r * sectors + (s+1);
+					indices[++i] = (r+1) * sectors + (s+1);
+					//1 3 4
+					indices[++i] = r * sectors + s;
+					indices[++i] = (r+1) * sectors + (s+1);
+					indices[++i] = (r+1) * sectors + s;
+				}
+			}
+		}
+		void draw(){
+			glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+			glNormalPointer(GL_FLOAT, 0, &normals[0]);
+			glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
+			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+		}
+	};
+
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-
+		SolidSphere sphere;
+		Texture tex;
 		Camera camera;
 		Object obj;
-		void drawSphere(double r, int lats, int longs) {
-	        int i, j;
-	        for(i = 0; i <= lats; i++) {
-	            double lat0 = Math::PI * (-0.5 + (double) (i - 1) / lats);
-	           double z0  = sin(lat0);
-	           double zr0 =  cos(lat0);
-    
-	           double lat1 = Math::PI * (-0.5 + (double) i / lats);
-	           double z1 = sin(lat1);
-	           double zr1 = cos(lat1);
-    
-	           glBegin(GL_QUAD_STRIP);
-	           for(j = 0; j <= longs; j++) {
-	               double lng = 2 * Math::PI * (double) (j - 1) / longs;
-	               double x = cos(lng);
-	               double y = sin(lng);
-    
-	               glNormal3f(x * zr0, y * zr0, z0);
-	               glVertex3f(x * zr0, y * zr0, z0);
-	               glNormal3f(x * zr1, y * zr1, z1);
-	               glVertex3f(x * zr1, y * zr1, z1);
-	           }
-	           glEnd();
-	       }
-	   }
 
 	public:
-		SolarMain():MainInstance("Solar System",1280,786){}
+		SolarMain():
+			MainInstance("Solar System",786,786,32,30)
+			,tex("img/earth.png")
+			,sphere(1,30,30){}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
@@ -54,9 +96,17 @@ namespace SolarSystem {
 		glEnable(GL_DEPTH_TEST);
 		//set projection matrix
 		camera.setPerspective(45,0.1f,1000.0f);
-		//enable state
+		//enable texturing	
+		glEnable( GL_TEXTURE_2D );
+		//enable state	
+		//always active!
         glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);       
+		//default status for blending    
+		glEnable(GL_ALPHA_TEST);
+        glEnable( GL_BLEND );   
+        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		/////////////////////////////////////////////
 		}
 		virtual void run(float dt){		
@@ -65,23 +115,24 @@ namespace SolarSystem {
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			//update camera
 			camera.update();
+			tex.bind();
 			//
 			int spheresTotal=0;
 			int spheresDrawn=0;
 			//
-			int xcount=10;
-			int zcount=10;
+			int xcount=230;
+			int zcount=230;
 			//
 			for (int i = -xcount; i < xcount; i+=4) 
 			for(int k =  -zcount; k < zcount; k+=4) {
-				glColor3f(float(i+xcount)/(xcount*2.0f),float(k+zcount)/(zcount*2.0f),0);
 				spheresTotal++;
 				Vec3 pos(i,0,k);
 				obj.setPosition(pos);
+				obj.setScale(Vec3(2,2,2));
 				if (Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)
-					||(camera.sphereInFrustum(pos,5) != Camera::OUTSIDE)) {
+					||(camera.sphereInFrustum(pos,2) != Camera::OUTSIDE)) {
 					glLoadMatrixf(camera.getGlobalMatrix().mul(obj.getGlobalMatrix()));
-					drawSphere(5,30,30);
+					sphere.draw();
 					spheresDrawn++;
 				}
 			};
