@@ -1424,7 +1424,7 @@ parameters there instead.
 -------------------
 
 No libraries other than the current standard C library are needed to compile
-LodePNG. For the C++ version, only the standard C++ library is needed on top.
+LodePNG. For the C++ version, only the standard C++ library is needed on ].normal.
 Add the files lodepng.c(pp) and lodepng.h to your project, include
 lodepng.h where needed, and your program can read/write PNG files.
 

@@ -170,23 +170,30 @@ void Quaternion::computeW()
 		else
 		w = -sqrt (t);
 }
-void Quaternion::normalise(){
+void Quaternion::safe_normalise(){
 	float mag2 = w * w + x * x + y * y + z * z;
 	if (fabs(mag2 - 1.0f) >  0.00001f) {
-		float mag = sqrt(mag2);
-		w /= mag;
-		x /= mag;
-		y /= mag;
-		z /= mag;
+		float mag = 1.0f/sqrt(mag2);
+		w *= mag;
+		x *= mag;
+		y *= mag;
+		z *= mag;
 	}
 }
-Quaternion Quaternion::mul(Quaternion &qt){
+void Quaternion::normalise(){
+	float mag = 1.0f/sqrt(w * w + x * x + y * y + z * z);
+	w *= mag;
+	x *= mag;
+	y *= mag;
+	z *= mag;
+}
+Quaternion Quaternion::mul(const Quaternion &qt) const{
 	return Quaternion(  w * qt.x + x * qt.w + y * qt.z - z * qt.y,
 						w * qt.y + y * qt.w + z * qt.x - x * qt.z,
 						w * qt.z + z * qt.w + x * qt.y - y * qt.x,
 						w * qt.w - x * qt.x - y * qt.y - z * qt.z);
 }
-Quaternion Quaternion::mulVec(Vector3D &v){
+Quaternion Quaternion::mulVec(const Vector3D &v) const{
 
 return  Quaternion(- (x * v.x) - (y * v.y) - (z * v.z),
 					 (w * v.x) + (y * v.z) - (z * v.y),
@@ -195,7 +202,7 @@ return  Quaternion(- (x * v.x) - (y * v.y) - (z * v.z),
 );
 
 	}
-Quaternion Quaternion::getInverse(){
+Quaternion Quaternion::getInverse() const{
 	return Quaternion(w,-x,-y,-z);
 }
 void Quaternion::setFromEulero(float pitch, float yaw, float roll){
@@ -208,7 +215,7 @@ void Quaternion::setFromEulero(float pitch, float yaw, float roll){
 	this->z = c.x * c.y * s.z - s.x * s.y * c.z;
 
 }
-void Quaternion::getEulero(float &pitch, float &yaw, float &roll){
+void Quaternion::getEulero(float &pitch, float &yaw, float &roll) const {
 
 	const double w2 = w*w;
 	const double x2 = x*x;
@@ -249,7 +256,7 @@ void Quaternion::setFromAxisAngle(Vector3D &vt,float angle){
 	z = (vn.z * sinAngle);
 	w = std::cos(angle);
 }
-void Quaternion::getAxisAngle(Vector3D &vt,float &angle){
+void Quaternion::getAxisAngle(Vector3D &vt,float &angle) const {
 
 float scale = sqrt(x * x + y * y + z * z);
 	vt.x = x / scale;
@@ -257,7 +264,7 @@ float scale = sqrt(x * x + y * y + z * z);
 	vt.z = z / scale;
 	angle = std::acos(w) * 2.0f;
 }
-Vector3D Quaternion::getRotatePoint(Vector3D & v){
+Vector3D Quaternion::getRotatePoint(Vector3D & v) const{
 
 	Quaternion tmp, final;
 
@@ -280,7 +287,7 @@ Vector3D Quaternion::getRotatePoint(Vector3D & v){
 
 	return out;
 }
-Matrix4x4 Quaternion::getMatrix(){
+Matrix4x4 Quaternion::getMatrix() const{
 	float x2 = x * x;
 	float y2 = y * y;
 	float z2 = z * z;
@@ -302,6 +309,76 @@ Matrix4x4 Quaternion::getMatrix(){
 String Quaternion::toString(const String& start,const String& sep,const String& end) const{
 	return start+String::toString(x)+sep+String::toString(y)+sep+String::toString(z)+sep+String::toString(w)+end;
 }
+/* PLANE */
+Plane::Plane():d(0.0f){}
+Plane::Plane(const Vector3D& normal,const Vector3D& origin){
+	setNormalAndOrigin(normal,origin);
+}
+Plane::Plane(const Vector3D& v1,const Vector3D& v2,const Vector3D& v3){
+	set3Points(v1,v2,v3);
+}
+Plane::Plane(float a, float b, float c, float d){
+	setCoefficients(a,b,c,d);
+}
+//calc from point
+void Plane::set3Points(const Vector3D& v1,const Vector3D& v2,const Vector3D& v3){
+	Vec3 aux1, aux2;
+	aux1 = v1 - v2;
+	aux2 = v3 - v2;
+	//calc normal
+	normal = aux2 * aux1;
+	normal.normalize();
+	//calc d
+	this->d=-normal.dot(v2);
+}
+//Linear rapresetation
+void Plane::setCoefficients(float a, float b, float c, float d){
+	//add normal
+	normal=Vec3(a,b,c);
+	//get length (for d)
+	float leng=normal.length();
+	//normalize (no length recalc)
+	normal.x/=leng;
+	normal.y/=leng;
+	normal.z/=leng;
+	//calc d
+	this->d=d/leng;
+}	
+//Parametric rapresetation
+void Plane::setNormalAndOrigin(const Vector3D& normal,const Vector3D& origin){
+	this->normal=normal;
+	this->d=-normal.dot(origin);
+}
+//distance from point
+float Plane::distance(const Vector3D& point){
+	return normal.dot(point)+d;
+}
+//normalize
+void Plane::normalize(){	
+	//get length (for d)
+	float leng=normal.length();
+	//normalize (no length recalc)
+	normal.x/=leng;
+	normal.y/=leng;
+	normal.z/=leng;
+	//calc d
+	d/=leng;
+}
+String	Plane::toString(const String& start,
+						const String& sep,
+						const String& end) const{
+	return start
+		   +String::toString(normal.x)
+		   +sep
+		   +String::toString(normal.y)
+		   +sep
+		   +String::toString(normal.z)
+		   +sep
+		   +String::toString(d)
+		   +end;
+;
+}
+
 /* MATRIX4x4*/
 static float Matrix4x4Identity[]={
 	1.0,0.0,0.0,0.0,

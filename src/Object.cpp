@@ -54,7 +54,13 @@ void Object::setTranslation(const Vector3D &translation){
 	change();
 }
 void Object::setTurn(const Quaternion& rotation){
-	transform.rotation=transform.rotation+rotation;
+
+	Vec3 local,turn;
+	transform.rotation.getEulero(local.x,local.y,local.z);
+	rotation.getEulero(turn.x,turn.y,turn.z);
+	transform.rotation.setFromEulero(local.x+turn.x,
+									 local.y+turn.y,
+									 local.z+turn.z);
 	change();
 }
 //
@@ -125,7 +131,7 @@ const Matrix4x4& Object::getGlobalMatrix(){
 		globalMat.identity();
 		//
 		if(parent){
-			Matrix4x4 mtmp;
+			Matrix4x4 mtmp,ptmp;
 			//calc values
 			mtmp=parent->getGlobalMatrix();
 			Vector3D tmpPos(mtmp.entries[12],mtmp.entries[13],mtmp.entries[14]);
@@ -138,18 +144,20 @@ const Matrix4x4& Object::getGlobalMatrix(){
 			if(parentMode & (ENABLE_PARENT)){
 				//////////////////////////////////////////////
 				//rotarion local
-				globalMat=globalMat.mul(transform.rotation.getMatrix());				
+				globalMat=transform.rotation.getMatrix();				
 				//position local
-				globalMat.entries[12]=transform.position.x;
-				globalMat.entries[13]=transform.position.y;
-				globalMat.entries[14]=transform.position.z;	
+				ptmp.entries[12]=transform.position.x;
+				ptmp.entries[13]=transform.position.y;
+				ptmp.entries[14]=transform.position.z;
+				globalMat=globalMat.mul(ptmp);
 				//////////////////////////////////////////////
 				//rotarion global
 				mtmp=tmpRot.getMatrix();
 				//position global
-				mtmp.entries[12]=tmpPos.x;
-				mtmp.entries[13]=tmpPos.y;
-				mtmp.entries[14]=tmpPos.z;		
+				ptmp.entries[12]=tmpPos.x;
+				ptmp.entries[13]=tmpPos.y;
+				ptmp.entries[14]=tmpPos.z;	
+				mtmp=mtmp.mul(ptmp);		
 				//global*local
 				globalMat=mtmp.mul(globalMat);
 				//////////////////////////////////////////////
@@ -170,9 +178,11 @@ const Matrix4x4& Object::getGlobalMatrix(){
 			//rotarion
 			globalMat=transform.rotation.getMatrix();
 			//position
-			globalMat.entries[12]=transform.position.x;
-			globalMat.entries[13]=transform.position.y;
-			globalMat.entries[14]=transform.position.z;
+			Mat4 tmp;
+			tmp.entries[12]=transform.position.x;
+			tmp.entries[13]=transform.position.y;
+			tmp.entries[14]=transform.position.z;
+			globalMat=globalMat.mul(tmp);
 			//scale
 			globalMat.entries[0]*=transform.scale.x;
 			globalMat.entries[5]*=transform.scale.y;

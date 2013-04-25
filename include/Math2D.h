@@ -347,6 +347,39 @@ namespace SolarSystem{
 	Vector4D operator*(float v,const Vector4D& vt);
 	Vector4D operator/(float v,const Vector4D& vt);
 	///////////////////////////////////////////////////////////////////////////
+	//plane  ORIGIN + NORMAL(direction)
+	class Plane{
+	public:
+
+		//Ax + By + Cz + D 
+		Vector3D normal; //a b c
+		float d;  //d
+	
+		DFORCEINLINE float& a(){ return normal.x; } 
+		DFORCEINLINE float& b(){ return normal.y; } 
+		DFORCEINLINE float& c(){ return normal.z; } 
+		DFORCEINLINE float a() const { return normal.x; } 
+		DFORCEINLINE float b() const { return normal.y; } 
+		DFORCEINLINE float c() const { return normal.z; } 
+
+		Plane();
+		Plane(const Vector3D& normal,const Vector3D& origin);
+		Plane(const Vector3D& v1,const Vector3D& v2,const Vector3D& v3);
+		Plane(float a, float b, float c, float d);
+		//calc from point
+		void set3Points(const Vector3D& v1,const Vector3D& v2,const Vector3D& v3);
+		//Linear rapresetation
+		void setCoefficients(float a, float b, float c, float d);		
+		//Parametric rapresetation
+		void setNormalAndOrigin(const Vector3D& normal,const Vector3D& origin);
+		//distance from point
+		float distance(const Vector3D& point);
+		//normalize
+		void normalize();
+		//
+		String	Plane::toString(const String& start="(",const String& sep=" ",const String& end=")") const;
+	};
+	///////////////////////////////////////////////////////////////////////////
 	class Quaternion{
 	public:
 		float w,x,y,z;
@@ -359,25 +392,26 @@ namespace SolarSystem{
 		///compute W coordinate
 		void computeW();
 		///normalise
+		void safe_normalise();
 		void normalise();
 		///inverse
-		Quaternion getInverse();
+		Quaternion getInverse() const;
 		///Quaternion multiplication
-		Quaternion mul(Quaternion &qt);
+		Quaternion mul(const Quaternion &qt) const;
 		///Quaternion*vector
-		Quaternion mulVec(Vector3D &v);
+		Quaternion mulVec(const Vector3D &v) const;
 		///set pitch, yaw and roll
 		void setFromEulero(float pitch, float yaw, float roll);
 		///return pitch, yaw and roll
-		void getEulero(float &pitch, float &yaw, float &roll);
+		void getEulero(float &pitch, float &yaw, float &roll) const;
 		///set quaternion from axis angle
 		void setFromAxisAngle(Vector3D &vt,float angle);
 		///return axis angle from quaternion
-		void getAxisAngle(Vector3D &vt,float &angle);
+		void getAxisAngle(Vector3D &vt,float &angle) const;
 		///return rotate point
-		Vector3D getRotatePoint(Vector3D & v);
+		Vector3D getRotatePoint(Vector3D & v) const;
 		///return matrix from quaternion
-		Matrix4x4 getMatrix();
+		Matrix4x4 getMatrix() const;
 		//overload op
 		DFORCEINLINE const Quaternion operator +(const Quaternion &q) const{
 			return Quaternion(x+q.x, y+q.y, z+q.z,w+q.w);

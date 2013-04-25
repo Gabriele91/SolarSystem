@@ -9,21 +9,30 @@ namespace SolarSystem {
 
 	class Camera : public Object {
 
-		struct{
-			float dist;
-			float w;
-			float h;
-		}plNear,
-		 plFar;
-
-	public:
-
-
-		Camera():Object(){}
-		//culling methods
-		int sphereInFrustum(const Vec3& point, float radius);
-		int pointInFrustum(Vec3 &point);
+		enum{
+			BACK=0,
+			FRONT=1,
+			TOP=2,
+			BOTTOM=3,
+			LEFT=4,
+			RIGHT=5
+		};
+		//planes
+		Plane planes[6];
+		//matrix
+		Mat4 mProjMatrix;
 		//
+	public:
+		//
+		Camera():Object(){}
+		//set prospetive
+		void setPerspective(float angle,float n,float f);
+		//culling methods		
+		static enum {OUTSIDE, INTERSECT, INSIDE};
+		int sphereInFrustum(const Vec3& point, float radius);
+		int pointInFrustum(const Vec3 &point);
+		//update camera
+		void update();
 	};
 
 };
