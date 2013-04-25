@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="File di origine">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="File di intestazione">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="File di risorse">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="File di origine\Image">
+      <UniqueIdentifier>{387686fe-1aa6-45a1-8488-f79430f9cdc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Thread">
+      <UniqueIdentifier>{3a34babf-f74b-4d03-9ad6-4b9f74bf8d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\window">
+      <UniqueIdentifier>{f34b095b-2104-48bd-8e15-905bd1a46481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di intestazione\window">
+      <UniqueIdentifier>{84f80ef6-a5df-4c43-80f5-cee48ba242f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolarSystem">
+      <UniqueIdentifier>{1f513684-aaaa-4fe1-8844-7188aa72f071}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EString.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ETime.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainInstance.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math2D.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Screen.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Image\lodepng.cpp">
+      <Filter>File di origine\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\OpenGLWindow.cpp">
+      <Filter>File di origine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\stdafx.cpp">
+      <Filter>File di origine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\WindowsApp.cpp">
+      <Filter>File di origine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\WindowsInput.cpp">
+      <Filter>File di origine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\WindowsScreen.cpp">
+      <Filter>File di origine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>File di risorse</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Image\Image.h">
+      <Filter>File di origine\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Image\lodepng.h">
+      <Filter>File di origine\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\Mutex.h">
+      <Filter>File di origine\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\MutexConf.h">
+      <Filter>File di origine\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\Thread.h">
+      <Filter>File di origine\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Thread\ThreadConf.h">
+      <Filter>File di origine\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window\gletx_header.h">
+      <Filter>File di intestazione\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window\OpenGLWindow.h">
+      <Filter>File di intestazione\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window\WindowsApp.h">
+      <Filter>File di intestazione\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window\WindowsInput.h">
+      <Filter>File di intestazione\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\window\WindowsScreen.h">
+      <Filter>File di intestazione\window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Application.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Camera.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Config.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Debug.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EString.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ETime.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Input.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MainInstance.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math2D.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Screen.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Types.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utility.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem\SolarMain.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>File di risorse</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Image\Image.inl">
+      <Filter>File di origine\Image</Filter>
+    </None>
+    <None Include="src\Thread\MutexWin32.inl">
+      <Filter>File di origine\Thread</Filter>
+    </None>
+    <None Include="src\Thread\ThreadWin32.inl">
+      <Filter>File di origine\Thread</Filter>
+    </None>
+  </ItemGroup>
+</Project>
