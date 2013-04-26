@@ -53,14 +53,21 @@ void Object::setTranslation(const Vector3D &translation){
 	transform.position+=translation;
 	change();
 }
+void Object::setMove(const Vector3D &move){
+	Vec3 mov;
+	const Mat4& tmp=transform.rotation.getMatrix();
+	mov.x =   tmp(0,0)*move.x + tmp(1,0)*move.y + tmp(2,0)*move.z + tmp(3,0);
+	mov.y =   tmp(0,1)*move.x + tmp(1,1)*move.y + tmp(2,1)*move.z + tmp(3,1);
+	mov.z =   tmp(0,2)*move.x + tmp(1,2)*move.y + tmp(2,2)*move.z + tmp(3,2);
+	transform.position+=mov;
+	change();
+}
 void Object::setTurn(const Quaternion& rotation){
-
+	
 	Vec3 local,turn;
-	transform.rotation.getEulero(local.x,local.y,local.z);
-	rotation.getEulero(turn.x,turn.y,turn.z);
-	transform.rotation.setFromEulero(local.x+turn.x,
-									 local.y+turn.y,
-									 local.z+turn.z);
+	transform.rotation.getEulero(local);
+	rotation.getEulero(turn);
+	transform.rotation.setFromEulero(local+turn);
 	change();
 }
 //

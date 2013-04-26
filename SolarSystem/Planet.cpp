@@ -112,6 +112,15 @@ void Planet::setData(float _day){
 	Vec3 pos;	
 	pos.x = cos(angle) * radius.x;
     pos.z = sin(angle) * radius.y;
+	//////////////////////////////
+	//calc offset sun
+	float value=(radius.x-radius.y)/2.0;
+	//////////////////////////////
+	if(value<0.0f)
+		pos.z+=value;
+	else
+	if(value>0.0f)
+		pos.x-=value;
 	//set Position
 	setPosition(pos);
 }

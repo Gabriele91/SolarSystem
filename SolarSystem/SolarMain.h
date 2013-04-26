@@ -11,8 +11,10 @@ namespace SolarSystem {
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-		Planet earth;
+		Planet jupiter;
 		Planet mars;
+		Planet earth;
+		Planet mercury;
 		Planet sun;
 		Camera camera;
 		Object obj;
@@ -20,9 +22,11 @@ namespace SolarSystem {
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",786,786,32,60)
+			MainInstance("Solar System",1920,1080,32,60,true)
+			,mercury("img/mercury.png")
 			,earth("img/earth.png")
 			,mars("img/mars.png")
+			,jupiter("img/jupiter.png")
 			,sun("img/sun.png"){}
 		virtual void start(){
 		//input
@@ -39,10 +43,12 @@ namespace SolarSystem {
 		//enable z buffer
 		glEnable(GL_DEPTH_TEST);
 		//set projection matrix
-		camera.setPerspective(45,0.1f,10000.0f);
-		camera.setPosition(Vec3(0,-120,-500));
+		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		quad.setFromEulero(Math::torad(-20),0,0);
+		//quad.setFromEulero(Math::torad(-15),0,0);
+		//camera.setPosition(Vec3(0,-80,-500));
+		quad.setFromEulero(Math::torad(-90),0,0);
+		camera.setPosition(Vec3(0,-10000,0));
 		camera.setRotation(quad);
 		//enable texturing	
 		glEnable( GL_TEXTURE_2D );
@@ -55,36 +61,57 @@ namespace SolarSystem {
 		glEnable(GL_ALPHA_TEST);
         glEnable( GL_BLEND );   
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-		/////////////////////////////////////////////
-		//set info earth
+		//scale factor
+		const float scale=1.0/0.1;
+		const float scalePlanet=1.0/0.3;
+		const float scaleSun=1.0/2.0;
 		days=0;
-		earth.setPlanetInfo(Vec2(147,152),360);
-		earth.setData(days);
-		earth.setScale(Vec3(12,12,12)/2);
-		//mars
-		mars.setPlanetInfo(Vec2(206,249),320);
-		mars.setData(days);
-		mars.setScale(Vec3(6,6,6)/2);
+		/////////////////////////////////////////////	
+		//Elipses are in MKm
+		//SUN is in KKm
+		//PLANETS is in KKm
 		//sun
-		sun.setPlanetInfo(Vec2(0,0),1);
+		sun.setPlanetInfo(Vec2(0,0)*scale,1);
 		sun.setData(days);
-		sun.setScale(Vec3(150,150,150)/2);
+		sun.setScale(Vec3(1500,1500,1500)*scaleSun*0.5);
+		//mercury
+		mercury.setPlanetInfo(Vec2(69,46)*scale,87.97);
+		mercury.setData(days);
+		mercury.setScale(Vec3(4,4,4)*scalePlanet*0.5);
+		//earth
+		earth.setPlanetInfo(Vec2(147,152)*scale,360);
+		earth.setData(days);
+		earth.setScale(Vec3(12,12,12)*scalePlanet*0.5);
+		//mars
+		mars.setPlanetInfo(Vec2(206,249)*scale,320);
+		mars.setData(days);
+		mars.setScale(Vec3(6,6,6)*scalePlanet*0.5);
+		//jupiter
+		jupiter.setPlanetInfo(Vec2(740,810)*scale,4332.82f);
+		jupiter.setData(days);
+		jupiter.setScale(Vec3(70,70,70)*scalePlanet*0.5);
 
 		}
 		virtual void run(float dt){		
 			//clear
-			glClearColor(0.25f, 0.5f, 1.0f, 1.0f);
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			//update camera
 			camera.update();
-			days+=1.f;
+			days+=2.f;
+
+			mercury.setData(days);
+			mercury.draw(camera);
 
 			earth.setData(days);
-			earth.draw(camera);
+			earth.draw(camera);	
 
 			mars.setData(days);
 			mars.draw(camera);	
 
+			jupiter.setData(days);
+			jupiter.draw(camera);
+			
 			sun.setData(days);
 			sun.draw(camera);			
 		}
@@ -92,33 +119,34 @@ namespace SolarSystem {
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
+			static const float v=10.0;
 			//rotation
 			Quaternion rot;
-			rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);		
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	
+				rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);		
 				camera.setTurn(rot);  
 				return;
 			}
 			//
 			if(key==Key::W)
-				camera.setTranslation(Vec3(0,0,.1));
+				camera.setMove(Vec3(0,0,v));
 			else 
 			if(key==Key::S)
-				camera.setTranslation(Vec3(0,0,-.1));
+				camera.setMove(Vec3(0,0,-v));
 
 			else 
 			if(key==Key::A)
-				camera.setTranslation(Vec3(.1,0,0));
+				camera.setMove(Vec3(v,0,0));
 			else 
 			if(key==Key::D)
-				camera.setTranslation(Vec3(-.1,0,0));
+				camera.setMove(Vec3(-v,0,0));
 
 			else
 			if(key==Key::Q)
-				camera.setTranslation(Vec3(0,-.1,0));
+				camera.setMove(Vec3(0,-v,0));
 			else 
 			if(key==Key::Z)
-				camera.setTranslation(Vec3(0,.1,0));			
+				camera.setMove(Vec3(0,v,0));			
 			
 
 		}

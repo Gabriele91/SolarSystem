@@ -26,6 +26,7 @@ namespace SolarSystem{
 		void setRotation(const Quaternion& rotation,bool global=false);
 		//inc
 		void setTranslation(const Vector3D &translation);
+		void setMove(const Vector3D &move);
 		void setTurn(const Quaternion& rotation);
 		//childs
 		void addChild(Object *child,ParentMode type=ENABLE_ALL);

@@ -402,22 +402,64 @@ namespace SolarSystem{
 		Quaternion mulVec(const Vector3D &v) const;
 		///set pitch, yaw and roll
 		void setFromEulero(float pitch, float yaw, float roll);
+		void setFromEulero(const Vec3& pyr){
+			setFromEulero(pyr.x,pyr.y,pyr.z);
+		}
 		///return pitch, yaw and roll
 		void getEulero(float &pitch, float &yaw, float &roll) const;
+		void getEulero(Vec3& pyr) const{
+			getEulero(pyr.x,pyr.y,pyr.z);
+		}
 		///set quaternion from axis angle
 		void setFromAxisAngle(Vector3D &vt,float angle);
 		///return axis angle from quaternion
 		void getAxisAngle(Vector3D &vt,float &angle) const;
 		///return rotate point
 		Vector3D getRotatePoint(Vector3D & v) const;
+		///linear quaternion interpolation
+		Quaternion lerp(const Quaternion &q, float t) {
+			return ((*this)*(1.0f-t) + q*t).getNormalize(); 
+		}		
+		Quaternion slerp(const Quaternion &q, float t){
+			Quaternion q3;
+			float dot = this->dot(q);
+
+			/*	dot = cos(theta)
+				if (dot < 0), q1 and q2 are more than 90 degrees apart,
+				so we can invert one to reduce spinning	*/
+			if (dot < 0){
+				dot = -dot;
+				q3 = -q;
+			}
+			else
+				q3 = q;		
+			if (dot < 0.95f){
+				float angle = acosf(dot);
+				return ((*this)*sinf(angle*(1-t)) + q3*sinf(angle*t))/sinf(angle);
+			} else // if the angle is small, use linear interpolation								
+				return this->lerp(q3,t);		
+		}
+		//standard op
+		float length() const;
+		float dot(const Quaternion& vec) const;
+		Quaternion getNormalize() const;
 		///return matrix from quaternion
 		Matrix4x4 getMatrix() const;
 		//overload op
+		DFORCEINLINE const Quaternion operator *(float f) const{
+			return Quaternion(x*f, y*f, z*f,w*f);
+		}
+		DFORCEINLINE const Quaternion operator /(float f) const{
+			return Quaternion(x/f, y/f, z/f,w/f);
+		}
 		DFORCEINLINE const Quaternion operator +(const Quaternion &q) const{
 			return Quaternion(x+q.x, y+q.y, z+q.z,w+q.w);
 		}
 		DFORCEINLINE const Quaternion operator -(const Quaternion &q) const{
 			return Quaternion(x-q.x, y-q.y, z-q.z,w-q.w);
+		}
+		DFORCEINLINE const Quaternion operator -(void) const{
+			return Quaternion(-x, -y, -z,-w);
 		}
 		///////////////////////////////////////////////////////////////////////////
 		operator float* ()  {return &this->x;}

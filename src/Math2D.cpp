@@ -216,7 +216,7 @@ void Quaternion::setFromEulero(float pitch, float yaw, float roll){
 
 }
 void Quaternion::getEulero(float &pitch, float &yaw, float &roll) const {
-
+	/*
 	const double w2 = w*w;
 	const double x2 = x*x;
 	const double y2 = y*y;
@@ -241,7 +241,40 @@ void Quaternion::getEulero(float &pitch, float &yaw, float &roll) const {
 		roll = static_cast<float>( atan2(2*adbc, 1 - 2*(z2+x2)) );
 		pitch =static_cast<float>( asin(2*abcd/unitLength)      );
 		yaw =  static_cast<float>( atan2(2*acbd, 1 - 2*(y2+x2)) );
-	}
+	}*/
+	float sqw = w*w;    
+	float sqx = x*x;    
+	float sqy = y*y;    
+	float sqz = z*z;    
+	/**
+	* OPENGL (h-left) (homogeneee)
+	* http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
+	*/	
+	float unit = sqx + sqy + sqz + sqw;
+    float test = x * y + z * w;
+
+    if (test > 0.4999f * unit)                              // 0.4999f OR 0.5f - EPSILON
+    {
+        // Singularity at north pole                        // directx 
+        yaw = 2.f * (float)atan2(x, w);                     // Yaw
+        roll = Math::PI * 0.5f;                             // Pitch
+        pitch = 0.f;                                        // Roll
+    }
+    else if (test < -0.4999f * unit)                        // -0.4999f OR -0.5f + EPSILON
+    {
+        // Singularity at south pole                        // directx 
+        yaw = -2.f * (float)atan2(x, w);				    // Yaw
+        roll = -Math::PI * 0.5f;                            // Pitch
+        pitch = 0.f;                                        // Roll
+    }
+    else
+    {                                                                                 // directx 
+        yaw = (float)atan2f(2.f * y * w - 2.f * x * z, sqx - sqy - sqz + sqw);        // Yaw
+        roll = (float)asinf(2.f * test / unit);                                       // Pitch
+        pitch = (float)atan2f(2.f * x * w - 2.f * y * z, -sqx + sqy - sqz + sqw);     // Roll
+    }
+
+   
 }
 void Quaternion::setFromAxisAngle(Vector3D &vt,float angle){
 	float sinAngle;
@@ -308,6 +341,16 @@ Matrix4x4 Quaternion::getMatrix() const{
 }
 String Quaternion::toString(const String& start,const String& sep,const String& end) const{
 	return start+String::toString(x)+sep+String::toString(y)+sep+String::toString(z)+sep+String::toString(w)+end;
+}
+float  Quaternion::length() const{
+	return sqrt(w * w + x * x + y * y + z * z);
+}
+float Quaternion::dot(const Quaternion& vec) const{
+	return x*vec.x+y*vec.y+z*vec.z+w*vec.w;
+}
+Quaternion Quaternion::getNormalize() const{
+	float d=sqrt(x*x+y*y+z*z+w*w);
+	return Quaternion(x/d,y/d,z/d,w/d);
 }
 /* PLANE */
 Plane::Plane():d(0.0f){}
