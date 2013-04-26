@@ -4,82 +4,26 @@
 #include <Math2D.h>
 #include <Camera.h>
 #include <Texture.h>
+#include <Planet.h>
 
 namespace SolarSystem {
-
-	class SolidSphere{
-	protected:
-		std::vector<GLfloat> vertices;
-		std::vector<GLfloat> normals;
-		std::vector<GLfloat> texcoords;
-		std::vector<GLushort> indices;
-
-	public:
-
-		SolidSphere(float radius, unsigned int rings, unsigned int sectors){
-			float const R = 1./(float)(rings-1);
-			float const S = 1./(float)(sectors-1);
-			int r, s;
-
-			vertices.resize(rings * sectors * 3);
-			normals.resize(rings * sectors * 3);
-			texcoords.resize(rings * sectors * 2);
-			std::vector<GLfloat>::iterator v = vertices.begin();
-			std::vector<GLfloat>::iterator n = normals.begin();
-			std::vector<GLfloat>::iterator t = texcoords.begin();
-			for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
-					float const y = sin( -0.5*Math::PI + Math::PI * r * R );
-					float const x = cos(  2*Math::PI * s * S) * sin( Math::PI * r * R );
-					float const z = sin(  2*Math::PI * s * S) * sin( Math::PI * r * R );
-
-					*t++ = s*S;
-					*t++ = r*R;
-
-					*v++ = x * radius;
-					*v++ = y * radius;
-					*v++ = z * radius;
-
-					*n++ = x;
-					*n++ = y;
-					*n++ = z;
-			}
-			
-			indices.resize(rings * sectors * 6);
-			int i = -1;
-			for(int r = 0; r < rings-1; r++) {
-				for(int s = 0; s < sectors-1; s++) {
-					//1 2 3
-					indices[++i] = r * sectors + s;
-					indices[++i] = r * sectors + (s+1);
-					indices[++i] = (r+1) * sectors + (s+1);
-					//1 3 4
-					indices[++i] = r * sectors + s;
-					indices[++i] = (r+1) * sectors + (s+1);
-					indices[++i] = (r+1) * sectors + s;
-				}
-			}
-		}
-		void draw(){
-			glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
-			glNormalPointer(GL_FLOAT, 0, &normals[0]);
-			glTexCoordPointer(2, GL_FLOAT, 0, &texcoords[0]);
-			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-		}
-	};
 
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-		SolidSphere sphere;
-		Texture tex;
+		Planet earth;
+		Planet mars;
+		Planet sun;
 		Camera camera;
 		Object obj;
+		float days;
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",786,786,32,30)
-			,tex("img/earth.png")
-			,sphere(1,30,30){}
+			MainInstance("Solar System",786,786,32,60)
+			,earth("img/earth.png")
+			,mars("img/mars.png")
+			,sun("img/sun.png"){}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
@@ -95,7 +39,11 @@ namespace SolarSystem {
 		//enable z buffer
 		glEnable(GL_DEPTH_TEST);
 		//set projection matrix
-		camera.setPerspective(45,0.1f,1000.0f);
+		camera.setPerspective(45,0.1f,10000.0f);
+		camera.setPosition(Vec3(0,-120,-500));
+		Quaternion quad;
+		quad.setFromEulero(Math::torad(-20),0,0);
+		camera.setRotation(quad);
 		//enable texturing	
 		glEnable( GL_TEXTURE_2D );
 		//enable state	
@@ -108,6 +56,20 @@ namespace SolarSystem {
         glEnable( GL_BLEND );   
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		/////////////////////////////////////////////
+		//set info earth
+		days=0;
+		earth.setPlanetInfo(Vec2(147,152),360);
+		earth.setData(days);
+		earth.setScale(Vec3(12,12,12)/2);
+		//mars
+		mars.setPlanetInfo(Vec2(206,249),320);
+		mars.setData(days);
+		mars.setScale(Vec3(6,6,6)/2);
+		//sun
+		sun.setPlanetInfo(Vec2(0,0),1);
+		sun.setData(days);
+		sun.setScale(Vec3(150,150,150)/2);
+
 		}
 		virtual void run(float dt){		
 			//clear
@@ -115,27 +77,16 @@ namespace SolarSystem {
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			//update camera
 			camera.update();
-			tex.bind();
-			//
-			int spheresTotal=0;
-			int spheresDrawn=0;
-			//
-			int xcount=230;
-			int zcount=230;
-			//
-			for (int i = -xcount; i < xcount; i+=4) 
-			for(int k =  -zcount; k < zcount; k+=4) {
-				spheresTotal++;
-				Vec3 pos(i,0,k);
-				obj.setPosition(pos);
-				obj.setScale(Vec3(2,2,2));
-				if (Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)
-					||(camera.sphereInFrustum(pos,2) != Camera::OUTSIDE)) {
-					glLoadMatrixf(camera.getGlobalMatrix().mul(obj.getGlobalMatrix()));
-					sphere.draw();
-					spheresDrawn++;
-				}
-			};
+			days+=1.f;
+
+			earth.setData(days);
+			earth.draw(camera);
+
+			mars.setData(days);
+			mars.draw(camera);	
+
+			sun.setData(days);
+			sun.draw(camera);			
 		}
 		virtual void end(){
 		}
