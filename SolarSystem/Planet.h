@@ -44,7 +44,7 @@ namespace SolarSystem {
 		//set data
 		void setData(float day);
 		//set planet info
-		void setPlanetInfo(Vec2& radius,
+		void setPlanetInfo(const Vec2& radius,
 						   float daysOfYear);
 	};
 

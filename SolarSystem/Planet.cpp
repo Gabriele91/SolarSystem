@@ -125,7 +125,7 @@ void Planet::setData(float _day){
 	setPosition(pos);
 }
 //set planet info
-void Planet::setPlanetInfo(Vec2& _radius, float _daysOfYear){
+void Planet::setPlanetInfo(const Vec2& _radius, float _daysOfYear){
 	radius=_radius;
 	daysOfYear=_daysOfYear;
 }

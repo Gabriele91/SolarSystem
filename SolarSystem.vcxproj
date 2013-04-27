@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SolarSystem\Planet.cpp" />
+    <ClCompile Include="SolarSystem\PlanetsManager.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Debug.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="src\Math2D.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Screen.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Utility.cpp" />
@@ -109,6 +111,7 @@
     <ClInclude Include="include\Math2D.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\Screen.h" />
+    <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Types.h" />
@@ -119,6 +122,7 @@
     <ClInclude Include="include\window\WindowsInput.h" />
     <ClInclude Include="include\window\WindowsScreen.h" />
     <ClInclude Include="SolarSystem\Planet.h" />
+    <ClInclude Include="SolarSystem\PlanetsManager.h" />
     <ClInclude Include="SolarSystem\SolarMain.h" />
     <ClInclude Include="src\Image\Image.h" />
     <ClInclude Include="src\Image\lodepng.h" />

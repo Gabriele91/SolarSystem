@@ -105,3 +105,62 @@ bool Texture::operator ==(const Texture& t) const{
 bool Texture::operator !=(const Texture& t) const{
 	return gpuid!=t.gpuid;
 }
+
+
+//render texture:
+//costructor
+RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0){
+	//create an GPU texture
+	glGenTextures( 1, &gpuid );
+	//build
+	bind();
+	//save width end height
+	width=argwidth;
+	height=argheight;	
+	//create a gpu texture
+	glTexImage2D(GL_TEXTURE_2D,
+				 0,
+				 GL_RGB,
+				 width,
+				 height,
+				 0,
+				 GL_RGB,
+				 GL_UNSIGNED_BYTE,
+				 0);
+	//create mipmaps
+	glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, bMipmaps );	
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+	//////////////////////////////////
+	//create VBO
+	glGenFramebuffersEXT(1, &fboid);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboid);
+	// Instruct openGL that we won't bind a color texture with the currently binded FBO
+	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, 
+							  GL_COLOR_ATTACHMENT0_EXT ,
+							  GL_TEXTURE_2D, gpuid, 0);	
+	// disabilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+}
+//destructor
+RenderTexture::~RenderTexture(){	
+	//unload
+	DEBUG_ASSERT(gpuid);
+	glDeleteFramebuffersEXT(1, &fboid);
+}
+//start draw
+void RenderTexture::enableRender(){	
+	//abilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboid);
+}
+//end draw
+void RenderTexture::disableRender(){
+	//abilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+}

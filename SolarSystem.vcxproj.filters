@@ -93,6 +93,12 @@
     <ClCompile Include="SolarSystem\Planet.cpp">
       <Filter>SolarSystem</Filter>
     </ClCompile>
+    <ClCompile Include="SolarSystem\PlanetsManager.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -181,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="SolarSystem\Planet.h">
       <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem\PlanetsManager.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shader.h">
+      <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

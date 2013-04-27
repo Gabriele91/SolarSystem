@@ -4,30 +4,27 @@
 #include <Math2D.h>
 #include <Camera.h>
 #include <Texture.h>
+#include <Shader.h>
 #include <Planet.h>
+#include <PlanetsManager.h>
 
 namespace SolarSystem {
 
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-		Planet jupiter;
-		Planet mars;
-		Planet earth;
-		Planet mercury;
-		Planet sun;
+
+		PlanetsManager system;
+		Shader basic;
 		Camera camera;
 		Object obj;
 		float days;
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",1920,1080,32,60,true)
-			,mercury("img/mercury.png")
-			,earth("img/earth.png")
-			,mars("img/mars.png")
-			,jupiter("img/jupiter.png")
-			,sun("img/sun.png"){}
+			MainInstance("Solar System",1920,1080,32,60,false)
+			,system(&camera)
+			,basic("shader/basic.vs","shader/basic.ps"){}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
@@ -62,64 +59,54 @@ namespace SolarSystem {
         glEnable( GL_BLEND );   
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		//scale factor
-		const float scale=1.0/0.1;
-		const float scalePlanet=1.0/0.3;
-		const float scaleSun=1.0/2.0;
 		days=0;
+		system.setScaleElipses(0.1);
+		system.setScalePlanets(0.3);
+		system.setScaleSun(2);
 		/////////////////////////////////////////////	
 		//Elipses are in MKm
 		//SUN is in KKm
 		//PLANETS is in KKm
 		//sun
-		sun.setPlanetInfo(Vec2(0,0)*scale,1);
-		sun.setData(days);
-		sun.setScale(Vec3(1500,1500,1500)*scaleSun*0.5);
+		system.addSun("img/sun.png",Vec3(1500,1500,1500));
 		//mercury
-		mercury.setPlanetInfo(Vec2(69,46)*scale,87.97);
-		mercury.setData(days);
-		mercury.setScale(Vec3(4,4,4)*scalePlanet*0.5);
+		system.addPlanet("img/mercury.png",
+						 Vec2(69,46),
+						 Vec3(4,4,4),
+						 87.97);
 		//earth
-		earth.setPlanetInfo(Vec2(147,152)*scale,360);
-		earth.setData(days);
-		earth.setScale(Vec3(12,12,12)*scalePlanet*0.5);
+		system.addPlanet("img/earth.png",
+						 Vec2(147,152),
+						 Vec3(12,12,12),
+						 360);
 		//mars
-		mars.setPlanetInfo(Vec2(206,249)*scale,320);
-		mars.setData(days);
-		mars.setScale(Vec3(6,6,6)*scalePlanet*0.5);
+		system.addPlanet("img/mars.png",
+						 Vec2(206,249),
+						 Vec3(6,6,6),
+						 320);
 		//jupiter
-		jupiter.setPlanetInfo(Vec2(740,810)*scale,4332.82f);
-		jupiter.setData(days);
-		jupiter.setScale(Vec3(70,70,70)*scalePlanet*0.5);
+		system.addPlanet("img/jupiter.png",
+						 Vec2(740,810),
+						 Vec3(70,70,70),
+						 4332.82f);
 
 		}
 		virtual void run(float dt){		
 			//clear
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			//update camera
-			camera.update();
-			days+=2.f;
 
-			mercury.setData(days);
-			mercury.draw(camera);
-
-			earth.setData(days);
-			earth.draw(camera);	
-
-			mars.setData(days);
-			mars.draw(camera);	
-
-			jupiter.setData(days);
-			jupiter.draw(camera);
-			
-			sun.setData(days);
-			sun.draw(camera);			
+			days+=60.f*dt;
+			system.setData(days);
+			if(Application::instance()->getInput()->getKeyDown(Key::RETURN)) basic.bind();
+				system.draw();
+			basic.unbind();
 		}
 		virtual void end(){
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
-			static const float v=10.0;
+			static const float v=100.0;
 			//rotation
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	

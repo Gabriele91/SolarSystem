@@ -36,8 +36,9 @@ bool WindowsApp::loadData(const String& path,void*& ptr,size_t &len){
 		len=ftell(pfile);
 		fseek(pfile,0,SEEK_SET);
 		//read
-		ptr=malloc(len*sizeof(char));
+		ptr=malloc(len*sizeof(char)+1);
 		fread(ptr,len,1,pfile);
+		(*((char*)ptr+len))='\0';
 	//close
 	fclose(pfile);
 	return pfile!=NULL;

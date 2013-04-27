@@ -8,9 +8,18 @@ namespace SolarSystem {
 
 	class Texture {
 
+	protected:
+
 		bool bBilinear,chBlr,bMipmaps,chMps;
 		uint width,height;
         uint gpuid;
+		Texture():bBilinear(true)
+				 ,chBlr(true)
+				 ,bMipmaps(true)
+				 ,chMps(true)
+				 ,width(0)
+				 ,height(0)
+				 ,gpuid(0){}
 
 	public:
 		//
@@ -25,11 +34,29 @@ namespace SolarSystem {
 		bool mipmaps();
 		bool mipmaps(bool value);
 		//query
-		DFORCEINLINE uint getWidth(){ return width; }    
-		DFORCEINLINE uint getHeight(){ return height; }    
+		DFORCEINLINE uint getWidth()const{ return width; }    
+		DFORCEINLINE uint getHeight()const{ return height; }  
+		DFORCEINLINE uint getGpuID()const{ return gpuid; }    
 		//overload
 		bool operator ==(const Texture&) const;
 		bool operator !=(const Texture&) const;
+	};
+
+	class RenderTexture : public Texture {
+
+		uint fboid;
+
+	public:
+
+		//costructor
+		RenderTexture(uint width,uint height);	
+		//destructor
+		virtual ~RenderTexture();
+		//start draw
+		void enableRender();
+		//end draw
+		void disableRender();
+
 	};
 
 };
