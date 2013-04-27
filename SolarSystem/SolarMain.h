@@ -51,7 +51,7 @@ namespace SolarSystem {
 		//set projection matrix
 		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		quad.setFromEulero(Math::torad(-5),0,0);
+		quad.setFromEulero(Math::torad(0),0,0);
 		camera.setPosition(Vec3(0,0,-9900));
 		//quad.setFromEulero(Math::torad(-90),0,0);
 		//camera.setPosition(Vec3(0,-10000,0));
@@ -164,6 +164,11 @@ namespace SolarSystem {
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	
 				rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);		
+				camera.setTurn(rot);  
+				return;
+			}
+			if((key==Key::UP)-(key==Key::DOWN)){ 	
+				rot.setFromEulero(0,0,0);		
 				camera.setTurn(rot);  
 				return;
 			}

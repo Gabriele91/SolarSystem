@@ -14,7 +14,7 @@ void main(){
 	deltaTextCoord *= 1.0 /  float(NUM_SAMPLES) * density;
 	float illuminationDecay = 1.0;
 	//get original color
-    vec3 color = tex2D(myTexture, gl_TexCoord[0].st).rgb;  
+    vec3 color = texture2D(myTexture, gl_TexCoord[0].st).rgb;  
 	//
 	for(int i=0; i < NUM_SAMPLES ; i++){
 	
