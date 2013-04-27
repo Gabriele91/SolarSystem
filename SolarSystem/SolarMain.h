@@ -13,9 +13,12 @@ namespace SolarSystem {
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-
+		
 		PlanetsManager system;
-		Shader basic;
+		Shader blackMesh;
+		Shader godRays;
+		RenderTexture blackTexture;
+		RenderTexture colorTexture;
 		Camera camera;
 		Object obj;
 		float days;
@@ -24,7 +27,13 @@ namespace SolarSystem {
 		SolarMain():
 			MainInstance("Solar System",1920,1080,32,60,false)
 			,system(&camera)
-			,basic("shader/basic.vs","shader/basic.ps"){}
+			,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
+			,godRays("shader/godRays.vs","shader/godRays.ps")
+			,blackTexture(1920,1080)
+			,colorTexture(1920,1080)
+		{
+		
+		}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
@@ -42,10 +51,10 @@ namespace SolarSystem {
 		//set projection matrix
 		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		//quad.setFromEulero(Math::torad(-15),0,0);
-		//camera.setPosition(Vec3(0,-80,-500));
-		quad.setFromEulero(Math::torad(-90),0,0);
-		camera.setPosition(Vec3(0,-10000,0));
+		quad.setFromEulero(Math::torad(-5),0,0);
+		camera.setPosition(Vec3(0,0,-9900));
+		//quad.setFromEulero(Math::torad(-90),0,0);
+		//camera.setPosition(Vec3(0,-10000,0));
 		camera.setRotation(quad);
 		//enable texturing	
 		glEnable( GL_TEXTURE_2D );
@@ -59,9 +68,9 @@ namespace SolarSystem {
         glEnable( GL_BLEND );   
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 		//scale factor
-		days=0;
+		days=900;
 		system.setScaleElipses(0.1);
-		system.setScalePlanets(0.3);
+		system.setScalePlanets(0.2);
 		system.setScaleSun(2);
 		/////////////////////////////////////////////	
 		//Elipses are in MKm
@@ -92,15 +101,59 @@ namespace SolarSystem {
 
 		}
 		virtual void run(float dt){		
-			//clear
+			
+
+			days+=20.f*dt;
+			system.setData(days);
+
+			//offscreen draw
+			blackTexture.enableRender();				
+				glViewport(0, 0, blackTexture.getWidth(),
+								 blackTexture.getHeight());
+				//clear
+				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+				//
+				camera.update();
+				system.drawSun();
+				blackMesh.bind();
+					system.drawPlanets();
+				blackMesh.unbind();
+			blackTexture.disableRender();	
+
+
+			//font buffer
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			glViewport(0, 0, Application::instance()->getScreen()->getWidth(),
+							 Application::instance()->getScreen()->getHeight());
+			//draw
+			system.draw();
 
-			days+=60.f*dt;
-			system.setData(days);
-			if(Application::instance()->getInput()->getKeyDown(Key::RETURN)) basic.bind();
-				system.draw();
-			basic.unbind();
+			//draw vbo
+			godRays.bind();
+			float uniformExposure = 0.0034f;
+			float uniformDecay = 1.0f;
+			float uniformDensity = 1.f;
+			float uniformWeight = 3.65f;
+			godRays.uniformFloat("exposure",uniformExposure);
+			godRays.uniformFloat("decay",uniformDecay);
+			godRays.uniformFloat("density",uniformDensity);
+			godRays.uniformFloat("weight",uniformWeight);
+			godRays.uniformVector2D("lightPositionOnScreen",camera.getPointIn3DSpace(Vec3::ZERO));
+			godRays.uniformInt("myTexture",0);
+			
+			glEnable( GL_BLEND );   
+			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+			blackTexture.draw();
+			godRays.unbind(); 
+
+			//default status for blending    
+			glEnable( GL_BLEND );   
+			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+			//get errors...
+			CHECK_GPU_ERRORS();
 		}
 		virtual void end(){
 		}

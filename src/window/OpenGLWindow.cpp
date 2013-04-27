@@ -29,6 +29,12 @@ PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT=NULL;
 PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT =NULL;
 PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT =NULL;
 PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT =NULL;
+//RBO
+PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT =NULL;
+PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT =NULL;
+PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT =NULL;
+PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT =NULL;
+PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT =NULL;
 //shader
 PFNGLENABLEVERTEXATTRIBARRAYPROC    glEnableVertexAttribArray=NULL;
 PFNGLVERTEXATTRIBPOINTERPROC       glVertexAttribPointer=NULL;
@@ -98,6 +104,12 @@ void SolarSystem::initOpenGL2(){
     glBindFramebufferEXT		= (PFNGLBINDFRAMEBUFFEREXTPROC)		  wglGetProcAddress("glBindFramebufferEXT"); DEBUG_ASSERT(glBindFramebufferEXT);
     glFramebufferTexture2DEXT	= (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)  wglGetProcAddress("glFramebufferTexture2DEXT"); DEBUG_ASSERT(glFramebufferTexture2DEXT);
     glCheckFramebufferStatusEXT	= (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)wglGetProcAddress("glCheckFramebufferStatusEXT"); DEBUG_ASSERT(glCheckFramebufferStatusEXT);
+    //RBO
+    glGenRenderbuffersEXT		= (PFNGLGENRENDERBUFFERSEXTPROC)		  wglGetProcAddress("glGenRenderbuffersEXT"); DEBUG_ASSERT(glGenRenderbuffersEXT);
+    glDeleteRenderbuffersEXT    = (PFNGLDELETERENDERBUFFERSEXTPROC)    wglGetProcAddress("glDeleteRenderbuffersEXT"); DEBUG_ASSERT(glDeleteRenderbuffersEXT);
+    glBindRenderbufferEXT		= (PFNGLBINDRENDERBUFFEREXTPROC)		  wglGetProcAddress("glBindRenderbufferEXT"); DEBUG_ASSERT(glBindRenderbufferEXT);
+    glRenderbufferStorageEXT	= (PFNGLRENDERBUFFERSTORAGEEXTPROC)  wglGetProcAddress("glRenderbufferStorageEXT"); DEBUG_ASSERT(glRenderbufferStorageEXT);
+    glFramebufferRenderbufferEXT= (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)wglGetProcAddress("glFramebufferRenderbufferEXT"); DEBUG_ASSERT(glFramebufferRenderbufferEXT);
     //shader
     glCreateShader=(PFNGLCREATESHADERPROC)wglGetProcAddress("glCreateShader"); DEBUG_ASSERT(glCreateShader);
     glDeleteShader=(PFNGLDELETESHADERPROC)wglGetProcAddress("glDeleteShader"); DEBUG_ASSERT(glDeleteShader);

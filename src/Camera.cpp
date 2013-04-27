@@ -39,7 +39,7 @@ int Camera::pointInFrustum(const Vec3 &point){
 //set camera
 void Camera::update(){
 	//compute fastrum
-	Mat4 mViewProjMatrix=mProjMatrix.mul(getGlobalMatrix());
+	mViewProjMatrix=mProjMatrix.mul(getGlobalMatrix());
 	//left
 	planes[LEFT].normal.x = mViewProjMatrix[ 3] + mViewProjMatrix[ 0];
 	planes[LEFT].normal.y = mViewProjMatrix[ 7] + mViewProjMatrix[ 4];
@@ -82,4 +82,22 @@ void Camera::update(){
 	//now change only MODELVIEW
 	glMatrixMode(GL_MODELVIEW);
 }
+//get a projectate point
+Vec2 Camera::getPointIn3DSpace(const Vec3& point){
+	
+	Vec4 vpp(point,1.0);
+	vpp=getGlobalMatrix().mul(vpp);	
+	vpp=mProjMatrix.mul(vpp);	
+	if(vpp.w==0) return Vec2::ZERO;
 
+	vpp.x/=vpp.w;
+	vpp.y/=vpp.w;
+	vpp.z/=vpp.w;
+
+    /* Map x, y and z to range 0-1 */
+    vpp.x = vpp.x * 0.5 + 0.5;
+    vpp.y = vpp.y * 0.5 + 0.5;
+    vpp.z = vpp.z * 0.5 + 0.5;    
+
+	return vpp.xy();
+}

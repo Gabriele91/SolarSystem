@@ -44,7 +44,7 @@ namespace SolarSystem {
 
 	class RenderTexture : public Texture {
 
-		uint fboid;
+		uint fboid,depthid;
 
 	public:
 
@@ -56,7 +56,8 @@ namespace SolarSystem {
 		void enableRender();
 		//end draw
 		void disableRender();
-
+		//draw in fullScreen
+		void draw(bool bindTexture=true);
 	};
 
 };

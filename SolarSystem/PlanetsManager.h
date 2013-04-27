@@ -12,6 +12,7 @@ namespace SolarSystem {
 
 	class PlanetsManager {
 
+		Planet* sun;
 		std::vector<Planet*> planets;
 		Camera *camera;
 		float scaleElipses;
@@ -40,6 +41,8 @@ namespace SolarSystem {
 					   float daysInYear);
 		void setData(float day);
 		void draw();
+		void drawPlanets();
+		void drawSun();
 	};
 
 };

@@ -21,6 +21,7 @@ namespace SolarSystem {
 		Plane planes[6];
 		//matrix
 		Mat4 mProjMatrix;
+		Mat4 mViewProjMatrix;
 		//
 	public:
 		//
@@ -33,6 +34,14 @@ namespace SolarSystem {
 		int pointInFrustum(const Vec3 &point);
 		//update camera
 		void update();
+		//return matrix
+		DFORCEINLINE const Mat4& getProjectionMatrix(){
+			return mProjMatrix;
+		}
+		DFORCEINLINE const Mat4& getViewProjMatrix(){
+			return mViewProjMatrix;
+		}		
+		Vec2 getPointIn3DSpace(const Vec3& point);
 	};
 
 };

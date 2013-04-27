@@ -78,10 +78,14 @@ void Texture::bind(uint ntexture){
 	glEnable( GL_TEXTURE_2D );
 	glBindTexture( GL_TEXTURE_2D, (GLuint)gpuid );
 	//settings
-	if(chBlr)
+	if(chBlr){
+		chBlr=false;
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,bBilinear?GL_LINEAR:GL_NEAREST);
-	if(chMps)
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,bMipmaps?GL_LINEAR_MIPMAP_NEAREST:GL_LINEAR);
+	}
+	if(chMps){
+		chMps=false;
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,bMipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
+	}
 }
 //setting
 bool Texture::bilinear(){
@@ -109,26 +113,43 @@ bool Texture::operator !=(const Texture& t) const{
 
 //render texture:
 //costructor
-RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0){
+RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0),depthid(0){
 	//create an GPU texture
 	glGenTextures( 1, &gpuid );
+	//not work midmaps
+	bMipmaps=false;
 	//build
-	bind();
+	glEnable( GL_TEXTURE_2D );
+	glBindTexture( GL_TEXTURE_2D, (GLuint)gpuid );
 	//save width end height
 	width=argwidth;
 	height=argheight;	
 	//create a gpu texture
 	glTexImage2D(GL_TEXTURE_2D,
 				 0,
-				 GL_RGB,
+				 GL_RGBA,
 				 width,
 				 height,
 				 0,
-				 GL_RGB,
+				 GL_RGBA,
 				 GL_UNSIGNED_BYTE,
 				 0);
 	//create mipmaps
 	glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, bMipmaps );	
+	//unbind texture
+	glBindTexture( GL_TEXTURE_2D, 0 );
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+	//////////////////////////////////
+	//df buffer
+	glGenRenderbuffersEXT(1, &depthid);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthid);
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, 
+							 GL_DEPTH_COMPONENT24, 
+							 width,
+							 height);	
+	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 	//////////////////////////////////
 	//get errors...
 	CHECK_GPU_ERRORS();
@@ -137,21 +158,37 @@ RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0){
 	glGenFramebuffersEXT(1, &fboid);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboid);
 	// Instruct openGL that we won't bind a color texture with the currently binded FBO
-	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
-	glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, 
 							  GL_COLOR_ATTACHMENT0_EXT ,
-							  GL_TEXTURE_2D, gpuid, 0);	
-	// disabilita fbo
+							  GL_TEXTURE_2D, 
+							  gpuid,
+							  0);	
+    //-------------------------
+    //Attach depth buffer to FBO
+    glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, 
+								 GL_DEPTH_ATTACHMENT_EXT, 
+								 GL_RENDERBUFFER_EXT, 
+								 depthid);	
+	//set draw buffer
+	//glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	//glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	//get errors...
+	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+	if(status != GL_FRAMEBUFFER_COMPLETE_EXT){
+		DEBUG_MESSAGE("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+	}
+	// disabilita fbo	
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	//////////////////////////////////
 	//get errors...
 	CHECK_GPU_ERRORS();
 }
 //destructor
-RenderTexture::~RenderTexture(){	
+RenderTexture::~RenderTexture(){
+	
 	//unload
 	DEBUG_ASSERT(gpuid);
+    glDeleteRenderbuffersEXT(1, &depthid);
 	glDeleteFramebuffersEXT(1, &fboid);
 }
 //start draw
@@ -161,6 +198,44 @@ void RenderTexture::enableRender(){
 }
 //end draw
 void RenderTexture::disableRender(){
-	//abilita fbo
+	//disabilita fbo
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+}
+//draw in fullScreen
+void RenderTexture::draw(bool bindTexture){
+	//reset projection matrix
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//reset model matrix
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//
+	float size=1.0;
+	static
+	const 
+	float vertexes[]={ 
+						-size,-size,0.0, 
+						-size, size,0.0, 
+						 size,-size,0.0, 
+						 size, size,0.0
+	                 };
+	
+	static
+	const 
+	float texCoord[]={ 
+						0.0,0.0, 
+						0.0,1.0, 
+						1.0,0.0, 
+						1.0,1.0
+	                 };
+
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ); 
+	//set texture
+	if(bindTexture) bind();
+	//set vertex
+	glVertexPointer(3, GL_FLOAT, 0, vertexes);
+    glTexCoordPointer(2, GL_FLOAT, 0, texCoord);
+	//draw
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
