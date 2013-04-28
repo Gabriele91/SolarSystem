@@ -100,6 +100,8 @@ void Planet::draw(Camera& camera){
 		//draw
 		glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_SHORT, 0);
 	}
+	//else
+		//glLoadIdentity();
 
 }
 //set data

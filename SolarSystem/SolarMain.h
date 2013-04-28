@@ -24,7 +24,7 @@ namespace SolarSystem {
 	public:
 		SolarMain():
 			MainInstance("Solar System",1920,1080,32,60,false)
-			,system(&camera)
+			,system(&camera,&render)
 		{
 		
 		}
@@ -37,10 +37,10 @@ namespace SolarSystem {
 		//setup camera
 		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		quad.setFromEulero(Math::torad(-90),0,0);
-		camera.setPosition(Vec3(0,-10000,0));
+		//quad.setFromEulero(Math::torad(-90),0,0);
+		//camera.setPosition(Vec3(0,-10000,0));
 		quad.setFromEulero(Math::torad(0),0,0);
-		camera.setPosition(Vec3(0,0,-9900));
+		camera.setPosition(Vec3(0,0,-9500));
 		camera.setRotation(quad);		
 		//scale factor
 		days=900;
@@ -82,7 +82,7 @@ namespace SolarSystem {
 
 		}
 		virtual void run(float dt){				
-			days+=1.0f*dt;
+			days+=60.0f*dt;
 			//clear screen
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer

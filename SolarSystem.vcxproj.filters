@@ -28,6 +28,9 @@
     <Filter Include="SolarSystem">
       <UniqueIdentifier>{1f513684-aaaa-4fe1-8844-7188aa72f071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{6fa42da3-4375-4aa8-b703-8adf77f5af13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -210,6 +213,24 @@
     </None>
     <None Include="src\Thread\ThreadWin32.inl">
       <Filter>File di origine\Thread</Filter>
+    </None>
+    <None Include="shader\blackMesh.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\blackMesh.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\godRays.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLight.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\godRays.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLight.vs">
+      <Filter>shader</Filter>
     </None>
   </ItemGroup>
 </Project>

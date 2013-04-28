@@ -135,6 +135,12 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shader\blackMesh.ps" />
+    <None Include="shader\blackMesh.vs" />
+    <None Include="shader\godRays.ps" />
+    <None Include="shader\godRays.vs" />
+    <None Include="shader\sunLight.ps" />
+    <None Include="shader\sunLight.vs" />
     <None Include="src\Image\Image.inl" />
     <None Include="src\Thread\MutexWin32.inl" />
     <None Include="src\Thread\ThreadWin32.inl" />

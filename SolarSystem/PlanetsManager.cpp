@@ -5,10 +5,11 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-PlanetsManager::PlanetsManager(Camera *camera)
-	:sun(0),camera(camera)
+PlanetsManager::PlanetsManager(Camera *camera,SolarRender *render)
+	:sun(0),camera(camera),render(render)
 	,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
 	,godRays("shader/godRays.vs","shader/godRays.ps")
+	,sunLight("shader/sunLight.vs","shader/sunLight.ps")
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
 {
@@ -62,24 +63,53 @@ void PlanetsManager::draw(){
 	glGetIntegerv(GL_BLEND_DST_RGB , &DST_BLEND);
 	bool BLEND_IS_ENABLE;
 	BLEND_IS_ENABLE=glIsEnabled(GL_BLEND);
+	////////////////////////////////////////////////////////////////////
 	//offscreen draw
-	blackTexture.enableRender();				
+	blackTexture.enableRender();
+		//set viewport
 		glViewport(0, 0, blackTexture.getWidth(),
 						 blackTexture.getHeight());
 		//clear
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
+		render->setClearColor(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		//
 		drawSun();
 		blackMesh.bind();
 			drawPlanets();
 		blackMesh.unbind();
+		//
 	blackTexture.disableRender();
+	////////////////////////////////////////////////////////////////////
 	//reset viewport
 	glViewport(oldViewport.x,oldViewport.y,oldViewport.z,oldViewport.w);
-	//draw
+	
+	//draw word
 	drawSun();
-	drawPlanets();
+	//load view matrix
+	glLoadMatrixf(camera->getGlobalMatrix());
+	//set lights
+	render->setLight(Vec3::ZERO,
+					 Vec4(1.0,1.0,1.0,1.0),
+					 Vec4(1.0,1.0,1.0,1.0),
+					 Vec4(1.0,1.0,1.0,1.0));
+	 GLfloat Kc = 0.01;
+     GLfloat Kl = 0.0;
+     GLfloat Kq = 0.0;
+     
+     glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION,Kc);
+     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, Kl);
+     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, Kq);
+	render->setMaterial(Vec4(0.0,0.0,0.0,1.0),
+					    Vec4(1.0,1.0,1.0,1.0),
+					    Vec4(0.8,0.8,0.8,1.0),
+					    Vec4(0.1,0.1,0.1,1.0),
+						1.0f);
+	render->enableLight();
+	sunLight.bind();
+	sunLight.uniformInt("planetTexture",0);
+		drawPlanets();
+	sunLight.unbind();
+	render->disableLight();
+
 	//draw vbo
 	godRays.bind();
 	float uniformExposure = 0.0034f;

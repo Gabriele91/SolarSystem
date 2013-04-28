@@ -17,6 +17,18 @@ namespace SolarSystem {
 		void setCullFace(CULLFACE type);
 		void setClearColor(const Vec4& color);
 
+		void enableLight();
+		void disableLight();
+		void setLight(const Vec3& posiction,
+					  const Vec4& ambient,
+					  const Vec4& diffuse,
+					  const Vec4& specular);
+		void setMaterial(const Vec4& ambient,
+						 const Vec4& diffuse,
+						 const Vec4& specular,
+						 const Vec4& emission,
+						 float shininess);
+
 	};
 
 };

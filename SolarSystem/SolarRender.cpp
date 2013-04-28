@@ -38,3 +38,35 @@ void SolarRender::setClearColor(const Vec4& color){
 	glClearColor(color.x, color.y, color.z, color.w);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 }
+
+void SolarRender::enableLight(){	
+     glEnable(GL_LIGHTING);
+     glEnable(GL_LIGHT0);
+}
+void SolarRender::disableLight(){	
+     glDisable(GL_LIGHT0);
+     glDisable(GL_LIGHTING);
+}
+void SolarRender::setLight( const Vec3& posiction,
+							const Vec4& ambient,
+							const Vec4& diffuse,
+							const Vec4& specular){	
+	 Vec4 pos(posiction,1.0);
+     glLightfv(GL_LIGHT0, GL_POSITION, pos);
+     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+}
+void SolarRender::setMaterial(  const Vec4& ambient,
+								const Vec4& diffuse,
+								const Vec4& specular,
+								const Vec4& emission,
+								float shininess){
+						
+     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient);
+     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse);
+     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
+     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+
+}

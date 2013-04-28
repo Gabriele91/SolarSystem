@@ -8,6 +8,7 @@
 #include <Camera.h>
 #include <Planet.h>
 #include <Shader.h>
+#include <SolarRender.h>
 
 namespace SolarSystem {
 
@@ -16,11 +17,13 @@ namespace SolarSystem {
 		Planet* sun;
 		std::vector<Planet*> planets;
 		Camera *camera;
+		SolarRender *render;
 		float scaleElipses;
 		float scaleSun;
 		float scalePlanets;		
 		Shader blackMesh;
 		Shader godRays;
+		Shader sunLight;
 		RenderTexture blackTexture;
 		//shader id
 		uint glslExposure,
@@ -32,7 +35,7 @@ namespace SolarSystem {
 
 	public:
 		
-		PlanetsManager(Camera *camera);
+		PlanetsManager(Camera *camera,SolarRender *render);
 		virtual ~PlanetsManager();
 
 		DFORCEINLINE void setScaleElipses(float scale){

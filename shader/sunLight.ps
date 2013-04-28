@@ -1,3 +1,11 @@
+
+uniform sampler2D planetTexture;
+
+void main(){
+	gl_FragColor =texture2D(planetTexture, gl_TexCoord[0].st)*gl_Color;
+}
+
+/*
 varying vec4 diffuse,ambient;
 varying vec3 normal,halfVector;
  
@@ -8,13 +16,9 @@ void main()
  
     lightDir = vec3(gl_LightSource[0].position);
  
-    /* The ambient term will always be present */
     vec4 color = ambient;
-    /* a fragment shader can't write a varying variable, hence we need
-    a new variable to store the normalized interpolated normal */
     n = normalize(normal);
 	
-    /* compute the dot product between normal and ldir */ 
     NdotL = max(dot(n,lightDir),0.0);
     if (NdotL > 0.0) {
         color += diffuse * NdotL;
@@ -28,3 +32,4 @@ void main()
     gl_FragColor = color;
 
 }
+*/
