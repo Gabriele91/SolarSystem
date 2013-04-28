@@ -5,6 +5,7 @@
 #include <Camera.h>
 #include <Texture.h>
 #include <Shader.h>
+#include <SolarRender.h>
 #include <Planet.h>
 #include <PlanetsManager.h>
 
@@ -13,12 +14,9 @@ namespace SolarSystem {
 	class SolarMain: public MainInstance,
 							Input::KeyboardHandler,
 							Input::MouseHandler{
-		
+
+		SolarRender    render;
 		PlanetsManager system;
-		Shader blackMesh;
-		Shader godRays;
-		RenderTexture blackTexture;
-		RenderTexture colorTexture;
 		Camera camera;
 		Object obj;
 		float days;
@@ -27,10 +25,6 @@ namespace SolarSystem {
 		SolarMain():
 			MainInstance("Solar System",1920,1080,32,60,false)
 			,system(&camera)
-			,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
-			,godRays("shader/godRays.vs","shader/godRays.ps")
-			,blackTexture(1920,1080)
-			,colorTexture(1920,1080)
 		{
 		
 		}
@@ -38,35 +32,16 @@ namespace SolarSystem {
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
 		Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
-		/////////////////////////////////////////////
-		//OPENGL
-		//view port
-		glViewport(0, 0, Application::instance()->getScreen()->getWidth(),
-						 Application::instance()->getScreen()->getHeight());
-		//enable culling
-		glEnable( GL_CULL_FACE );
-		glCullFace( GL_FRONT );
-		//enable z buffer
-		glEnable(GL_DEPTH_TEST);
-		//set projection matrix
+		//init render
+		render.init();
+		//setup camera
 		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		quad.setFromEulero(Math::torad(0),0,0);
-		camera.setPosition(Vec3(0,0,-9900));
 		//quad.setFromEulero(Math::torad(-90),0,0);
 		//camera.setPosition(Vec3(0,-10000,0));
-		camera.setRotation(quad);
-		//enable texturing	
-		glEnable( GL_TEXTURE_2D );
-		//enable state	
-		//always active!
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);       
-		//default status for blending    
-		glEnable(GL_ALPHA_TEST);
-        glEnable( GL_BLEND );   
-        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		quad.setFromEulero(Math::torad(0),0,0);
+		camera.setPosition(Vec3(0,0,-9900));
+		camera.setRotation(quad);		
 		//scale factor
 		days=900;
 		system.setScaleElipses(0.1);
@@ -100,58 +75,13 @@ namespace SolarSystem {
 						 4332.82f);
 
 		}
-		virtual void run(float dt){		
-			
-
+		virtual void run(float dt){				
 			days+=20.f*dt;
-			system.setData(days);
-
-			//offscreen draw
-			blackTexture.enableRender();				
-				glViewport(0, 0, blackTexture.getWidth(),
-								 blackTexture.getHeight());
-				//clear
-				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-				//
-				camera.update();
-				system.drawSun();
-				blackMesh.bind();
-					system.drawPlanets();
-				blackMesh.unbind();
-			blackTexture.disableRender();	
-
-
+			//clear screen
+			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			glViewport(0, 0, Application::instance()->getScreen()->getWidth(),
-							 Application::instance()->getScreen()->getHeight());
-			//draw
+			system.setData(days);
 			system.draw();
-
-			//draw vbo
-			godRays.bind();
-			float uniformExposure = 0.0034f;
-			float uniformDecay = 1.0f;
-			float uniformDensity = 1.f;
-			float uniformWeight = 3.65f;
-			godRays.uniformFloat("exposure",uniformExposure);
-			godRays.uniformFloat("decay",uniformDecay);
-			godRays.uniformFloat("density",uniformDensity);
-			godRays.uniformFloat("weight",uniformWeight);
-			godRays.uniformVector2D("lightPositionOnScreen",camera.getPointIn3DSpace(Vec3::ZERO));
-			godRays.uniformInt("myTexture",0);
-			
-			glEnable( GL_BLEND );   
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
-			blackTexture.draw();
-			godRays.unbind(); 
-
-			//default status for blending    
-			glEnable( GL_BLEND );   
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}

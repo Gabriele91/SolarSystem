@@ -21,6 +21,8 @@ namespace SolarSystem{
 		void loadShader(const Utility::Path& vs, 
 						const Utility::Path& fs,
 						const char *defines[]=NULL);		
+
+		//uniform whit name
 		void uniformInt(const char *name,int v);
 		void uniformFloat(const char *name,float v);
 		void uniformTexture(const char *name,const Texture& v);
@@ -33,6 +35,21 @@ namespace SolarSystem{
 		void uniformVec3Array(const char *name,Vector3D  *v,unsigned int n);
 		void uniformVec4Array(const char *name,Vector4D  *v,unsigned int n);
 		void uniformMat4Array(const char *name,Matrix4x4 *v,unsigned int n);
+		//get uniform id
+		uint getUniformID(const char *name);
+		//uniform whit id		
+		void uniformInt(uint id,int v);
+		void uniformFloat(uint id,float v);
+		void uniformTexture(uint id,const Texture& v);
+		void uniformVector2D(uint id,const Vector2D& v);
+		void uniformVector3D(uint id,const Vector3D& v);
+		void uniformVector4D(uint id,const Vector4D& v);
+		void uniformMatrix4x4(uint id,const Matrix4x4& v);
+		void uniformFloatArray(uint id,float *v,unsigned int n);
+		void uniformVec2Array(uint id,Vector2D  *v,unsigned int n);
+		void uniformVec3Array(uint id,Vector3D  *v,unsigned int n);
+		void uniformVec4Array(uint id,Vector4D  *v,unsigned int n);
+		void uniformMat4Array(uint id,Matrix4x4 *v,unsigned int n);
 		//imposta shader
 		void bind();
 		void unbind();

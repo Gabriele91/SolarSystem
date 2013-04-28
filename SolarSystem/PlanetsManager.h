@@ -7,6 +7,7 @@
 #include <Texture.h>
 #include <Camera.h>
 #include <Planet.h>
+#include <Shader.h>
 
 namespace SolarSystem {
 
@@ -17,7 +18,17 @@ namespace SolarSystem {
 		Camera *camera;
 		float scaleElipses;
 		float scaleSun;
-		float scalePlanets;
+		float scalePlanets;		
+		Shader blackMesh;
+		Shader godRays;
+		RenderTexture blackTexture;
+		//shader id
+		uint glslExposure,
+			 glslDecay,
+			 glslDensity,
+			 glslWeight,
+			 glslLightPositionOnScreen,
+			 glslScreenTexture;
 
 	public:
 		

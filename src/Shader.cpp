@@ -158,6 +158,23 @@ void Shader::uniformVec2Array(const char *name,Vector2D *v,unsigned int n){ glUn
 void Shader::uniformVec3Array(const char *name,Vector3D *v,unsigned int n){ glUniform3fv(glGetUniformLocation(shader_id, name), n,&v[0].x); }
 void Shader::uniformVec4Array(const char *name,Vector4D *v,unsigned int n){ glUniform2fv(glGetUniformLocation(shader_id, name), n,&v[0].x); }
 void Shader::uniformMat4Array(const char *name,Matrix4x4 *v,unsigned int n) { glUniformMatrix4fv(glGetUniformLocation(shader_id, name),n, false,v->entries); }
+///////////////////////////////////
+//get uniform id
+uint Shader::getUniformID(const char *name){ return glGetUniformLocation(shader_id, name); }
+//uniform whit id		
+void Shader::uniformInt(uint id,int v){ glUniform1i(id, v); }
+void Shader::uniformFloat(uint id,float v){ glUniform1f(id, v); }
+void Shader::uniformTexture(uint id,const Texture& v){ glUniform1i(id, v.getGpuID()); }
+void Shader::uniformVector2D(uint id,const Vector2D& v){ glUniform2fv(id, 1,&v.x); }
+void Shader::uniformVector3D(uint id,const Vector3D& v){ glUniform3fv(id, 1,&v.x); }
+void Shader::uniformVector4D(uint id,const Vector4D& v){ glUniform4fv(id, 1,&v.x); }
+void Shader::uniformMatrix4x4(uint id,const Matrix4x4& v){ glUniformMatrix4fv(id,1, false,v.entries); }
+
+void Shader::uniformFloatArray(uint id,float *v,unsigned int n){ glUniform1fv(id, n,v); }
+void Shader::uniformVec2Array(uint id,Vector2D  *v,unsigned int n){ glUniform2fv(id, n,&v[0].x); }
+void Shader::uniformVec3Array(uint id,Vector3D  *v,unsigned int n){ glUniform3fv(id, n,&v[0].x); }
+void Shader::uniformVec4Array(uint id,Vector4D  *v,unsigned int n){ glUniform2fv(id, n,&v[0].x); }
+void Shader::uniformMat4Array(uint id,Matrix4x4 *v,unsigned int n) { glUniformMatrix4fv(id,n, false,v->entries); }
 /////////////////////////////////
 //disabilita shader
 void Shader::unbind(){
