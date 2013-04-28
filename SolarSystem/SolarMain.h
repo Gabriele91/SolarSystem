@@ -37,8 +37,8 @@ namespace SolarSystem {
 		//setup camera
 		camera.setPerspective(95,1.0f,100000.0f);
 		Quaternion quad;
-		//quad.setFromEulero(Math::torad(-90),0,0);
-		//camera.setPosition(Vec3(0,-10000,0));
+		quad.setFromEulero(Math::torad(-90),0,0);
+		camera.setPosition(Vec3(0,-10000,0));
 		quad.setFromEulero(Math::torad(0),0,0);
 		camera.setPosition(Vec3(0,0,-9900));
 		camera.setRotation(quad);		
@@ -52,31 +52,37 @@ namespace SolarSystem {
 		//SUN is in KKm
 		//PLANETS is in KKm
 		//sun
-		system.addSun("img/sun.png",Vec3(1500,1500,1500));
+		system.addSun("img/sun.png",
+					  Vec3(1500,1500,1500),
+					  25.379995);
 		//mercury
 		system.addPlanet("img/mercury.png",
 						 Vec2(69,46),
 						 Vec3(4,4,4),
-						 87.97);
+						 87.97,
+					     58.6462);
 		//earth
 		system.addPlanet("img/earth.png",
 						 Vec2(147,152),
 						 Vec3(12,12,12),
-						 360);
+						 360,
+						 0.99726968);
 		//mars
 		system.addPlanet("img/mars.png",
 						 Vec2(206,249),
 						 Vec3(6,6,6),
-						 320);
+						 320,
+						 1.02595675);
 		//jupiter
 		system.addPlanet("img/jupiter.png",
 						 Vec2(740,810),
 						 Vec3(70,70,70),
-						 4332.82f);
+						 4332.82f,
+						 0.41007);
 
 		}
 		virtual void run(float dt){				
-			days+=20.f*dt;
+			days+=1.0f*dt;
 			//clear screen
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer

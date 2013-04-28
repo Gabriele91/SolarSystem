@@ -33,6 +33,8 @@ namespace SolarSystem {
 		Vec2 radius;
 		float daysOfYear;
 		float day;
+		//planet rotation
+		float rotationPeriod;
 
 	public:
 
@@ -45,7 +47,8 @@ namespace SolarSystem {
 		void setData(float day);
 		//set planet info
 		void setPlanetInfo(const Vec2& radius,
-						   float daysOfYear);
+						   float daysOfYear,
+						   float rotationPeriod);
 	};
 
 };

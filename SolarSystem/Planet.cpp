@@ -123,9 +123,17 @@ void Planet::setData(float _day){
 		pos.x-=value;
 	//set Position
 	setPosition(pos);
+	//calc rotation
+	float yRotation=day/rotationPeriod*Math::PI2;
+	Quaternion rot;
+	rot.setFromEulero(0,yRotation,0);
+	setRotation(rot);
 }
 //set planet info
-void Planet::setPlanetInfo(const Vec2& _radius, float _daysOfYear){
+void Planet::setPlanetInfo(const Vec2& _radius, 
+						   float _daysOfYear,
+						   float _rotationPeriod){
 	radius=_radius;
 	daysOfYear=_daysOfYear;
+	rotationPeriod=_rotationPeriod;
 }

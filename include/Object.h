@@ -39,6 +39,7 @@ namespace SolarSystem{
 		ParentMode getParentMode() const;
 		//math
 		void change();
+		DFORCEINLINE bool isChange(){ return changeValue; }
 		const Matrix4x4& getGlobalMatrix();
 		//for each methods
 		std::list<Object*>::iterator begin();
@@ -47,6 +48,10 @@ namespace SolarSystem{
 		std::list<Object*>::reverse_iterator rend();
 		//data
 		void *data;
+
+	protected:
+
+		const Matrix4x4& _getGlobalMatrixCamera();
 
 	private:
 		

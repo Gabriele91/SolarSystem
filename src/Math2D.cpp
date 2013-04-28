@@ -633,9 +633,9 @@ void Matrix4x4::inverse2D(){
 Matrix4x4 Matrix4x4::getInverse() const{
 Matrix4x4 out;
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
-	Matrix4Invert(&(entries[0]),out.entries);
+	Matrix4Invert(&(entries[0]),&(out.entries[0]));
 #else
-	gluInvertMatrix(entries,out.entries);
+	gluInvertMatrix(&(entries[0]),&(out.entries[0]));
 #endif
 	return out;
 }

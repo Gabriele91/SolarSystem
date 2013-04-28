@@ -138,7 +138,7 @@ const Matrix4x4& Object::getGlobalMatrix(){
 		globalMat.identity();
 		//
 		if(parent){
-			Matrix4x4 mtmp,ptmp;
+			Matrix4x4 mtmp;
 			//calc values
 			mtmp=parent->getGlobalMatrix();
 			Vector3D tmpPos(mtmp.entries[12],mtmp.entries[13],mtmp.entries[14]);
@@ -149,22 +149,20 @@ const Matrix4x4& Object::getGlobalMatrix(){
 			mtmp.identity();
 			//
 			if(parentMode & (ENABLE_PARENT)){
-				//////////////////////////////////////////////
-				//rotarion local
-				globalMat=transform.rotation.getMatrix();				
+				//////////////////////////////////////////////					
 				//position local
-				ptmp.entries[12]=transform.position.x;
-				ptmp.entries[13]=transform.position.y;
-				ptmp.entries[14]=transform.position.z;
-				globalMat=globalMat.mul(ptmp);
+				globalMat[12]=transform.position.x;
+				globalMat[13]=transform.position.y;
+				globalMat[14]=transform.position.z;
+				//rotarion local	
+				globalMat=globalMat.mul(transform.rotation.getMatrix());
 				//////////////////////////////////////////////
-				//rotarion global
-				mtmp=tmpRot.getMatrix();
 				//position global
-				ptmp.entries[12]=tmpPos.x;
-				ptmp.entries[13]=tmpPos.y;
-				ptmp.entries[14]=tmpPos.z;	
-				mtmp=mtmp.mul(ptmp);		
+				mtmp.entries[12]=tmpPos.x;
+				mtmp.entries[13]=tmpPos.y;
+				mtmp.entries[14]=tmpPos.z;	
+				//rotarion global
+				mtmp=mtmp.mul(tmpRot.getMatrix());		
 				//global*local
 				globalMat=mtmp.mul(globalMat);
 				//////////////////////////////////////////////
@@ -182,17 +180,93 @@ const Matrix4x4& Object::getGlobalMatrix(){
 
 		}
 		else{
-			//rotarion
-			globalMat=transform.rotation.getMatrix();
 			//position
-			Mat4 tmp;
-			tmp.entries[12]=transform.position.x;
-			tmp.entries[13]=transform.position.y;
-			tmp.entries[14]=transform.position.z;
-			globalMat=globalMat.mul(tmp);
+			globalMat.entries[12]=transform.position.x;
+			globalMat.entries[13]=transform.position.y;
+			globalMat.entries[14]=transform.position.z;
+			//rotarion		
+			globalMat=globalMat.mul(transform.rotation.getMatrix());
 			//scale
 			globalMat.entries[0]*=transform.scale.x;
+			globalMat.entries[4]*=transform.scale.x;
+			globalMat.entries[8]*=transform.scale.x;
+			globalMat.entries[1]*=transform.scale.y;
 			globalMat.entries[5]*=transform.scale.y;
+			globalMat.entries[9]*=transform.scale.y;			
+			globalMat.entries[2]*=transform.scale.z;
+			globalMat.entries[6]*=transform.scale.z;
+			globalMat.entries[10]*=transform.scale.z;
+		}
+		//
+		changeValue=false;
+	 }
+
+return globalMat;
+}
+
+const Matrix4x4& Object::_getGlobalMatrixCamera(){
+	if(changeValue==true){
+		//
+		globalMat.identity();
+		//
+		if(parent){
+			Matrix4x4 mtmp;
+			//calc values
+			mtmp=parent->getGlobalMatrix();
+			Vector3D tmpPos(mtmp.entries[12],mtmp.entries[13],mtmp.entries[14]);
+			Quaternion tmpRot;
+			tmpRot.setFromEulero(mtmp.getRotX(),
+								 mtmp.getRotY(),
+								 mtmp.getRotZ());
+			mtmp.identity();
+			//
+			if(parentMode & (ENABLE_PARENT)){
+				//////////////////////////////////////////////					
+				//position local
+				globalMat[12]=transform.position.x;
+				globalMat[13]=transform.position.y;
+				globalMat[14]=transform.position.z;
+				//rotarion local	
+				globalMat=transform.rotation.getMatrix().mul(globalMat);
+				//////////////////////////////////////////////
+				//position global
+				mtmp.entries[12]=tmpPos.x;
+				mtmp.entries[13]=tmpPos.y;
+				mtmp.entries[14]=tmpPos.z;	
+				//rotarion global
+				mtmp=tmpRot.getMatrix().mul(mtmp);		
+				//global*local
+				globalMat=mtmp.mul(globalMat);
+				//////////////////////////////////////////////
+			}
+
+			if(parentMode & ENABLE_SCALE){
+			   const Vector3D& vTScale=getGlobalParentScale();
+			   mtmp.setScale(vTScale);
+			   globalMat=globalMat.mul(mtmp);
+			}
+			else{
+			   mtmp.setScale(transform.scale);
+			   globalMat=globalMat.mul(mtmp);
+			}
+
+		}
+		else{
+			//position
+			globalMat.entries[12]=transform.position.x;
+			globalMat.entries[13]=transform.position.y;
+			globalMat.entries[14]=transform.position.z;
+			//rotarion		
+			globalMat=transform.rotation.getMatrix().mul(globalMat);
+			//scale
+			globalMat.entries[0]*=transform.scale.x;
+			globalMat.entries[4]*=transform.scale.x;
+			globalMat.entries[8]*=transform.scale.x;
+			globalMat.entries[1]*=transform.scale.y;
+			globalMat.entries[5]*=transform.scale.y;
+			globalMat.entries[9]*=transform.scale.y;			
+			globalMat.entries[2]*=transform.scale.z;
+			globalMat.entries[6]*=transform.scale.z;
 			globalMat.entries[10]*=transform.scale.z;
 		}
 		//

@@ -45,11 +45,14 @@ namespace SolarSystem {
 			scalePlanets=(1.0/scale)*0.5;
 		}
 		
-		void addSun(const Utility::Path &path,const Vec3& scale);
+		void addSun(const Utility::Path &path,
+			        const Vec3& scale,
+					float rotationPeriod);
 		void addPlanet(const Utility::Path &path,
 					   const Vec2& elipse,
 					   const Vec3& scale,
-					   float daysInYear);
+					   float daysInYear,
+					   float rotationPeriod);
 		void setData(float day);
 		void draw();
 		void drawPlanets();

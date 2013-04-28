@@ -25,18 +25,21 @@ PlanetsManager::~PlanetsManager(){
 	if(sun) delete sun;
 }
 
-void PlanetsManager::addSun(const Utility::Path &path,const Vec3& scale){	
+void PlanetsManager::addSun(const Utility::Path &path,
+							const Vec3& scale,
+							float rotationPeriod){	
 	sun=new Planet(path);
-	sun->setPlanetInfo(Vec2::ZERO,1);
+	sun->setPlanetInfo(Vec2::ZERO,1,rotationPeriod);
 	sun->setScale(scale*scaleSun);
 }
 
 void PlanetsManager::addPlanet(const Utility::Path &path,
 							   const Vec2& elipse,
 							   const Vec3& scale,
-							   float daysInYear){
+							   float daysInYear,
+							   float rotationPeriod){
 	Planet* planet=new Planet(path);
-	planet->setPlanetInfo(elipse*scaleElipses,daysInYear);
+	planet->setPlanetInfo(elipse*scaleElipses,daysInYear,rotationPeriod);
 	planet->setScale(scale*scalePlanets);
 	planets.push_back(planet);
 }
@@ -44,6 +47,7 @@ void PlanetsManager::addPlanet(const Utility::Path &path,
 void PlanetsManager::setData(float day){
 	for(auto planet:planets)
 		planet->setData(day);
+	if(sun) sun->setData(day);
 }
 void PlanetsManager::draw(){
 	camera->update();
