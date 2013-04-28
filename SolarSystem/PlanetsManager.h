@@ -56,6 +56,12 @@ namespace SolarSystem {
 					   const Vec3& scale,
 					   float daysInYear,
 					   float rotationPeriod);
+		void addPlanet(const Utility::Path &path,
+					   const Utility::Path &cloudPath,
+					   const Vec2& elipse,
+					   const Vec3& scale,
+					   float daysInYear,
+					   float rotationPeriod);
 		void setData(float day);
 		void draw();
 		void drawPlanets();

@@ -27,8 +27,10 @@ namespace SolarSystem {
 		uint indicesBuffer;
 		//
 		void buildMesh(int rings,int sectors);
+		void bindMesh();
 		//texture
-		Texture texture;		 
+		Texture texture;	
+		Texture *cloudTexture;		 
 		//elliptical path
 		Vec2 radius;
 		float daysOfYear;
@@ -37,10 +39,15 @@ namespace SolarSystem {
 		float rotationPeriod;
 
 	public:
-
+		
 		Planet(const Utility::Path& texture,
 			   int rings=50,
 			   int sectors=50);
+		Planet(const Utility::Path& texture,
+			   const Utility::Path& textureCloud,
+			   int rings=50,
+			   int sectors=50);
+		virtual ~Planet();
 		//draw
 		void draw(Camera& camera);
 		//set data

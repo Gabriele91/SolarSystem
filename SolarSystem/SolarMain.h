@@ -23,7 +23,7 @@ namespace SolarSystem {
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",1920,1080,32,60,false)
+			MainInstance("Solar System",768,768,32,60,false)
 			,system(&camera,&render)
 		{
 		
@@ -40,13 +40,13 @@ namespace SolarSystem {
 		//quad.setFromEulero(Math::torad(-90),0,0);
 		//camera.setPosition(Vec3(0,-10000,0));
 		quad.setFromEulero(Math::torad(0),0,0);
-		camera.setPosition(Vec3(0,0,-9500));
+		camera.setPosition(Vec3(0,0,-15000));
 		camera.setRotation(quad);		
 		//scale factor
 		days=900;
-		system.setScaleElipses(0.1);
-		system.setScalePlanets(0.2);
-		system.setScaleSun(2);
+		system.setScaleElipses(0.07);
+		system.setScalePlanets(0.15);
+		system.setScaleSun(1.5);
 		/////////////////////////////////////////////	
 		//Elipses are in MKm
 		//SUN is in KKm
@@ -62,7 +62,8 @@ namespace SolarSystem {
 						 87.97,
 					     58.6462);
 		//earth
-		system.addPlanet("img/earth.png",
+		system.addPlanet("img/earth2.png",
+						 "img/earthClouds.png",
 						 Vec2(147,152),
 						 Vec3(12,12,12),
 						 360,
@@ -82,7 +83,7 @@ namespace SolarSystem {
 
 		}
 		virtual void run(float dt){				
-			days+=60.0f*dt;
+			days+=0.1f*dt;
 			//clear screen
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer
@@ -95,7 +96,7 @@ namespace SolarSystem {
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
-			static const float v=100.0;
+			static const float v=50.0;
 			//rotation
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	

@@ -44,6 +44,17 @@ void PlanetsManager::addPlanet(const Utility::Path &path,
 	planet->setScale(scale*scalePlanets);
 	planets.push_back(planet);
 }
+void PlanetsManager::addPlanet(const Utility::Path &path,
+							   const Utility::Path &coudPath,
+							   const Vec2& elipse,
+							   const Vec3& scale,
+							   float daysInYear,
+							   float rotationPeriod){
+	Planet* planet=new Planet(path,coudPath);
+	planet->setPlanetInfo(elipse*scaleElipses,daysInYear,rotationPeriod);
+	planet->setScale(scale*scalePlanets);
+	planets.push_back(planet);
+}
 
 void PlanetsManager::setData(float day){
 	for(auto planet:planets)
@@ -52,7 +63,6 @@ void PlanetsManager::setData(float day){
 }
 void PlanetsManager::draw(){
 	camera->update();
-	
 	//save viewport
 	Vec4 oldViewport;
 	glGetFloatv(GL_VIEWPORT,&oldViewport.x);
@@ -87,7 +97,7 @@ void PlanetsManager::draw(){
 	//load view matrix
 	glLoadMatrixf(camera->getGlobalMatrix());
 	//set lights
-	render->setLight(Vec3::ZERO,
+	render->setLight(sun->getPosition(),
 					 Vec4(1.0,1.0,1.0,1.0),
 					 Vec4(1.0,1.0,1.0,1.0),
 					 Vec4(1.0,1.0,1.0,1.0));
@@ -100,9 +110,9 @@ void PlanetsManager::draw(){
      glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, Kq);
 	render->setMaterial(Vec4(0.0,0.0,0.0,1.0),
 					    Vec4(1.0,1.0,1.0,1.0),
-					    Vec4(0.8,0.8,0.8,1.0),
+					    Vec4(0.6,0.6,0.6,1.0),
 					    Vec4(0.1,0.1,0.1,1.0),
-						1.0f);
+						20.0f);
 	render->enableLight();
 	sunLight.bind();
 	sunLight.uniformInt("planetTexture",0);
@@ -112,7 +122,7 @@ void PlanetsManager::draw(){
 
 	//draw vbo
 	godRays.bind();
-	float uniformExposure = 0.0034f;
+	float uniformExposure = 0.0044f;
 	float uniformDecay = 1.0f;
 	float uniformDensity = 1.f;
 	float uniformWeight = 3.65f;

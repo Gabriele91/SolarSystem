@@ -64,7 +64,18 @@ void Planet::buildMesh(int rings,int sectors){
 	delete[] vertices;
 	delete[] indices;
 }
-
+void Planet::bindMesh(){
+	//bind VBO
+	glBindBuffer( GL_ARRAY_BUFFER, verticesBuffer );
+	//set vertex
+	glVertexPointer  (3, GL_FLOAT, sizeof(GLVertex), 0 );
+	glNormalPointer  (   GL_FLOAT, sizeof(GLVertex), (void*)offsetof(GLVertex,normals) );
+	glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex), (void*)offsetof(GLVertex,texcoords) );
+	//bind IBO
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indicesBuffer ); 
+	//draw
+	glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_SHORT, 0);
+}
 Planet::Planet(const Utility::Path& texture,
 			   int rings,
 			   int sectors)
@@ -72,11 +83,28 @@ Planet::Planet(const Utility::Path& texture,
 			  ,verticesBuffer(0)
 			  ,indicesSize(0)
 			  ,indicesBuffer(0)
-			  ,texture(texture){
+			  ,texture(texture)
+			  ,cloudTexture(NULL){
 	//build mesh
 	buildMesh(rings,sectors);
 }
-
+Planet::Planet(const Utility::Path& texture,
+			   const Utility::Path& cloudTexture,
+			   int rings,
+			   int sectors)
+			  :verticesSize(0)
+			  ,verticesBuffer(0)
+			  ,indicesSize(0)
+			  ,indicesBuffer(0)
+			  ,texture(texture)
+			  ,cloudTexture(new Texture(cloudTexture)){
+	//build mesh
+	buildMesh(rings,sectors);
+}
+Planet::~Planet(){
+	if(cloudTexture) 
+		delete cloudTexture;
+}
 //draw
 void Planet::draw(Camera& camera){
 	//get values
@@ -88,20 +116,40 @@ void Planet::draw(Camera& camera){
 		//bind texture
 		texture.bind();
 		//set model matrix
-		glLoadMatrixf(camera.getGlobalMatrix().mul(thisMtx));
-		//bind VBO
-		glBindBuffer( GL_ARRAY_BUFFER, verticesBuffer );
-		//set vertex
-		glVertexPointer  (3, GL_FLOAT, sizeof(GLVertex), 0 );
-		glNormalPointer  (   GL_FLOAT, sizeof(GLVertex), (void*)offsetof(GLVertex,normals) );
-		glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex), (void*)offsetof(GLVertex,texcoords) );
-		//bind IBO
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indicesBuffer ); 
+		Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+		glLoadMatrixf(viewmodel);
 		//draw
-		glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_SHORT, 0);
+		bindMesh();
+		//draw cloud
+		if(cloudTexture&& 
+		   camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale*1.01) != Camera::OUTSIDE){			
+			//save blend
+			int SRC_BLEND;
+			int DST_BLEND;
+			glGetIntegerv(GL_BLEND_SRC_RGB , &SRC_BLEND);
+			glGetIntegerv(GL_BLEND_DST_RGB , &DST_BLEND);
+			bool BLEND_IS_ENABLE;
+			BLEND_IS_ENABLE=glIsEnabled(GL_BLEND);	
+			//set additive blend
+			if(!BLEND_IS_ENABLE) glEnable( GL_BLEND );   
+			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+			//
+			Vec3 cloudScale(1.01,1.01,1.01);
+			//set matrix
+			viewmodel.entries[0]*=cloudScale.x; viewmodel.entries[1]*=cloudScale.y; viewmodel.entries[2]*=cloudScale.z;
+			viewmodel.entries[4]*=cloudScale.x; viewmodel.entries[5]*=cloudScale.y; viewmodel.entries[6]*=cloudScale.z;
+			viewmodel.entries[8]*=cloudScale.x; viewmodel.entries[9]*=cloudScale.y;	viewmodel.entries[10]*=cloudScale.z;			
+			//
+			glLoadMatrixf(viewmodel);
+			//bind texture
+			cloudTexture->bind();
+			//draw
+			bindMesh();
+			//reset old blend state   
+			if(!BLEND_IS_ENABLE) glDisable( GL_BLEND );   
+			glBlendFunc( SRC_BLEND, DST_BLEND );
+		}
 	}
-	//else
-		//glLoadIdentity();
 
 }
 //set data
