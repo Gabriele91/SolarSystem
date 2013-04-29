@@ -24,7 +24,7 @@ namespace SolarSystem {
 	public:
 		SolarMain():
 			MainInstance("Solar System",768,768,32,60,false)
-			,system(&camera,&render)
+			,system("SolarSystem.conf",&camera,&render)
 		{
 		
 		}
@@ -42,44 +42,9 @@ namespace SolarSystem {
 		quad.setFromEulero(Math::torad(0),0,0);
 		camera.setPosition(Vec3(0,0,-15000));
 		camera.setRotation(quad);		
-		//scale factor
+		//start day
 		days=900;
-		system.setScaleElipses(0.07);
-		system.setScalePlanets(0.15);
-		system.setScaleSun(1.5);
 		/////////////////////////////////////////////	
-		//Elipses are in MKm
-		//SUN is in KKm
-		//PLANETS is in KKm
-		//sun
-		system.addSun("img/sun.png",
-					  Vec3(1500,1500,1500),
-					  25.379995);
-		//mercury
-		system.addPlanet("img/mercury.png",
-						 Vec2(69,46),
-						 Vec3(4,4,4),
-						 87.97,
-					     58.6462);
-		//earth
-		system.addPlanet("img/earth2.png",
-						 "img/earthClouds.png",
-						 Vec2(147,152),
-						 Vec3(12,12,12),
-						 360,
-						 0.99726968);
-		//mars
-		system.addPlanet("img/mars.png",
-						 Vec2(206,249),
-						 Vec3(6,6,6),
-						 320,
-						 1.02595675);
-		//jupiter
-		system.addPlanet("img/jupiter.png",
-						 Vec2(740,810),
-						 Vec3(70,70,70),
-						 4332.82f,
-						 0.41007);
 
 		}
 		virtual void run(float dt){				

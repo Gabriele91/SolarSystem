@@ -105,6 +105,9 @@
     <ClCompile Include="SolarSystem\SolarRender.cpp">
       <Filter>SolarSystem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Table.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="SolarSystem\SolarRender.h">
       <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Table.h">
+      <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

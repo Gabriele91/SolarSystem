@@ -8,6 +8,7 @@
 #include <Camera.h>
 #include <Planet.h>
 #include <Shader.h>
+#include <Table.h>
 #include <SolarRender.h>
 
 namespace SolarSystem {
@@ -18,13 +19,14 @@ namespace SolarSystem {
 		std::vector<Planet*> planets;
 		Camera *camera;
 		SolarRender *render;
-		float scaleElipses;
+		float scaleEllipses;
 		float scaleSun;
 		float scalePlanets;		
 		Shader blackMesh;
 		Shader godRays;
 		Shader sunLight;
 		RenderTexture blackTexture;
+		Table configfile; 
 		//shader id
 		uint glslExposure,
 			 glslDecay,
@@ -35,11 +37,13 @@ namespace SolarSystem {
 
 	public:
 		
-		PlanetsManager(Camera *camera,SolarRender *render);
+		PlanetsManager(const Utility::Path& path,
+					   Camera *camera,
+					   SolarRender *render);
 		virtual ~PlanetsManager();
 
-		DFORCEINLINE void setScaleElipses(float scale){
-			scaleElipses=1.0/scale;
+		DFORCEINLINE void setScaleEllipses(float scale){
+			scaleEllipses=1.0/scale;
 		}
 		DFORCEINLINE void setScaleSun(float scale){
 			scaleSun=(1.0/scale)*0.5;
@@ -52,13 +56,13 @@ namespace SolarSystem {
 			        const Vec3& scale,
 					float rotationPeriod);
 		void addPlanet(const Utility::Path &path,
-					   const Vec2& elipse,
+					   const Vec2& ellipse,
 					   const Vec3& scale,
 					   float daysInYear,
 					   float rotationPeriod);
 		void addPlanet(const Utility::Path &path,
 					   const Utility::Path &cloudPath,
-					   const Vec2& elipse,
+					   const Vec2& ellipse,
 					   const Vec3& scale,
 					   float daysInYear,
 					   float rotationPeriod);

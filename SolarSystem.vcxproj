@@ -88,6 +88,7 @@
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Table.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Utility.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Table.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Types.h" />

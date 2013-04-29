@@ -30,7 +30,8 @@ WindowsApp::~WindowsApp(){
 bool WindowsApp::loadData(const String& path,void*& ptr,size_t &len){
 	//open
 	FILE *pfile=fopen(path,"rb");
-	DEBUG_ASSERT_MSG(pfile,"load file: "<<path);
+	DEBUG_MESSAGE("load file: "<<path); 
+	DEBUG_ASSERT_MSG(pfile,"error load file: "<<path);
 		//get size
 		fseek(pfile,0,SEEK_END);
 		len=ftell(pfile);

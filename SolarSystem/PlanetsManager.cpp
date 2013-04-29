@@ -5,8 +5,10 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-PlanetsManager::PlanetsManager(Camera *camera,SolarRender *render)
-	:sun(0),camera(camera),render(render)
+PlanetsManager::PlanetsManager(const Utility::Path& path,
+							   Camera *camera,
+							   SolarRender *render)
+	:sun(0),camera(camera),render(render),configfile(path)
 	,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
 	,godRays("shader/godRays.vs","shader/godRays.ps")
 	,sunLight("shader/sunLight.vs","shader/sunLight.ps")
@@ -20,6 +22,36 @@ PlanetsManager::PlanetsManager(Camera *camera,SolarRender *render)
 	glslWeight=godRays.getUniformID("weight");
 	glslLightPositionOnScreen=godRays.getUniformID("lightPositionOnScreen");
 	glslScreenTexture=godRays.getUniformID("screenTexture");
+	//setup config file:
+	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
+	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found sun planets");
+	//gat tables
+	const Table& sun=configfile.getTable("sun");
+	const Table& planets=configfile.getTable("planets");
+	//set scale
+	setScaleEllipses(configfile.getFloat("scaleEllipses",0.07));
+	setScalePlanets(configfile.getFloat("scalePlanets",0.15));
+	setScaleSun(configfile.getFloat("scaleSun",1.5));
+	//add sun
+	addSun(sun.getString("image"),sun.getVector3D("scale"),sun.getFloat("period"));
+	//add planets:
+	for(auto& itTable:planets){
+		const Table& planet=itTable.second->get<Table>();
+		if(planet.existsAsType("cloud",Table::STRING))
+			addPlanet(planet.getString("image"),
+					  planet.getString("cloud"),
+					  planet.getVector2D("ellipse"),
+					  planet.getVector3D("scale"),
+					  planet.getFloat("daysInYear"),
+					  planet.getFloat("period"));
+		else
+			addPlanet(planet.getString("image"),
+					  planet.getVector2D("ellipse"),
+					  planet.getVector3D("scale"),
+					  planet.getFloat("daysInYear"),
+					  planet.getFloat("period"));
+	}
+
 }
 PlanetsManager::~PlanetsManager(){	
 	for(auto planet:planets) delete planet;
@@ -35,23 +67,23 @@ void PlanetsManager::addSun(const Utility::Path &path,
 }
 
 void PlanetsManager::addPlanet(const Utility::Path &path,
-							   const Vec2& elipse,
+							   const Vec2& ellipse,
 							   const Vec3& scale,
 							   float daysInYear,
 							   float rotationPeriod){
 	Planet* planet=new Planet(path);
-	planet->setPlanetInfo(elipse*scaleElipses,daysInYear,rotationPeriod);
+	planet->setPlanetInfo(ellipse*scaleEllipses,daysInYear,rotationPeriod);
 	planet->setScale(scale*scalePlanets);
 	planets.push_back(planet);
 }
 void PlanetsManager::addPlanet(const Utility::Path &path,
 							   const Utility::Path &coudPath,
-							   const Vec2& elipse,
+							   const Vec2& ellipse,
 							   const Vec3& scale,
 							   float daysInYear,
 							   float rotationPeriod){
 	Planet* planet=new Planet(path,coudPath);
-	planet->setPlanetInfo(elipse*scaleElipses,daysInYear,rotationPeriod);
+	planet->setPlanetInfo(ellipse*scaleEllipses,daysInYear,rotationPeriod);
 	planet->setScale(scale*scalePlanets);
 	planets.push_back(planet);
 }
@@ -112,7 +144,7 @@ void PlanetsManager::draw(){
 					    Vec4(1.0,1.0,1.0,1.0),
 					    Vec4(0.6,0.6,0.6,1.0),
 					    Vec4(0.1,0.1,0.1,1.0),
-						20.0f);
+						15.0f);
 	render->enableLight();
 	sunLight.bind();
 	sunLight.uniformInt("planetTexture",0);
