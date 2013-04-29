@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="sphere" />
+		<Option title="SolarSystem" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -16,9 +16,11 @@
 					<Add option="-g" />
 					<Add option="-std=gnu++0x" />
 					<Add option="-D_DEBUG" />
+					<Add option="-DORDERED_TABLE" />
 					<Add directory="./" />
 					<Add directory="include" />
 					<Add directory="include/linux" />
+					<Add directory="SolarSystem" />
 				</Compiler>
 				<Linker>
 					<Add option="-lX11" />
@@ -37,9 +39,11 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=gnu++0x" />
+					<Add option="-DORDERED_TABLE" />
 					<Add directory="./" />
 					<Add directory="include" />
 					<Add directory="include/linux" />
+					<Add directory="SolarSystem" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -54,6 +58,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="SolarSystem/Planet.cpp" />
+		<Unit filename="SolarSystem/Planet.h" />
+		<Unit filename="SolarSystem/PlanetsManager.cpp" />
+		<Unit filename="SolarSystem/PlanetsManager.h" />
+		<Unit filename="SolarSystem/SolarMain.h" />
+		<Unit filename="SolarSystem/SolarRender.cpp" />
+		<Unit filename="SolarSystem/SolarRender.h" />
 		<Unit filename="include/Application.h" />
 		<Unit filename="include/Camera.h" />
 		<Unit filename="include/Config.h" />
@@ -66,6 +77,9 @@
 		<Unit filename="include/Math2D.h" />
 		<Unit filename="include/Object.h" />
 		<Unit filename="include/Screen.h" />
+		<Unit filename="include/Shader.h" />
+		<Unit filename="include/Table.h" />
+		<Unit filename="include/Texture.h" />
 		<Unit filename="include/Timer.h" />
 		<Unit filename="include/Types.h" />
 		<Unit filename="include/Utility.h" />
@@ -88,6 +102,9 @@
 		<Unit filename="src/Math2D.cpp" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Screen.cpp" />
+		<Unit filename="src/Shader.cpp" />
+		<Unit filename="src/Table.cpp" />
+		<Unit filename="src/Texture.cpp" />
 		<Unit filename="src/Thread/Mutex.h" />
 		<Unit filename="src/Thread/MutexConf.h" />
 		<Unit filename="src/Thread/MutexPOSIX.inl" />
