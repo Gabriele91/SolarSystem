@@ -606,13 +606,13 @@ namespace SolarSystem{
 		static DFORCEINLINE Vector2D min(Vector2D v1,Vector2D v2){
 			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
 		}
-		static DFORCEINLINE const Vector2D& min(const Vector2D& v1,const Vector2D& v2){
+		static DFORCEINLINE Vector2D min(const Vector2D& v1,const Vector2D& v2){
 			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
 		}
 		static DFORCEINLINE Vector3D min(Vector3D v1,Vector3D v2){
 			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
 		}
-		static DFORCEINLINE const Vector3D& min(const Vector3D& v1,const Vector3D& v2){
+		static DFORCEINLINE Vector3D min(const Vector3D& v1,const Vector3D& v2){
 			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
 		}
 		//max
@@ -623,13 +623,13 @@ namespace SolarSystem{
 		static DFORCEINLINE Vector2D max(Vector2D v1,Vector2D v2) {
 			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
 		}
-		static DFORCEINLINE const Vector2D& max(const Vector2D& v1,const Vector2D& v2) {
+		static DFORCEINLINE Vector2D max(const Vector2D& v1,const Vector2D& v2) {
 			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
 		}
 		static DFORCEINLINE Vector3D max(Vector3D v1,Vector3D v2) {
 			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
 		}
-		static DFORCEINLINE const Vector3D& max(const Vector3D& v1,const Vector3D& v2) {
+		static DFORCEINLINE Vector3D max(const Vector3D& v1,const Vector3D& v2) {
 			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
 		}
 		//lerp

@@ -73,7 +73,12 @@ PFNGLGETPROGRAMIVPROC	glGetProgramiv=NULL;
 PFNGLGETPROGRAMINFOLOGPROC	glGetProgramInfoLog=NULL;
 
 void SolarSystem::initOpenGL2(){
-
+	//out debug
+	DEBUG_MESSAGE("Setup OpenGL2");
+	DEBUG_MESSAGE("Vendor:" << glGetString(GL_VENDOR)  );
+    DEBUG_MESSAGE("Renderer:" << glGetString(GL_RENDERER));
+    DEBUG_MESSAGE("OpenGL Version: " << glGetString(GL_VERSION) );
+    DEBUG_MESSAGE("GLSL Version:" << glGetString(GL_SHADING_LANGUAGE_VERSION) );
 	//VBO / edit vbo 
     glEnableVertexAttribArray=(PFNGLENABLEVERTEXATTRIBARRAYPROC)wglGetProcAddress("glEnableVertexAttribArray"); DEBUG_ASSERT(glEnableVertexAttribArray);
     glVertexAttribPointer=(PFNGLVERTEXATTRIBPOINTERPROC)wglGetProcAddress("glVertexAttribPointer"); DEBUG_ASSERT(glVertexAttribPointer);

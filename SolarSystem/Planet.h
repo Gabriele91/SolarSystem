@@ -6,6 +6,7 @@
 #include <Object.h>
 #include <Texture.h>
 #include <Camera.h>
+#include <SolarRender.h>
 
 namespace SolarSystem {
 
@@ -30,23 +31,30 @@ namespace SolarSystem {
 		void bindMesh();
 		//texture
 		Texture texture;	
-		Texture *cloudTexture;		 
+		Texture *cloudTexture;
+		Texture *blackTexture;		 
 		//elliptical path
 		Vec2 radius;
 		float daysOfYear;
 		float day;
 		//planet rotation
 		float rotationPeriod;
+		//pointer to render
+		SolarRender *render;
+		//material
+		Vec4 ambient;
+		Vec4 diffuse;
+		Vec4 specular;
+		Vec4 emission;
+		float shininess;
 
 	public:
 		
-		Planet(const Utility::Path& texture,
+		Planet(SolarRender *render,
+		       const Utility::Path& texture,
 			   int rings=50,
 			   int sectors=50);
-		Planet(const Utility::Path& texture,
-			   const Utility::Path& textureCloud,
-			   int rings=50,
-			   int sectors=50);
+
 		virtual ~Planet();
 		//draw
 		void draw(Camera& camera);
@@ -56,8 +64,16 @@ namespace SolarSystem {
 		void setPlanetInfo(const Vec2& radius,
 						   float daysOfYear,
 						   float rotationPeriod);
+		//set material		
+		void setMaterial(const Vec4& ambient,
+						 const Vec4& diffuse,
+						 const Vec4& specular,
+						 const Vec4& emission,
+						 float shininess);
+		//set extra texture
+		void setCloudTexture(const Utility::Path& texture);
+		void setBlackTexture(const Utility::Path& texture);
 	};
-
 };
 
 #endif

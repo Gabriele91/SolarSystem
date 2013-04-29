@@ -28,23 +28,46 @@ Texture::Texture(const Utility::Path& path)
 					   Image::getTypeFromExtetion(path.getExtension()));
 	//free raw file
 	free(data);
-	/////////////////////////////////////////////////////////////////////
+	//save width end height
+	width=image.width;
+	height=image.height;	
+	//create a gpu texture
+	buildTexture(image.bytes,image.type);
+	//
+}
+
+Texture::Texture(const Vec4& floatColor,uint newWidth,uint newheight)
+				:bBilinear(true)
+				,chBlr(true)
+				,bMipmaps(true)
+				,chMps(true)
+				,width(0)
+				,height(0)
+				,gpuid(0){
+	//build
+	Image image(newWidth,newheight,4,true,Image::rgba(&(floatColor.x)));
+	//save width end height
+	width=newWidth;
+	height=newheight;	
+	//create a gpu texture
+	buildTexture(image.bytes,image.type);
+}	
+
+//send texture to gpu
+void Texture::buildTexture(void *data,uint type){	
 	//gen gpu
 	//create an GPU texture
 	glGenTextures( 1, &gpuid );
 	//build
 	bind();
-	//save width end height
-	width=image.width;
-	height=image.height;	
 	//create a gpu texture
 	glTexImage2D(GL_TEXTURE_2D,
 				 0,
-				 image.type,
+				 type,
 				 width,
 				 height,
 				 0,
-				 image.type,
+				 type,
 				 GL_UNSIGNED_BYTE,
 				 0);
 	//create mipmaps
@@ -53,9 +76,9 @@ Texture::Texture(const Utility::Path& path)
     glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0,
 					 width,
 					 height,
-					 image.type,
+					 type,
 					 GL_UNSIGNED_BYTE,
-					 image.bytes );
+					 data );
 	//////////////////////////////////
 	//get errors...
 	CHECK_GPU_ERRORS();
@@ -86,6 +109,10 @@ void Texture::bind(uint ntexture){
 		chMps=false;
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,bMipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
 	}
+}
+void Texture::unbind(uint ntexture){
+	glActiveTexture( GL_TEXTURE0 + ntexture );
+	glDisable(GL_TEXTURE_2D);
 }
 //setting
 bool Texture::bilinear(){
@@ -239,3 +266,4 @@ void RenderTexture::draw(bool bindTexture){
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
+

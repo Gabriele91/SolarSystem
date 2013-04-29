@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <Planet.h>
+#include <Debug.h>
 
 ///////////////////////
 using namespace SolarSystem;
@@ -76,7 +77,8 @@ void Planet::bindMesh(){
 	//draw
 	glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_SHORT, 0);
 }
-Planet::Planet(const Utility::Path& texture,
+Planet::Planet(SolarRender *render,
+			   const Utility::Path& texture,
 			   int rings,
 			   int sectors)
 			  :verticesSize(0)
@@ -84,57 +86,73 @@ Planet::Planet(const Utility::Path& texture,
 			  ,indicesSize(0)
 			  ,indicesBuffer(0)
 			  ,texture(texture)
-			  ,cloudTexture(NULL){
-	//build mesh
-	buildMesh(rings,sectors);
-}
-Planet::Planet(const Utility::Path& texture,
-			   const Utility::Path& cloudTexture,
-			   int rings,
-			   int sectors)
-			  :verticesSize(0)
-			  ,verticesBuffer(0)
-			  ,indicesSize(0)
-			  ,indicesBuffer(0)
-			  ,texture(texture)
-			  ,cloudTexture(new Texture(cloudTexture)){
+			  ,cloudTexture(NULL)
+			  ,blackTexture(NULL)
+			  ,render(render)
+			  ,ambient(Vec3::ZERO,1.0f)
+			  ,diffuse(Vec3::ZERO,1.0f)
+			  ,specular(Vec3::ZERO,1.0f)
+			  ,emission(Vec3::ZERO,1.0f)
+			  ,shininess(1.0){
 	//build mesh
 	buildMesh(rings,sectors);
 }
 Planet::~Planet(){
 	if(cloudTexture) 
 		delete cloudTexture;
+	if(blackTexture) 
+		delete blackTexture;
 }
+//set extra texture
+void Planet::setCloudTexture(const Utility::Path& texture){
+	DEBUG_ASSERT(cloudTexture==NULL);
+	cloudTexture=new Texture(texture);
+}
+void Planet::setBlackTexture(const Utility::Path& texture){
+	DEBUG_ASSERT(blackTexture==NULL);
+	blackTexture=new Texture(texture);
+};
 //draw
 void Planet::draw(Camera& camera){
+	////////////////////////////////////
 	//get values
 	const Mat4& thisMtx=getGlobalMatrix();
 	const Vec3& thisScale=thisMtx.getScale3D();
 	const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z));
 	//culling
 	if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
-		//bind texture
-		texture.bind();
+		if(render->lightIsEnable()){	
+			render->setMaterial(ambient,
+								diffuse,
+								specular,
+								emission,
+								shininess);
+			
+			if(blackTexture) blackTexture->bind(1);
+			else render->getTextureBlack().bind(1);
+		}
+		//bind texture 
+		texture.bind(0);
 		//set model matrix
 		Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
 		glLoadMatrixf(viewmodel);
 		//draw
 		bindMesh();
+		//unbind
+		if(render->lightIsEnable()){			
+			if(blackTexture) blackTexture->unbind(1);
+			else render->getTextureBlack().unbind(1);
+		}
 		//draw cloud
-		if(cloudTexture&& 
+		if(cloudTexture && 
 		   camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale*1.01) != Camera::OUTSIDE){			
 			//save blend
-			int SRC_BLEND;
-			int DST_BLEND;
-			glGetIntegerv(GL_BLEND_SRC_RGB , &SRC_BLEND);
-			glGetIntegerv(GL_BLEND_DST_RGB , &DST_BLEND);
-			bool BLEND_IS_ENABLE;
-			BLEND_IS_ENABLE=glIsEnabled(GL_BLEND);	
+			auto stateBlend=render->getBlendState();
 			//set additive blend
-			if(!BLEND_IS_ENABLE) glEnable( GL_BLEND );   
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+			if(!stateBlend.enable) glEnable( GL_BLEND );   
+			glBlendFunc( GL_SRC_ALPHA, GL_ONE  );
 			//
-			Vec3 cloudScale(1.01,1.01,1.01);
+			Vec3 cloudScale(1.01f,1.01f,1.01f);
 			//set matrix
 			viewmodel.entries[0]*=cloudScale.x; viewmodel.entries[1]*=cloudScale.y; viewmodel.entries[2]*=cloudScale.z;
 			viewmodel.entries[4]*=cloudScale.x; viewmodel.entries[5]*=cloudScale.y; viewmodel.entries[6]*=cloudScale.z;
@@ -142,12 +160,15 @@ void Planet::draw(Camera& camera){
 			//
 			glLoadMatrixf(viewmodel);
 			//bind texture
-			cloudTexture->bind();
+			cloudTexture->bind(0);
+			//set black texture
+			if(render->lightIsEnable()) render->getTextureBlack().bind(1);
 			//draw
 			bindMesh();
-			//reset old blend state   
-			if(!BLEND_IS_ENABLE) glDisable( GL_BLEND );   
-			glBlendFunc( SRC_BLEND, DST_BLEND );
+			//unbind black texture		
+			if(render->lightIsEnable()) render->getTextureBlack().unbind(1);
+			//reset old blend state  
+			render->setBlendState(stateBlend);
 		}
 	}
 
@@ -186,4 +207,16 @@ void Planet::setPlanetInfo(const Vec2& _radius,
 	radius=_radius;
 	daysOfYear=_daysOfYear;
 	rotationPeriod=_rotationPeriod;
+}
+//set material		
+void Planet::setMaterial(const Vec4& _ambient,
+						const Vec4& _diffuse,
+						const Vec4& _specular,
+						const Vec4& _emission,
+						float _shininess){
+	ambient=_ambient;
+	diffuse=_diffuse;
+	specular=_specular;
+	emission=_emission;
+	shininess=_shininess;
 }

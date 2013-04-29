@@ -43,29 +43,31 @@ namespace SolarSystem {
 		virtual ~PlanetsManager();
 
 		DFORCEINLINE void setScaleEllipses(float scale){
-			scaleEllipses=1.0/scale;
+			scaleEllipses=1.0f/scale;
 		}
 		DFORCEINLINE void setScaleSun(float scale){
-			scaleSun=(1.0/scale)*0.5;
+			scaleSun=(1.0f/scale)*0.5f;
 		}
 		DFORCEINLINE void setScalePlanets(float scale){
-			scalePlanets=(1.0/scale)*0.5;
+			scalePlanets=(1.0f/scale)*0.5f;
 		}
 		
 		void addSun(const Utility::Path &path,
 			        const Vec3& scale,
 					float rotationPeriod);
-		void addPlanet(const Utility::Path &path,
-					   const Vec2& ellipse,
-					   const Vec3& scale,
-					   float daysInYear,
-					   float rotationPeriod);
-		void addPlanet(const Utility::Path &path,
-					   const Utility::Path &cloudPath,
-					   const Vec2& ellipse,
-					   const Vec3& scale,
-					   float daysInYear,
-					   float rotationPeriod);
+		Planet* addPlanet( //texture
+						   const Utility::Path &path,
+						   //physics
+						   const Vec2& ellipse,
+						   const Vec3& scale,
+						   float daysInYear,
+						   float rotationPeriod,
+						   //material
+						   const Vec4& ambient,
+						   const Vec4& diffuse,
+						   const Vec4& specular,
+						   const Vec4& emission,
+						   float shininess);
 		void setData(float day);
 		void draw();
 		void drawPlanets();

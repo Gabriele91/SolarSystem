@@ -6,7 +6,10 @@
 using namespace SolarSystem;
 ///////////////////////
 
-SolarRender::SolarRender(){}
+SolarRender::SolarRender():black(Vec4(0.0,0.0,0.0,1.0),16,16)
+						  ,white(Vec4(1.0,1.0,1.0,1.0),16,16)
+{
+}
 
 void SolarRender::init(){
 	//OPENGL
@@ -39,6 +42,20 @@ void SolarRender::setClearColor(const Vec4& color){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 }
 
+SolarRender::BlendState SolarRender::getBlendState(){	
+	SolarRender::BlendState bs;
+	//save blend
+	glGetIntegerv(GL_BLEND_SRC_RGB , &bs.src);
+	glGetIntegerv(GL_BLEND_DST_RGB , &bs.dst);
+	bs.enable=glIsEnabled(GL_BLEND)!=false;
+	return bs;
+}
+void SolarRender::setBlendState(const BlendState& bs){	
+	//restore old blend state   
+	if(!bs.enable) glDisable( GL_BLEND );   
+	glBlendFunc( bs.src, bs.dst );
+}
+
 void SolarRender::enableLight(){	
      glEnable(GL_LIGHTING);
      glEnable(GL_LIGHT0);
@@ -47,6 +64,12 @@ void SolarRender::disableLight(){
      glDisable(GL_LIGHT0);
      glDisable(GL_LIGHTING);
 }
+bool SolarRender::lightIsEnable(){	
+	GLboolean out;
+	glGetBooleanv(GL_LIGHTING,&out);
+	return out;
+}
+
 void SolarRender::setLight( const Vec3& posiction,
 							const Vec4& ambient,
 							const Vec4& diffuse,

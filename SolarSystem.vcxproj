@@ -143,6 +143,7 @@
     <None Include="shader\godRays.vs" />
     <None Include="shader\sunLight.ps" />
     <None Include="shader\sunLight.vs" />
+    <None Include="SolarSystem.conf" />
     <None Include="src\Image\Image.inl" />
     <None Include="src\Thread\MutexWin32.inl" />
     <None Include="src\Thread\ThreadWin32.inl" />

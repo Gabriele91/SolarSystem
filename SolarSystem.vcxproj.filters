@@ -238,5 +238,8 @@
     <None Include="shader\sunLight.vs">
       <Filter>shader</Filter>
     </None>
+    <None Include="SolarSystem.conf">
+      <Filter>File di risorse</Filter>
+    </None>
   </ItemGroup>
 </Project>

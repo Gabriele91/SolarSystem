@@ -61,7 +61,7 @@ namespace SolarSystem {
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
-			static const float v=50.0;
+			static const float v=100.0;
 			//rotation
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	

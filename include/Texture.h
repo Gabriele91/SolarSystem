@@ -2,11 +2,14 @@
 #define TEXTURE_H
 
 #include <Config.h>
+#include <Math2D.h>
 #include <Utility.h>
 
 namespace SolarSystem {
 
 	class Texture {
+		
+		void buildTexture(void *data,uint type);
 
 	protected:
 
@@ -23,11 +26,15 @@ namespace SolarSystem {
 
 	public:
 		//
-		Texture(const Utility::Path& path);	
+		Texture(const Utility::Path& path);
+		Texture(const Vec4& floatColor,
+				uint newWidth,
+				uint newheight);
 		//destructor
 		virtual ~Texture();
 		//
 		void bind(uint ntexture=0);
+		void unbind(uint ntexture=0);
 		//settings
 		bool bilinear();
 		bool bilinear(bool value);

@@ -45,8 +45,13 @@ class Image{
 			unsigned char r,g,b,a;
 			rgba(){r=g=b=a=255;}
 			rgba(unsigned char r, unsigned char g, unsigned char b, unsigned char a):r(r),g(g),b(b),a(a){}
+			rgba(float* rgba):r(rgba[0]*255),g(rgba[1]*255),b(rgba[2]*255),a(rgba[3]*255){}
+			rgba(const float* rgba):r(rgba[0]*255),g(rgba[1]*255),b(rgba[2]*255),a(rgba[3]*255){}
 			void setColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a){
 				this->r=r; this->g=g; this->b=b; this->a=a;
+			}
+			void setFloatColor(float r, float g, float b, float a){			
+				this->r=r*255; this->g=g*255; this->b=b*255; this->a=a*255;
 			}
 			rgba operator + (const rgba& v){ return (rgba(r+v.r,g+v.g,b+v.b,a+v.a)); }
 			rgba operator - (const rgba& v){ return (rgba(r-v.r,g-v.g,b-v.b,a-v.a)); }
