@@ -1,6 +1,6 @@
 #include <LinuxScreen.h>
 ///////////////////////
-using namespace Sphere;
+using namespace SolarSystem;
 ///////////////////////
 
 #define WINDOW_ATTRIBUTE ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | StructureNotifyMask

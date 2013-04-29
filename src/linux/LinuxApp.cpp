@@ -6,7 +6,7 @@
 #include <Debug.h>
 #include <sys/time.h>
 ///////////////////////
-using namespace Sphere;
+using namespace SolarSystem;
 
 LinuxApp::LinuxApp()
 		   :Application(){

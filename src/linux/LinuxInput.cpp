@@ -4,7 +4,7 @@
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 ///////////////////////
-using namespace Sphere;
+using namespace SolarSystem;
 ///////////////////////
 
 Key::Keyboard KeyMapUnix[Key::KEYBOARDMAX];

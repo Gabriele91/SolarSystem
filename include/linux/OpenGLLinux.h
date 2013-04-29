@@ -34,6 +34,12 @@ extern PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT;
 extern PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT ;
 extern PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT ;
 extern PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT ;
+//RBO
+extern PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT;
+extern PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT;
+extern PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT;
+extern PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT;
+extern PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT;
 //shader
 extern PFNGLENABLEVERTEXATTRIBARRAYPROC	    glEnableVertexAttribArray;
 extern PFNGLVERTEXATTRIBPOINTERPROC	        glVertexAttribPointer;
@@ -71,7 +77,7 @@ extern PFNGLGETSHADERIVPROC			 glGetShaderiv;
 extern PFNGLGETPROGRAMIVPROC		 glGetProgramiv;
 extern PFNGLGETPROGRAMINFOLOGPROC	 glGetProgramInfoLog;
 
-namespace Sphere {
+namespace SolarSystem {
 	//init openGL2
 	extern void initOpenGL2();
 };

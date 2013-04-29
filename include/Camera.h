@@ -28,8 +28,8 @@ namespace SolarSystem {
 		Camera():Object(){}
 		//set prospetive
 		void setPerspective(float angle,float n,float f);
-		//culling methods		
-		static enum {OUTSIDE, INTERSECT, INSIDE};
+		//culling methods
+		enum {OUTSIDE, INTERSECT, INSIDE};
 		int sphereInFrustum(const Vec3& point, float radius);
 		int pointInFrustum(const Vec3 &point);
 		//update camera
@@ -40,10 +40,10 @@ namespace SolarSystem {
 		}
 		DFORCEINLINE const Mat4& getViewProjMatrix(){
 			return mViewProjMatrix;
-		}		
+		}
 		DFORCEINLINE const Mat4& getGlobalMatrix(){
 			return _getGlobalMatrixCamera();
-		}		
+		}
 		Vec2 getPointIn3DSpace(const Vec3& point);
 	};
 

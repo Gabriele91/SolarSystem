@@ -6,7 +6,7 @@
 #include <Input.h>
 #include <LinuxApp.h>
 
-namespace Sphere {
+namespace SolarSystem {
 
 	class LinuxInput : Input{
 

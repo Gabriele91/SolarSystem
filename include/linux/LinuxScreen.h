@@ -9,7 +9,7 @@
 #include <EString.h>
 #include <Screen.h>
 
-namespace Sphere {
+namespace SolarSystem {
 
 	class LinuxScreen : Screen{
 

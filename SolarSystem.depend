@@ -1,0 +1,330 @@
+# depslib dependency file v1.0
+1367221165 source:/home/user/SolarSystem/SolarSystem/Planet.cpp
+	<stdafx.h>
+	<Planet.h>
+
+1367221165 /home/user/SolarSystem//stdafx.h
+	<Config.h>
+
+1367221165 /home/user/SolarSystem/include/Config.h
+	<cmath>
+	<cassert>
+	<cstdlib>
+	<ctime>
+	<cstring>
+	<cfloat>
+	<climits>
+	<cstdlib>
+	<list>
+	<vector>
+	<string>
+	<algorithm>
+	<sstream>
+	<sys/types.h>
+	<sys/stat.h>
+	<Types.h>
+	<map>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<window/OpenGLWindow.h>
+	<GL/gl.h>
+	<linux/OpenGLLinux.h>
+	<AL/al.h>
+	<AL/alc.h>
+	"TargetConditionals.h"
+	<stdint.h>
+	<AL/al.h>
+	<AL/alc.h>
+	<android/log.h>
+	<android/native_activity.h>
+	<android_native_app_glue.h>
+	<utility>
+	<unordered_map>
+	<functional>
+	<memory>
+	<tr1/unordered_map>
+	<tr1/functional>
+	<tr1/memory>
+
+1367221165 /home/user/SolarSystem/include/Types.h
+
+1367221165 /home/user/SolarSystem/include/window/OpenGLWindow.h
+	<gletx_header.h>
+
+1367224668 /home/user/SolarSystem/include/linux/OpenGLLinux.h
+	<GL/glx.h>
+	<GL/glext.h>
+
+1367221165 /home/user/SolarSystem/SolarSystem/Planet.h
+	<Config.h>
+	<Utility.h>
+	<Object.h>
+	<Texture.h>
+	<Camera.h>
+
+1367221165 /home/user/SolarSystem/include/Utility.h
+	<Config.h>
+	<EString.h>
+
+1367221165 /home/user/SolarSystem/include/EString.h
+	<Config.h>
+
+1367221165 /home/user/SolarSystem/include/Object.h
+	<Config.h>
+	<Math2D.h>
+
+1367224295 /home/user/SolarSystem/include/Math2D.h
+	<Config.h>
+	<EString.h>
+
+1367221165 /home/user/SolarSystem/include/Texture.h
+	<Config.h>
+	<Utility.h>
+
+1367224314 /home/user/SolarSystem/include/Camera.h
+	<Config.h>
+	<Object.h>
+
+1367223625 source:/home/user/SolarSystem/SolarSystem/PlanetsManager.cpp
+	<stdafx.h>
+	<PlanetsManager.h>
+	<Application.h>
+
+1367223625 /home/user/SolarSystem/SolarSystem/PlanetsManager.h
+	<Config.h>
+	<Utility.h>
+	<Object.h>
+	<Texture.h>
+	<Camera.h>
+	<Planet.h>
+	<Shader.h>
+	<Table.h>
+	<SolarRender.h>
+
+1367221165 /home/user/SolarSystem/include/Shader.h
+	<Config.h>
+	<Math2D.h>
+	<Utility.h>
+	<Texture.h>
+
+1367223625 /home/user/SolarSystem/include/Table.h
+	<Config.h>
+	<Math2D.h>
+	<EString.h>
+	<iostream>
+	<Utility.h>
+
+1367221165 /home/user/SolarSystem/SolarSystem/SolarRender.h
+	<Config.h>
+	<Math2D.h>
+
+1367221165 /home/user/SolarSystem/include/Application.h
+	<Config.h>
+	<MainInstance.h>
+	<EString.h>
+	<Screen.h>
+	<Input.h>
+
+1367221165 /home/user/SolarSystem/include/MainInstance.h
+	<Config.h>
+	<Types.h>
+	<Screen.h>
+	<EString.h>
+
+1367221165 /home/user/SolarSystem/include/Screen.h
+	<Config.h>
+	<MainInstance.h>
+	<Application.h>
+
+1367221165 /home/user/SolarSystem/include/Input.h
+	<Config.h>
+	<Debug.h>
+	<Math2D.h>
+
+1367223625 /home/user/SolarSystem/include/Debug.h
+	<Config.h>
+	<ostream>
+
+1367221165 source:/home/user/SolarSystem/SolarSystem/SolarRender.cpp
+	<stdafx.h>
+	<SolarRender.h>
+	<Application.h>
+
+1367221165 source:/home/user/SolarSystem/main.cpp
+	<stdafx.h>
+	<Application.h>
+	<SolarMain.h>
+
+1367223625 /home/user/SolarSystem/SolarSystem/SolarMain.h
+	<Config.h>
+	<Application.h>
+	<MainInstance.h>
+	<Math2D.h>
+	<Camera.h>
+	<Texture.h>
+	<Shader.h>
+	<SolarRender.h>
+	<Planet.h>
+	<PlanetsManager.h>
+
+1367221165 source:/home/user/SolarSystem/src/Application.cpp
+	<stdafx.h>
+	<Application.h>
+	<ETime.h>
+	<WindowsApp.h>
+	<LinuxApp.h>
+
+1367221165 /home/user/SolarSystem/include/ETime.h
+	<Config.h>
+	<Types.h>
+
+1367224496 /home/user/SolarSystem/include/linux/LinuxApp.h
+	<Config.h>
+	<Application.h>
+	<MainInstance.h>
+
+1367221165 source:/home/user/SolarSystem/src/Camera.cpp
+	<stdafx.h>
+	<Camera.h>
+	<Application.h>
+
+1367221165 source:/home/user/SolarSystem/src/Debug.cpp
+	<stdafx.h>
+	<Debug.h>
+	<EString.h>
+	<iostream>
+	<signal.h>
+
+1367221165 source:/home/user/SolarSystem/src/EString.cpp
+	<stdafx.h>
+	<stdafx.h>
+	<EString.h>
+
+1367221165 source:/home/user/SolarSystem/src/ETime.cpp
+	<stdafx.h>
+	<ETime.h>
+	<sys/time.h>
+
+1367221165 source:/home/user/SolarSystem/src/Image/lodepng.cpp
+	<stdafx.h>
+	"lodepng.h"
+	<stdio.h>
+	<stdlib.h>
+	<fstream>
+
+1367221165 /home/user/SolarSystem/src/Image/lodepng.h
+	<string.h>
+	<vector>
+	<string>
+	"lodepng.h"
+	<iostream>
+	"lodepng.h"
+
+1367221165 source:/home/user/SolarSystem/src/Input.cpp
+	<stdafx.h>
+	<Input.h>
+
+1367221165 source:/home/user/SolarSystem/src/MainInstance.cpp
+	<stdafx.h>
+	<MainInstance.h>
+
+1367221165 source:/home/user/SolarSystem/src/Math2D.cpp
+	<stdafx.h>
+	<Math2D.h>
+
+1367221165 source:/home/user/SolarSystem/src/Object.cpp
+	<stdafx.h>
+	<Object.h>
+
+1367221165 source:/home/user/SolarSystem/src/Screen.cpp
+	<stdafx.h>
+	<Screen.h>
+
+1367221165 source:/home/user/SolarSystem/src/Timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1367221165 /home/user/SolarSystem/include/Timer.h
+	<Config.h>
+	<Types.h>
+	<ETime.h>
+
+1367221165 source:/home/user/SolarSystem/src/Utility.cpp
+	<stdafx.h>
+	<Utility.h>
+	<Application.h>
+	<sys/stat.h>
+	<unistd.h>
+	<dirent.h>
+	<limits.h>
+	<errno.h>
+	<sys/stat.h>
+
+1367224496 source:/home/user/SolarSystem/src/linux/LinuxApp.cpp
+	<Timer.h>
+	<LinuxApp.h>
+	<LinuxScreen.h>
+	<LinuxInput.h>
+	<Debug.h>
+	<sys/time.h>
+
+1367224544 /home/user/SolarSystem/include/linux/LinuxScreen.h
+	<X11/Xlib.h>
+	<X11/Xatom.h>
+	<X11/keysym.h>
+	<X11/extensions/xf86vmode.h>
+	<Config.h>
+	<LinuxApp.h>
+	<EString.h>
+	<Screen.h>
+
+1367224544 /home/user/SolarSystem/include/linux/LinuxInput.h
+	<Config.h>
+	<Math2D.h>
+	<Input.h>
+	<LinuxApp.h>
+
+1367224496 source:/home/user/SolarSystem/src/linux/LinuxInput.cpp
+	<LinuxInput.h>
+	<Input.h>
+	<X11/Xlib.h>
+	<X11/keysym.h>
+	<X11/keysymdef.h>
+
+1367224496 source:/home/user/SolarSystem/src/linux/LinuxScreen.cpp
+	<LinuxScreen.h>
+
+1367224872 source:/home/user/SolarSystem/src/linux/OpenGLLinux.cpp
+	<stdafx.h>
+	<OpenGLLinux.h>
+	<Debug.h>
+
+1367221165 source:/home/user/SolarSystem/src/Shader.cpp
+	<stdafx.h>
+	<Shader.h>
+	<Application.h>
+	<Debug.h>
+
+1367223625 source:/home/user/SolarSystem/src/Table.cpp
+	<Table.h>
+	<Application.h>
+
+1367221165 source:/home/user/SolarSystem/src/Texture.cpp
+	<stdafx.h>
+	<Texture.h>
+	<Application.h>
+	<Debug.h>
+	"Image/Image.h"
+
+1367221165 /home/user/SolarSystem/src/Image/Image.h
+	<string>
+	"Image.inl"
+
+1367221165 /home/user/SolarSystem/src/Image/Image.inl
+	<stdio.h>
+	<string.h>
+	"Image.h"
+	"lodepng.h"
+	"lodepng.h"
+

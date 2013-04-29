@@ -5,7 +5,7 @@
 #include <Application.h>
 #include <MainInstance.h>
 
-namespace Sphere {
+namespace SolarSystem {
 
 	/**
     * Abstract class, represent the application instance

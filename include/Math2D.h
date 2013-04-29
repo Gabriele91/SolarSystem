@@ -351,16 +351,16 @@ namespace SolarSystem{
 	class Plane{
 	public:
 
-		//Ax + By + Cz + D 
+		//Ax + By + Cz + D
 		Vector3D normal; //a b c
 		float d;  //d
-	
-		DFORCEINLINE float& a(){ return normal.x; } 
-		DFORCEINLINE float& b(){ return normal.y; } 
-		DFORCEINLINE float& c(){ return normal.z; } 
-		DFORCEINLINE float a() const { return normal.x; } 
-		DFORCEINLINE float b() const { return normal.y; } 
-		DFORCEINLINE float c() const { return normal.z; } 
+
+		DFORCEINLINE float& a(){ return normal.x; }
+		DFORCEINLINE float& b(){ return normal.y; }
+		DFORCEINLINE float& c(){ return normal.z; }
+		DFORCEINLINE float a() const { return normal.x; }
+		DFORCEINLINE float b() const { return normal.y; }
+		DFORCEINLINE float c() const { return normal.z; }
 
 		Plane();
 		Plane(const Vector3D& normal,const Vector3D& origin);
@@ -369,7 +369,7 @@ namespace SolarSystem{
 		//calc from point
 		void set3Points(const Vector3D& v1,const Vector3D& v2,const Vector3D& v3);
 		//Linear rapresetation
-		void setCoefficients(float a, float b, float c, float d);		
+		void setCoefficients(float a, float b, float c, float d);
 		//Parametric rapresetation
 		void setNormalAndOrigin(const Vector3D& normal,const Vector3D& origin);
 		//distance from point
@@ -377,7 +377,7 @@ namespace SolarSystem{
 		//normalize
 		void normalize();
 		//
-		String	Plane::toString(const String& start="(",const String& sep=" ",const String& end=")") const;
+		String	toString(const String& start="(",const String& sep=" ",const String& end=")") const;
 	};
 	///////////////////////////////////////////////////////////////////////////
 	class Quaternion{
@@ -418,8 +418,8 @@ namespace SolarSystem{
 		Vector3D getRotatePoint(Vector3D & v) const;
 		///linear quaternion interpolation
 		Quaternion lerp(const Quaternion &q, float t) {
-			return ((*this)*(1.0f-t) + q*t).getNormalize(); 
-		}		
+			return ((*this)*(1.0f-t) + q*t).getNormalize();
+		}
 		Quaternion slerp(const Quaternion &q, float t){
 			Quaternion q3;
 			float dot = this->dot(q);
@@ -432,12 +432,12 @@ namespace SolarSystem{
 				q3 = -q;
 			}
 			else
-				q3 = q;		
+				q3 = q;
 			if (dot < 0.95f){
 				float angle = acosf(dot);
 				return ((*this)*sinf(angle*(1-t)) + q3*sinf(angle*t))/sinf(angle);
-			} else // if the angle is small, use linear interpolation								
-				return this->lerp(q3,t);		
+			} else // if the angle is small, use linear interpolation
+				return this->lerp(q3,t);
 		}
 		//standard op
 		float length() const;
@@ -603,20 +603,16 @@ namespace SolarSystem{
 		static DFORCEINLINE T min(T x,T y){
 			return x>y?y:x;
 		}
-		template<>
-		static DFORCEINLINE Vector2D min<Vector2D>(Vector2D v1,Vector2D v2){
+		static DFORCEINLINE Vector2D min(Vector2D v1,Vector2D v2){
 			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
 		}
-		template<>
-		static DFORCEINLINE const Vector2D& min<const Vector2D&>(const Vector2D& v1,const Vector2D& v2){
+		static DFORCEINLINE const Vector2D& min(const Vector2D& v1,const Vector2D& v2){
 			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
 		}
-		template<>
-		static DFORCEINLINE Vector3D min<Vector3D>(Vector3D v1,Vector3D v2){
+		static DFORCEINLINE Vector3D min(Vector3D v1,Vector3D v2){
 			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
 		}
-		template<>
-		static DFORCEINLINE const Vector3D& min<const Vector3D&>(const Vector3D& v1,const Vector3D& v2){
+		static DFORCEINLINE const Vector3D& min(const Vector3D& v1,const Vector3D& v2){
 			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
 		}
 		//max
@@ -624,20 +620,16 @@ namespace SolarSystem{
 		static DFORCEINLINE T max(T x,T y){
 			return x>y?x:y;
 		}
-		template<>
-		static DFORCEINLINE Vector2D max<Vector2D>(Vector2D v1,Vector2D v2) {
+		static DFORCEINLINE Vector2D max(Vector2D v1,Vector2D v2) {
 			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
 		}
-		template<>
-		static DFORCEINLINE const Vector2D& max<const Vector2D&>(const Vector2D& v1,const Vector2D& v2) {
+		static DFORCEINLINE const Vector2D& max(const Vector2D& v1,const Vector2D& v2) {
 			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
 		}
-		template<>
-		static DFORCEINLINE Vector3D max<Vector3D>(Vector3D v1,Vector3D v2) {
+		static DFORCEINLINE Vector3D max(Vector3D v1,Vector3D v2) {
 			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
 		}
-		template<>
-		static DFORCEINLINE const Vector3D& max<const Vector3D&>(const Vector3D& v1,const Vector3D& v2) {
+		static DFORCEINLINE const Vector3D& max(const Vector3D& v1,const Vector3D& v2) {
 			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
 		}
 		//lerp
@@ -690,20 +682,15 @@ namespace SolarSystem{
 		///////////////////////////////////////////////////
 		//fast factorial
 		template <int n>
-		struct factorial {		
+		struct factorial {
 		  //static
 		  enum { value = n * factorial<n - 1>::value };
-		  //dynamic 
+		  //dynamic
 		  int get(){ return fac(n); }
-		  
+
 		private:
 		  int fac(int x){ return x<1?1:x*fac(x-1); }
-		  
-		};
-		template <>
-		struct factorial<0> 
-		{
-			enum { value = 1 };
+
 		};
 		///////////////////////////////////////////////////
 		//fast fibonacci
@@ -711,23 +698,29 @@ namespace SolarSystem{
 		struct fibonacci {
 		  //static
 		  enum { value = fibonacci<n - 2>::value + fibonacci<n - 1>::value };
-		  //dynamic 
+		  //dynamic
 		  int get(){ return fib(n); }
-		  
+
 		private:
 		  int fib(int x){ return x<2?1:fib(x-2)+fib(x-1); }
-		  
-		};
-		template<>
-		struct fibonacci<0>{ 
-			enum { value = 1 };
-		};		
-		template<>
-		struct fibonacci<1>{ 
-			enum { value = 1 };
+
 		};
 	};
 
+    template <>
+    struct Math::factorial<0>
+    {
+        enum { value = 1 };
+    };
+
+    template<>
+    struct Math::fibonacci<0>{
+        enum { value = 1 };
+    };
+    template<>
+    struct Math::fibonacci<1>{
+        enum { value = 1 };
+    };
 }
 
 #endif

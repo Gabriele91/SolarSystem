@@ -31,6 +31,12 @@ PFNGLDELETEFRAMEBUFFERSEXTPROC glDeleteFramebuffersEXT=NULL;
 PFNGLBINDFRAMEBUFFEREXTPROC glBindFramebufferEXT =NULL;
 PFNGLFRAMEBUFFERTEXTURE2DEXTPROC glFramebufferTexture2DEXT =NULL;
 PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC glCheckFramebufferStatusEXT =NULL;
+//RBO
+PFNGLGENRENDERBUFFERSEXTPROC glGenRenderbuffersEXT=NULL;
+PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT=NULL;
+PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT=NULL;
+PFNGLRENDERBUFFERSTORAGEEXTPROC glRenderbufferStorageEXT=NULL;
+PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT=NULL;
 //shader
 PFNGLENABLEVERTEXATTRIBARRAYPROC    glEnableVertexAttribArray=NULL;
 PFNGLVERTEXATTRIBPOINTERPROC       glVertexAttribPointer=NULL;
@@ -68,7 +74,7 @@ PFNGLGETSHADERIVPROC	glGetShaderiv=NULL;
 PFNGLGETPROGRAMIVPROC	glGetProgramiv=NULL;
 PFNGLGETPROGRAMINFOLOGPROC	glGetProgramInfoLog=NULL;
 
-void Sphere::initOpenGL2(){
+void SolarSystem::initOpenGL2(){
 
 	//VBO / edit vbo
     glEnableVertexAttribArray=(PFNGLENABLEVERTEXATTRIBARRAYPROC)glXGetProcAddress((unsigned char *)"glEnableVertexAttribArray"); DEBUG_ASSERT(glEnableVertexAttribArray);
@@ -102,6 +108,12 @@ void Sphere::initOpenGL2(){
     glBindFramebufferEXT		= (PFNGLBINDFRAMEBUFFEREXTPROC)		  glXGetProcAddress((unsigned char *)"glBindFramebufferEXT"); DEBUG_ASSERT(glBindFramebufferEXT);
     glFramebufferTexture2DEXT	= (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)  glXGetProcAddress((unsigned char *)"glFramebufferTexture2DEXT"); DEBUG_ASSERT(glFramebufferTexture2DEXT);
     glCheckFramebufferStatusEXT	= (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)glXGetProcAddress((unsigned char *)"glCheckFramebufferStatusEXT"); DEBUG_ASSERT(glCheckFramebufferStatusEXT);
+    //RBO
+    glGenRenderbuffersEXT		= (PFNGLGENRENDERBUFFERSEXTPROC)		  glXGetProcAddress((unsigned char *)"glGenRenderbuffersEXT"); DEBUG_ASSERT(glGenRenderbuffersEXT);
+    glDeleteRenderbuffersEXT    = (PFNGLDELETERENDERBUFFERSEXTPROC)    glXGetProcAddress((unsigned char *)"glDeleteRenderbuffersEXT"); DEBUG_ASSERT(glDeleteRenderbuffersEXT);
+    glBindRenderbufferEXT		= (PFNGLBINDRENDERBUFFEREXTPROC)		  glXGetProcAddress((unsigned char *)"glBindRenderbufferEXT"); DEBUG_ASSERT(glBindRenderbufferEXT);
+    glRenderbufferStorageEXT	= (PFNGLRENDERBUFFERSTORAGEEXTPROC)  glXGetProcAddress((unsigned char *)"glRenderbufferStorageEXT"); DEBUG_ASSERT(glRenderbufferStorageEXT);
+    glFramebufferRenderbufferEXT= (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)glXGetProcAddress((unsigned char *)"glFramebufferRenderbufferEXT"); DEBUG_ASSERT(glFramebufferRenderbufferEXT);
     //shader
     glCreateShader=(PFNGLCREATESHADERPROC)glXGetProcAddress((unsigned char *)"glCreateShader"); DEBUG_ASSERT(glCreateShader);
     glDeleteShader=(PFNGLDELETESHADERPROC)glXGetProcAddress((unsigned char *)"glDeleteShader"); DEBUG_ASSERT(glDeleteShader);
