@@ -71,6 +71,8 @@ namespace SolarSystem {
 		void setData(float day);
 		void draw();
 		void drawPlanets();
+		void drawPlanetssClouds();
+		void drawPlanetssCores();
 		void drawSun();
 	};
 

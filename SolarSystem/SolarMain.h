@@ -23,7 +23,7 @@ namespace SolarSystem {
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",768,768,32,60,false)
+			MainInstance("Solar System",1280,720,32,60,false)
 			,system("SolarSystem.conf",&camera,&render)
 		{
 		
@@ -35,7 +35,7 @@ namespace SolarSystem {
 		//init render
 		render.init();
 		//setup camera
-		camera.setPerspective(95,1.0f,100000.0f);
+		camera.setPerspective(45.0f,2.0f,1.0f,100000.0f);
 		Quaternion quad;
 		//quad.setFromEulero(Math::torad(-90),0,0);
 		//camera.setPosition(Vec3(0,-10000,0));
@@ -61,7 +61,7 @@ namespace SolarSystem {
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
-			static const float v=100.0;
+			static const float v=50.0;
 			//rotation
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	

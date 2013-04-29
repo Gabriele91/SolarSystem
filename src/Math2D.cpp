@@ -752,12 +752,22 @@ void Matrix4x4::setScale(const Vector3D &v3){
 				entries[5]=v3.y;
 						entries[10]=v3.z;
 }
+void Matrix4x4::addScale(const Vector3D &v3){
+	entries[0]*=v3.x;	entries[1]*=v3.y;	entries[2]*=v3.z;
+	entries[4]*=v3.x;	entries[5]*=v3.y;	entries[6]*=v3.z;
+	entries[8]*=v3.x;	entries[9]*=v3.y;	entries[10]*=v3.z;
+}
 void Matrix4x4::setScale(const Vector3D *v3){
         identity();
                 entries[0]=v3->x;
                                 entries[5]=v3->y;
                                                 entries[10]=v3->z;
     }
+void Matrix4x4::addScale(const Vector3D *v3){
+	entries[0]*=v3->x;	entries[1]*=v3->y;	entries[2]*=v3->z;
+	entries[4]*=v3->x;	entries[5]*=v3->y;	entries[6]*=v3->z;
+	entries[8]*=v3->x;	entries[9]*=v3->y;	entries[10]*=v3->z;
+}
 void Matrix4x4::setScale(const Vector2D &v2){
 	identity();
 		entries[0]=v2.x;

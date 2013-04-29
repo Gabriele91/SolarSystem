@@ -52,12 +52,14 @@ namespace SolarSystem {
 		
 		Planet(SolarRender *render,
 		       const Utility::Path& texture,
-			   int rings=50,
-			   int sectors=50);
+			   int rings=64,
+			   int sectors=64);
 
 		virtual ~Planet();
 		//draw
 		void draw(Camera& camera);
+		void drawPlanet(Camera& camera);
+		void drawCloud(Camera& camera);
 		//set data
 		void setData(float day);
 		//set planet info
@@ -73,6 +75,9 @@ namespace SolarSystem {
 		//set extra texture
 		void setCloudTexture(const Utility::Path& texture);
 		void setBlackTexture(const Utility::Path& texture);
+		/*
+		todo add atmosfere like night and day texture
+		*/
 	};
 };
 

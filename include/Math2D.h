@@ -507,8 +507,10 @@ namespace SolarSystem{
 		Matrix4x4 getTranspose() const;
 		///set scale
 		void setScale(const Vector3D &v3);
+		void addScale(const Vector3D &v3);
 		///set scale
 		void setScale(const Vector3D *v3);
+		void addScale(const Vector3D *v3);
 		///set scale
 		void setScale(const Vector2D &v2);
 		///return scale

@@ -143,7 +143,7 @@ void PlanetsManager::draw(){
 		//
 		drawSun();
 		blackMesh.bind();
-			drawPlanets();
+			drawPlanetssCores();
 		blackMesh.unbind();
 		//
 	blackTexture.disableRender();
@@ -201,6 +201,14 @@ void PlanetsManager::draw(){
 void PlanetsManager::drawPlanets(){
 	for(auto planet:planets)
 		planet->draw(*camera);
+}
+void PlanetsManager::drawPlanetssClouds(){
+	for(auto planet:planets)
+		planet->drawCloud(*camera);
+}
+void PlanetsManager::drawPlanetssCores(){
+	for(auto planet:planets)
+		planet->drawPlanet(*camera);
 }
 void PlanetsManager::drawSun(){
 	sun->draw(*camera);

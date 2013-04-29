@@ -223,16 +223,12 @@ const Matrix4x4& Object::_getGlobalMatrixCamera(){
 			if(parentMode & (ENABLE_PARENT)){
 				//////////////////////////////////////////////					
 				//position local
-				globalMat[12]=transform.position.x;
-				globalMat[13]=transform.position.y;
-				globalMat[14]=transform.position.z;
+				globalMat.setTranslation(transform.position);
 				//rotarion local	
 				globalMat=transform.rotation.getMatrix().mul(globalMat);
 				//////////////////////////////////////////////
 				//position global
-				mtmp.entries[12]=tmpPos.x;
-				mtmp.entries[13]=tmpPos.y;
-				mtmp.entries[14]=tmpPos.z;	
+				mtmp.setTranslation(tmpPos);
 				//rotarion global
 				mtmp=tmpRot.getMatrix().mul(mtmp);		
 				//global*local
@@ -240,34 +236,19 @@ const Matrix4x4& Object::_getGlobalMatrixCamera(){
 				//////////////////////////////////////////////
 			}
 
-			if(parentMode & ENABLE_SCALE){
-			   const Vector3D& vTScale=getGlobalParentScale();
-			   mtmp.setScale(vTScale);
-			   globalMat=globalMat.mul(mtmp);
-			}
-			else{
-			   mtmp.setScale(transform.scale);
-			   globalMat=globalMat.mul(mtmp);
-			}
+			if(parentMode & ENABLE_SCALE)
+			   globalMat.addScale(getGlobalParentScale());			
+			else
+			   globalMat.addScale(transform.scale);
 
 		}
 		else{
 			//position
-			globalMat.entries[12]=transform.position.x;
-			globalMat.entries[13]=transform.position.y;
-			globalMat.entries[14]=transform.position.z;
+			globalMat.setTranslation(transform.position);
 			//rotarion		
 			globalMat=transform.rotation.getMatrix().mul(globalMat);
 			//scale
-			globalMat.entries[0]*=transform.scale.x;
-			globalMat.entries[4]*=transform.scale.x;
-			globalMat.entries[8]*=transform.scale.x;
-			globalMat.entries[1]*=transform.scale.y;
-			globalMat.entries[5]*=transform.scale.y;
-			globalMat.entries[9]*=transform.scale.y;			
-			globalMat.entries[2]*=transform.scale.z;
-			globalMat.entries[6]*=transform.scale.z;
-			globalMat.entries[10]*=transform.scale.z;
+			globalMat.addScale(transform.scale);
 		}
 		//
 		changeValue=false;

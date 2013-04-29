@@ -114,6 +114,10 @@ void Planet::setBlackTexture(const Utility::Path& texture){
 };
 //draw
 void Planet::draw(Camera& camera){
+	drawPlanet(camera);
+	drawCloud(camera);
+}
+void Planet::drawPlanet(Camera& camera){
 	////////////////////////////////////
 	//get values
 	const Mat4& thisMtx=getGlobalMatrix();
@@ -122,15 +126,10 @@ void Planet::draw(Camera& camera){
 	//culling
 	if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
 		if(render->lightIsEnable()){	
-			render->setMaterial(ambient,
-								diffuse,
-								specular,
-								emission,
-								shininess);
-			
-			if(blackTexture) blackTexture->bind(1);
-			else render->getTextureBlack().bind(1);
-		}
+				render->setMaterial(ambient,diffuse,specular,emission,shininess);			
+				if(blackTexture) blackTexture->bind(1);
+				else render->getTextureBlack().bind(1);
+			}
 		//bind texture 
 		texture.bind(0);
 		//set model matrix
@@ -143,35 +142,40 @@ void Planet::draw(Camera& camera){
 			if(blackTexture) blackTexture->unbind(1);
 			else render->getTextureBlack().unbind(1);
 		}
-		//draw cloud
-		if(cloudTexture && 
-		   camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale*1.01) != Camera::OUTSIDE){			
+	}
+}
+void Planet::drawCloud(Camera& camera){	
+	if(cloudTexture){
+		////////////////////////////////////
+		//get values
+		const Mat4& thisMtx=getGlobalMatrix();
+		const Vec3& thisScale=thisMtx.getScale3D();
+
+		const float scaleCloud=1.0042f;
+		const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
+		//culling
+		if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
 			//save blend
-			auto stateBlend=render->getBlendState();
-			//set additive blend
-			if(!stateBlend.enable) glEnable( GL_BLEND );   
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE  );
-			//
-			Vec3 cloudScale(1.01f,1.01f,1.01f);
-			//set matrix
-			viewmodel.entries[0]*=cloudScale.x; viewmodel.entries[1]*=cloudScale.y; viewmodel.entries[2]*=cloudScale.z;
-			viewmodel.entries[4]*=cloudScale.x; viewmodel.entries[5]*=cloudScale.y; viewmodel.entries[6]*=cloudScale.z;
-			viewmodel.entries[8]*=cloudScale.x; viewmodel.entries[9]*=cloudScale.y;	viewmodel.entries[10]*=cloudScale.z;			
-			//
-			glLoadMatrixf(viewmodel);
-			//bind texture
-			cloudTexture->bind(0);
-			//set black texture
-			if(render->lightIsEnable()) render->getTextureBlack().bind(1);
-			//draw
-			bindMesh();
-			//unbind black texture		
-			if(render->lightIsEnable()) render->getTextureBlack().unbind(1);
-			//reset old blend state  
-			render->setBlendState(stateBlend);
+				auto stateBlend=render->getBlendState();
+				//set additive blend
+				if(!stateBlend.enable) glEnable( GL_BLEND );   
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE  );				
+				//set model matrix
+				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+				viewmodel.addScale(Vec3(scaleCloud,scaleCloud,scaleCloud));
+				glLoadMatrixf(viewmodel);
+				//bind texture
+				cloudTexture->bind(0);
+				//set black texture
+				if(render->lightIsEnable()) render->getTextureBlack().bind(1);
+				//draw
+				bindMesh();
+				//unbind black texture		
+				if(render->lightIsEnable()) render->getTextureBlack().unbind(1);
+				//reset old blend state  
+				render->setBlendState(stateBlend);
 		}
 	}
-
 }
 //set data
 void Planet::setData(float _day){
