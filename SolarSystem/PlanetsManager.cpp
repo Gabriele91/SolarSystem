@@ -10,24 +10,44 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 							   SolarRender *render)
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
-	,godRays("shader/godRays.vs","shader/godRays.ps")
-	,sunLight("shader/sunLight.vs","shader/sunLight.ps")
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
 {
-	//get uniform
-	glslExposure=godRays.getUniformID("exposure");
-	glslDecay=godRays.getUniformID("decay");
-	glslDensity=godRays.getUniformID("density");
-	glslWeight=godRays.getUniformID("weight");
-	glslLightPositionOnScreen=godRays.getUniformID("lightPositionOnScreen");
-	glslScreenTexture=godRays.getUniformID("screenTexture");
+	//load shader sun:
+	sunLight.shader.loadShader("shader/sunLight.vs","shader/sunLight.ps");
+	sunLight.glPlanetTexture=sunLight.shader.getUniformID("planetTexture");
+	sunLight.glPlanetNightTexture=sunLight.shader.getUniformID("planetNightTexture");
 	//setup config file:
 	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
 	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found sun planets");
 	//get tables
 	const Table& sun=configfile.getTable("sun");
 	const Table& planets=configfile.getTable("planets");
+	//get shader info:
+	String semples("NUM_SAMPLES 100");	
+	godRays.uniformExposure = 0.0044f;
+	godRays.uniformDecay = 1.0f;
+	godRays.uniformDensity = 1.f;
+	godRays.uniformWeight = 3.65f;
+	if(sun.existsAsType("shader",Table::TABLE)){
+		const Table& shader=sun.getConstTable("shader");
+		semples=("NUM_SAMPLES "+String::toString((int)shader.getFloat("semples",100)));		
+		godRays.uniformExposure =shader.getFloat("exposure",godRays.uniformExposure);
+		godRays.uniformDecay =shader.getFloat("decady",godRays.uniformDecay);
+		godRays.uniformDensity =shader.getFloat("density",godRays.uniformDensity);
+		godRays.uniformWeight = shader.getFloat("weight",godRays.uniformWeight);
+	}
+	//////////////////////////////load shader//////////////////////////////
+	const char* defines[]={semples,NULL};
+	godRays.shader.loadShader("shader/godRays.vs","shader/godRays.ps",defines);
+	//get uniform
+	godRays.glslExposure=godRays.shader.getUniformID("exposure");
+	godRays.glslDecay=godRays.shader.getUniformID("decay");
+	godRays.glslDensity=godRays.shader.getUniformID("density");
+	godRays.glslWeight=godRays.shader.getUniformID("weight");
+	godRays.glslLightPositionOnScreen=godRays.shader.getUniformID("lightPositionOnScreen");
+	godRays.glslScreenTexture=godRays.shader.getUniformID("screenTexture");
+	///////////////////////////////////////////////////////////////////////
 	//get default material
 	Vec4 ambienMat(Vec3::ZERO,1.0f);
 	Vec4 diffuseMat(Vec3::ZERO,1.0f);
@@ -47,7 +67,20 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	setScalePlanets(configfile.getFloat("scalePlanets",0.15));
 	setScaleSun(configfile.getFloat("scaleSun",1.5));
 	//add sun
-	addSun(sun.getString("image"),sun.getVector3D("scale"),sun.getFloat("period"));
+	addSun(sun.getString("image"),
+		   sun.getVector3D("scale"),
+		   sun.getFloat("period"));
+	//get light info	
+	Vec4 lightAmbient(1.0,1.0,1.0,1.0);
+	Vec4 lightDiffuse(1.0,1.0,1.0,1.0);
+	Vec4 lightSpecular(1.0,1.0,1.0,1.0);
+	if(sun.existsAsType("light",Table::TABLE)){
+		const Table& light=sun.getConstTable("light");
+		lightAmbient=light.getVector4D("ambien",lightAmbient);
+		lightDiffuse=light.getVector4D("diffuse",lightDiffuse);
+		lightSpecular=light.getVector4D("specular",lightSpecular);
+	}
+	this->sun->setMaterial(lightAmbient,lightDiffuse,lightSpecular,Vec4::ZERO,1.0);
 	//add planets:
 	for(auto& itTable:planets){
 		
@@ -157,9 +190,9 @@ void PlanetsManager::draw(){
 	glLoadMatrixf(camera->getGlobalMatrix());
 	//set lights
 	render->setLight(sun->getPosition(),
-					 Vec4(1.0,1.0,1.0,1.0),
-					 Vec4(1.0,1.0,1.0,1.0),
-					 Vec4(1.0,1.0,1.0,1.0));
+					 sun->getAmbient(),
+					 sun->getDiffuse(),
+					 sun->getSpecular());
 	 GLfloat Kc = 0.01f;
      GLfloat Kl = 0.0f;
      GLfloat Kq = 0.0f;
@@ -168,33 +201,26 @@ void PlanetsManager::draw(){
      glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, Kl);
      glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, Kq);
 
+	//draw planets
 	render->enableLight();
-	sunLight.bind();
-	sunLight.uniformInt("planetTexture",0);
-	sunLight.uniformInt("planetNightTexture",1);
-		drawPlanets();
-	sunLight.unbind();
+	sunLight.shader.bind();
+	sunLight.uniforming();
+		drawPlanetssCores();		
+		drawPlanetssClouds();
+	sunLight.shader.unbind();
 	render->disableLight();
 
 	//draw vbo
-	godRays.bind();
-	float uniformExposure = 0.0044f;
-	float uniformDecay = 1.0f;
-	float uniformDensity = 1.f;
-	float uniformWeight = 3.65f;
-	godRays.uniformFloat(glslExposure,uniformExposure);
-	godRays.uniformFloat(glslDecay,uniformDecay);
-	godRays.uniformFloat(glslDensity,uniformDensity);
-	godRays.uniformFloat(glslWeight,uniformWeight);
-	godRays.uniformVector2D(glslLightPositionOnScreen,
-							camera->getPointIn3DSpace(sun->getPosition()));
-	godRays.uniformInt(glslScreenTexture,0);	
+	godRays.shader.bind();
+	godRays.uniforming();
+	godRays.shader.uniformVector2D(godRays.glslLightPositionOnScreen,
+								  camera->getPointIn3DSpace(sun->getPosition()));
 	//additive blend
 	glEnable( GL_BLEND );   
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 	//
 	blackTexture.draw();
-	godRays.unbind(); 
+	godRays.shader.unbind(); 
 	//reset old blend state   
 	render->setBlendState(blendState);
 }

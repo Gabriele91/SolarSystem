@@ -72,6 +72,12 @@ namespace SolarSystem {
 						 const Vec4& specular,
 						 const Vec4& emission,
 						 float shininess);
+		//getter
+		DFORCEINLINE const Vec4& getAmbient() const { return ambient; }
+		DFORCEINLINE const Vec4& getDiffuse() const { return diffuse; }
+		DFORCEINLINE const Vec4& getSpecular() const { return specular; }
+		DFORCEINLINE const Vec4& getEmission() const { return emission; }
+		DFORCEINLINE float getShininess() const { return shininess; }
 		//set extra texture
 		void setCloudTexture(const Utility::Path& texture);
 		void setBlackTexture(const Utility::Path& texture);

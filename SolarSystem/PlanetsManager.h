@@ -23,17 +23,50 @@ namespace SolarSystem {
 		float scaleSun;
 		float scalePlanets;		
 		Shader blackMesh;
-		Shader godRays;
-		Shader sunLight;
 		RenderTexture blackTexture;
 		Table configfile; 
+		///////////////////////////////
 		//shader id
-		uint glslExposure,
-			 glslDecay,
-			 glslDensity,
-			 glslWeight,
-			 glslLightPositionOnScreen,
-			 glslScreenTexture;
+		struct Godrays{
+			uint glslExposure,
+				 glslDecay,
+				 glslDensity,
+				 glslWeight,
+				 glslLightPositionOnScreen,
+				 glslScreenTexture;
+			//shader values
+			float uniformExposure,
+				  uniformDecay,
+				  uniformDensity,
+				  uniformWeight;
+			//uniforming:
+			void uniforming(){
+				shader.uniformFloat(glslExposure,uniformExposure);
+				shader.uniformFloat(glslDecay,uniformDecay);
+				shader.uniformFloat(glslDensity,uniformDensity);
+				shader.uniformFloat(glslWeight,uniformWeight);
+				shader.uniformInt(glslScreenTexture,0);	
+			}
+			///////////////
+			Shader shader;
+			///////////////
+		}godRays;
+		///////////////////////////////
+		struct SunLight{
+
+			uint glPlanetTexture,
+				 glPlanetNightTexture;
+
+			void uniforming(){
+				shader.uniformInt(glPlanetTexture,0);	
+				shader.uniformInt(glPlanetNightTexture,1);	
+			}
+			///////////////
+			Shader shader;
+			///////////////			
+		}sunLight;
+		///////////////////////////////
+
 
 	public:
 		

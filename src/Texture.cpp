@@ -35,7 +35,6 @@ Texture::Texture(const Utility::Path& path)
 	buildTexture(image.bytes,image.type);
 	//
 }
-
 Texture::Texture(const Vec4& floatColor,uint newWidth,uint newheight)
 				:bBilinear(true)
 				,chBlr(true)
@@ -52,7 +51,6 @@ Texture::Texture(const Vec4& floatColor,uint newWidth,uint newheight)
 	//create a gpu texture
 	buildTexture(image.bytes,image.type);
 }	
-
 //send texture to gpu
 void Texture::buildTexture(void *data,uint type){	
 	//gen gpu
@@ -136,8 +134,132 @@ bool Texture::operator ==(const Texture& t) const{
 bool Texture::operator !=(const Texture& t) const{
 	return gpuid!=t.gpuid;
 }
+//////////////////////////////////////////////
 
+//////////////////////////////////////////////
+Texture1D::Texture1D(const Utility::Path& path)
+					:bBilinear(true)
+					,chBlr(true)
+					,bMipmaps(true)
+					,chMps(true)
+					,width(0)
+					,gpuid(0){
+	/////////////////////////////////////////////////////////////////////
+	//cpu load
+	//get raw file
+	void *data=NULL; uint len=0;
+	Application::instance()->loadData(path,data,len);
+	//load image
+	Image image;
+	image.loadFromData(data,
+					   len,
+					   Image::getTypeFromExtetion(path.getExtension()));
+	//free raw file
+	free(data);
+	//save width end height
+	width=image.width;	
+	//create a gpu texture
+	buildTexture1D(image.bytes,image.type);
+	//
+}
+Texture1D::Texture1D(const Vec4& floatColor,uint newWidth)
+					:bBilinear(true)
+					,chBlr(true)
+					,bMipmaps(true)
+					,chMps(true)
+					,width(0)
+					,gpuid(0){
+	//build
+	Image image(newWidth,1,4,true,Image::rgba(&(floatColor.x)));
+	//save width end height
+	width=newWidth;
+	//create a gpu texture
+	buildTexture1D(image.bytes,image.type);
+}	
+//send texture to gpu
+void Texture1D::buildTexture1D(void *data,uint type){	
+	//gen gpu
+	//create an GPU texture
+	glGenTextures( 1, &gpuid );
+	//build
+	bind();
+	//create a gpu texture
+	glTexImage1D(GL_TEXTURE_1D,
+				 0,
+				 type,
+				 width,
+				 0,
+				 type,
+				 GL_UNSIGNED_BYTE,
+				 0);
+	//create mipmaps
+	glTexParameteri( GL_TEXTURE_1D, GL_GENERATE_MIPMAP, bMipmaps );	
+	//send to GPU
+    glTexSubImage1D( GL_TEXTURE_1D, 0, 0, 
+					 width,
+					 type,
+					 GL_UNSIGNED_BYTE,
+					 data );
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+}
+//destructor
+Texture1D::~Texture1D(){
+	//unload
+	DEBUG_ASSERT(gpuid);
+    glDeleteTextures(1, &gpuid );
+	//reset values
+    width = 0;
+    gpuid = 0;
+}
+//
+void Texture1D::bind(uint ntexture){
+	//
+	DEBUG_ASSERT(gpuid);
+	//
+    glActiveTexture( GL_TEXTURE0 + ntexture );
+	glEnable( GL_TEXTURE_1D );
+	glBindTexture( GL_TEXTURE_1D, (GLuint)gpuid );
+	//settings
+	if(chBlr){
+		chBlr=false;
+		glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MAG_FILTER,bBilinear?GL_LINEAR:GL_NEAREST);
+	}
+	if(chMps){
+		chMps=false;
+		glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MIN_FILTER,bMipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
+	}
+}
+void Texture1D::unbind(uint ntexture){
+	glActiveTexture( GL_TEXTURE0 + ntexture );
+	glDisable(GL_TEXTURE_2D);
+}
+//setting
+bool Texture1D::bilinear(){
+	return bBilinear;
+}
+bool Texture1D::bilinear(bool value){
+	chBlr=bBilinear!=value;
+	return bBilinear=value;
+}
+bool Texture1D::mipmaps(){
+	return bMipmaps;
+}
+bool Texture1D::mipmaps(bool value){
+	chMps=bMipmaps!=value;
+	return bMipmaps=value;
+}
+//operators
+bool Texture1D::operator ==(const Texture1D& t) const{
+	return gpuid==t.gpuid;
+}
+bool Texture1D::operator !=(const Texture1D& t) const{
+	return gpuid!=t.gpuid;
+}
+//////////////////////////////////////////////
 
+//////////////////////////////////////////////
 //render texture:
 //costructor
 RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0),depthid(0){
@@ -266,4 +388,5 @@ void RenderTexture::draw(bool bindTexture){
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
+//////////////////////////////////////////////
 
