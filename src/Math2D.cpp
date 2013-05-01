@@ -799,6 +799,60 @@ Vector2D Matrix4x4::getTranslation2D() const{
 	return Vector2D( entries[12], entries[13]);
 }
 
+///add a euler rotarion
+void Matrix4x4::addEulerRotation(const Vec3& euler){
+	//var dec
+	float cos_ang,sin_ang;
+
+	// yaw
+	cos_ang=std::cos(euler.y);
+	sin_ang=std::sin(euler.y);
+
+	float m00 = entries[0]*cos_ang + entries[2]*-sin_ang;
+	float m01 = entries[4]*cos_ang + entries[6]*-sin_ang;
+	float m02 = entries[8]*cos_ang + entries[10]*-sin_ang;
+
+	entries[2] = entries[0]*sin_ang + entries[2]*cos_ang;
+	entries[6] = entries[4]*sin_ang + entries[6]*cos_ang;
+	entries[10]= entries[8]*sin_ang + entries[10]*cos_ang;
+
+	entries[0]=m00;
+	entries[4]=m01;
+	entries[8]=m02;
+
+	// pitch
+	cos_ang=std::cos(euler.x);
+	sin_ang=std::sin(euler.x);
+
+	float m10 = entries[1]*cos_ang + entries[2]*sin_ang;
+	float m11 = entries[5]*cos_ang + entries[6]*sin_ang;
+	float m12 = entries[9]*cos_ang + entries[10]*sin_ang;
+
+	entries[2] = entries[1]*-sin_ang + entries[2]*cos_ang;
+	entries[6] = entries[5]*-sin_ang + entries[6]*cos_ang;
+	entries[10] = entries[9]*-sin_ang + entries[10]*cos_ang;
+
+	entries[1]=m10;
+	entries[5]=m11;
+	entries[9]=m12;
+
+	// roll
+	cos_ang=std::cos(euler.z);
+	sin_ang=std::sin(euler.z);
+
+	m00 = entries[0]*cos_ang + entries[1]*sin_ang;
+	m01 = entries[4]*cos_ang + entries[5]*sin_ang;
+	m02 = entries[8]*cos_ang + entries[9]*sin_ang;
+
+	entries[1] = entries[0]*-sin_ang + entries[1]*cos_ang;
+	entries[5] = entries[4]*-sin_ang + entries[5]*cos_ang;
+	entries[9] = entries[8]*-sin_ang + entries[9]*cos_ang;
+
+	entries[0]=m00;
+	entries[4]=m01;
+	entries[8]=m02;
+}
+
 void Matrix4x4::setRotY(float angle){
 	identity();
 

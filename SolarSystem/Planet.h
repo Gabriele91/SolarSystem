@@ -42,6 +42,9 @@ namespace SolarSystem {
 		float day;
 		//planet rotation
 		float rotationPeriod;
+		//cloud offset;
+		Vec3 cloudDayOffset;
+		Vec3 cloudOffset;
 		//pointer to render
 		SolarRender *render;
 		//material
@@ -70,6 +73,8 @@ namespace SolarSystem {
 		void setPlanetInfo(const Vec2& radius,
 						   float daysOfYear,
 						   float rotationPeriod);
+		//set cloud info
+		void Planet::setCloudOffset(const Vec3& cloudOffset);
 		//set material		
 		void setMaterial(const Vec4& ambient,
 						 const Vec4& diffuse,

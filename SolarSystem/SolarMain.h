@@ -52,6 +52,8 @@ namespace SolarSystem {
 		virtual void run(float dt){		
 			incDaysDt+=(Application::instance()->getInput()->getKeyDown(Key::R)?0.2:0.0);
 			incDaysDt-=(Application::instance()->getInput()->getKeyDown(Key::T)?0.2:0.0);
+			incDaysDt+=(Application::instance()->getInput()->getKeyHit(Key::F)?0.1:0.0);
+			incDaysDt-=(Application::instance()->getInput()->getKeyHit(Key::G)?0.1:0.0);
 			days+=incDaysDt*dt;
 			//clear screen
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));

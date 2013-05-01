@@ -167,10 +167,12 @@ void Planet::drawCloud(Camera& camera){
 	if(cloudTexture){
 		////////////////////////////////////
 		//get values
-		const Mat4& thisMtx=getGlobalMatrix();
+		Mat4 thisMtx=getGlobalMatrix();
 		const Vec3& thisScale=thisMtx.getScale3D();
+		//z-buffer fixed
 		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleCloud=distToCam<800 ? 1.004f : 1.035f;
+		float scaleCloud=distToCam<800 ? 1.003f : 1.03f;
+		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
 		//culling
 		if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
@@ -180,6 +182,10 @@ void Planet::drawCloud(Camera& camera){
 				if(!stateBlend.enable) glEnable( GL_BLEND );   
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );				
 				//set model matrix
+				//calc offset
+				if((cloudDayOffset.x+cloudDayOffset.y+cloudDayOffset.z)!=0.0f)
+					thisMtx.addEulerRotation(cloudDayOffset);
+				//set matrix
 				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
 				viewmodel.addScale(Vec3(scaleCloud,scaleCloud,scaleCloud));
 				glLoadMatrixf(viewmodel);
@@ -200,10 +206,11 @@ void Planet::drawAtmosphere(Camera& camera){
 		////////////////////////////////////
 		//get values
 		const Mat4& thisMtx=getGlobalMatrix();
-		const Vec3& thisScale=thisMtx.getScale3D();
-		
+		const Vec3& thisScale=thisMtx.getScale3D();		
+		//z-buffer fixed
 		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleAtmosphere=distToCam<800 ? 1.005f : 1.05f;
+		float scaleAtmosphere=distToCam<800 ? 1.006f : 1.06f;
+		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleAtmosphere;
 		//culling
 		if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
@@ -253,10 +260,13 @@ void Planet::setData(float _day){
 	//set Position
 	setPosition(pos);
 	//calc rotation
-	float yRotation=day/rotationPeriod*Math::PI2;
+	float rotationDay=day/rotationPeriod*Math::PI2;
 	Quaternion rot;
-	rot.setFromEulero(0,yRotation,0);
+	rot.setFromEulero(0,rotationDay,0);
 	setRotation(rot);
+	//calc offset
+	if((cloudOffset.x+cloudOffset.y+cloudOffset.z)!=0.0f)
+		cloudDayOffset=cloudOffset*rotationDay;
 }
 //set planet info
 void Planet::setPlanetInfo(const Vec2& _radius, 
@@ -265,6 +275,10 @@ void Planet::setPlanetInfo(const Vec2& _radius,
 	radius=_radius;
 	daysOfYear=_daysOfYear;
 	rotationPeriod=_rotationPeriod;
+}
+//cloud info
+void Planet::setCloudOffset(const Vec3& _cloudOffset){
+	cloudOffset=_cloudOffset;
 }
 //set material		
 void Planet::setMaterial(const Vec4& _ambient,

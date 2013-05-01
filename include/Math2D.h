@@ -546,6 +546,8 @@ namespace SolarSystem{
 		Vector3D getTranslation3D() const;
 		///return translation
 		Vector2D getTranslation2D() const;
+		///add a euler rotarion
+		void addEulerRotation(const Vec3& euler);
 		///set pitch
 		void setRotX(float x);
 		///set yaw

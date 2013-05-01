@@ -120,6 +120,8 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 					emission,
 					shininess);
 		
+		if(planet.existsAsType("cloudOffset",Table::VECTOR3D))
+			ptr->setCloudOffset(planet.getVector3D("cloudOffset"));
 		if(planet.existsAsType("cloud",Table::STRING))
 			ptr->setCloudTexture(planet.getString("cloud"));
 		if(planet.existsAsType("night",Table::STRING))
