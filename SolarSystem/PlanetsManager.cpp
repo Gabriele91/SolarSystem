@@ -9,17 +9,26 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 							   Camera *camera,
 							   SolarRender *render)
 	:sun(0),camera(camera),render(render),configfile(path)
-	,blackMesh("shader/blackMesh.vs","shader/blackMesh.ps")
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
 {
-	//load shader sun:
+	//black shader
+	blackMesh.shader.loadShader("shader/blackMesh.vs","shader/blackMesh.ps");
+	//load shader sun light (planets):
 	sunLight.shader.loadShader("shader/sunLight.vs","shader/sunLight.ps");
 	sunLight.glPlanetTexture=sunLight.shader.getUniformID("planetTexture");
 	sunLight.glPlanetNightTexture=sunLight.shader.getUniformID("planetNightTexture");
+	//load shader sun light (clouds):
+	sunLightCloud.shader.loadShader("shader/sunLightClouds.vs","shader/sunLightClouds.ps");
+	sunLightCloud.glCloudTexture=sunLightCloud.shader.getUniformID("cloudTexture");
+	//load shader sun light (atmospheres):
+	sunLightAtmosphere.shader.loadShader("shader/sunLightAtmosphere.vs","shader/sunLightAtmosphere.ps");
+	sunLightAtmosphere.glAtmGrad1=sunLightAtmosphere.shader.getUniformID("atmGrad1");
+	sunLightAtmosphere.glAtmGrad2=sunLightAtmosphere.shader.getUniformID("atmGrad2");	
+	sunLightAtmosphere.atmRim=sunLightAtmosphere.shader.getUniformID("atmRim");	
 	//setup config file:
 	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
-	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found sun planets");
+	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found planets table");
 	//get tables
 	const Table& sun=configfile.getTable("sun");
 	const Table& planets=configfile.getTable("planets");
@@ -115,6 +124,23 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			ptr->setCloudTexture(planet.getString("cloud"));
 		if(planet.existsAsType("night",Table::STRING))
 			ptr->setBlackTexture(planet.getString("night"));
+		if(planet.existsAsType("atmosphere",Table::TABLE)){
+			const Table& atmosphere=planet.getConstTable("atmosphere");			
+			DEBUG_ASSERT_MSG(atmosphere.size()==3,"PlanetsManager error : in "<< (itTable.first.isString() ? 
+																						itTable.first.string() : 
+																						String::toString(itTable.first.integer()))
+																			  <<", atmosphere table must to be size 3");
+			DEBUG_ASSERT_MSG(atmosphere.existsAsType(0,Table::STRING)&&
+							 atmosphere.existsAsType(1,Table::STRING)&&
+							 atmosphere.existsAsType(2,Table::STRING)
+							,"PlanetsManager error : in "<< (itTable.first.isString() ? 
+															 itTable.first.string() : 
+															 String::toString(itTable.first.integer()))
+														  <<", atmosphere table must contain 3 strings")																			
+			ptr->setAtmosphereTexture(atmosphere.getString(0),
+									  atmosphere.getString(1),
+									  atmosphere.getString(2));
+		}
 		
 	}
 
@@ -175,9 +201,9 @@ void PlanetsManager::draw(){
 		render->setClearColor(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		//
 		drawSun();
-		blackMesh.bind();
+		blackMesh.shader.bind();
 			drawPlanetssCores();
-		blackMesh.unbind();
+		blackMesh.shader.unbind();
 		//
 	blackTexture.disableRender();
 	////////////////////////////////////////////////////////////////////
@@ -186,30 +212,34 @@ void PlanetsManager::draw(){
 	
 	//draw word
 	drawSun();
+	
+	//////////////////////////////////////////////////////////////////
+	//enable light
+	render->enableLight();
 	//load view matrix
 	glLoadMatrixf(camera->getGlobalMatrix());
 	//set lights
-	render->setLight(sun->getPosition(),
-					 sun->getAmbient(),
-					 sun->getDiffuse(),
-					 sun->getSpecular());
-	 GLfloat Kc = 0.01f;
-     GLfloat Kl = 0.0f;
-     GLfloat Kq = 0.0f;
-     
-     glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION,Kc);
-     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, Kl);
-     glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, Kq);
-
+	render->setLight(sun->getPosition()+Vec3(0,000,0), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
+	//////////////////////////////////////////////////////////////////
 	//draw planets
-	render->enableLight();
 	sunLight.shader.bind();
-	sunLight.uniforming();
-		drawPlanetssCores();		
+	sunLight.uniforming();	
+		drawPlanetssCores();	
+	sunLight.shader.unbind();	
+	//draw clouds
+	sunLightCloud.shader.bind();
+	sunLightCloud.uniforming();	
 		drawPlanetssClouds();
-	sunLight.shader.unbind();
+	sunLightCloud.shader.unbind();
+	//////////////////////////////////////////////////////////////////
 	render->disableLight();
-
+	//////////////////////////////////////////////////////////////////
+	//draw atmosphere
+	sunLightAtmosphere.shader.bind();
+	sunLightAtmosphere.uniforming();	
+		drawPlanetssAtmosphere();
+	sunLightAtmosphere.shader.unbind();
+	//////////////////////////////////////////////////////////////////
 	//draw vbo
 	godRays.shader.bind();
 	godRays.uniforming();
@@ -224,13 +254,13 @@ void PlanetsManager::draw(){
 	//reset old blend state   
 	render->setBlendState(blendState);
 }
-void PlanetsManager::drawPlanets(){
-	for(auto planet:planets)
-		planet->draw(*camera);
-}
 void PlanetsManager::drawPlanetssClouds(){
 	for(auto planet:planets)
 		planet->drawCloud(*camera);
+}
+void PlanetsManager::drawPlanetssAtmosphere(){
+	for(auto planet:planets)
+		planet->drawAtmosphere(*camera);
 }
 void PlanetsManager::drawPlanetssCores(){
 	for(auto planet:planets)

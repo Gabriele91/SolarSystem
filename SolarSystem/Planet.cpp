@@ -30,7 +30,7 @@ void Planet::buildMesh(int rings,int sectors){
 			vertices[idv].normals.y= y;
 			vertices[idv].normals.z= z;
 			/* calc uv */
-			vertices[idv].texcoords.x=s*S;
+			vertices[idv].texcoords.x=1.0f-s*S;
 			vertices[idv].texcoords.y=r*R;
 			//
 			++idv;					
@@ -88,6 +88,9 @@ Planet::Planet(SolarRender *render,
 			  ,texture(texture)
 			  ,cloudTexture(NULL)
 			  ,blackTexture(NULL)
+			  ,atmGrad1(NULL)
+			  ,atmGrad2(NULL)
+			  ,atmRim(NULL)
 			  ,render(render)
 			  ,ambient(Vec3::ZERO,1.0f)
 			  ,diffuse(Vec3::ZERO,1.0f)
@@ -102,6 +105,12 @@ Planet::~Planet(){
 		delete cloudTexture;
 	if(blackTexture) 
 		delete blackTexture;
+	if(atmGrad1) 
+		delete atmGrad1;
+	if(atmGrad2) 
+		delete atmGrad2;
+	if(atmRim) 
+		delete atmRim;
 }
 //set extra texture
 void Planet::setCloudTexture(const Utility::Path& texture){
@@ -112,6 +121,16 @@ void Planet::setBlackTexture(const Utility::Path& texture){
 	DEBUG_ASSERT(blackTexture==NULL);
 	blackTexture=new Texture(texture);
 };
+void Planet::setAtmosphereTexture(const Utility::Path& grad1,
+								  const Utility::Path& grad2,
+								  const Utility::Path& rim){
+		DEBUG_ASSERT(atmGrad1==NULL);
+		DEBUG_ASSERT(atmGrad2==NULL);
+		DEBUG_ASSERT(atmRim==NULL);
+		atmGrad1=new Texture1D(grad1);
+		atmGrad2=new Texture1D(grad2);
+		atmRim=new Texture1D(rim);
+}
 //draw
 void Planet::draw(Camera& camera){
 	drawPlanet(camera);
@@ -150,28 +169,63 @@ void Planet::drawCloud(Camera& camera){
 		//get values
 		const Mat4& thisMtx=getGlobalMatrix();
 		const Vec3& thisScale=thisMtx.getScale3D();
-
-		const float scaleCloud=1.0042f;
-		const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
+		float distToCam=camera.getPosition(true).distance(-getPosition(true));
+		float scaleCloud=distToCam<800 ? 1.004f : 1.035f;
+		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
 		//culling
 		if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
-			//save blend
+				//save blend
 				auto stateBlend=render->getBlendState();
 				//set additive blend
 				if(!stateBlend.enable) glEnable( GL_BLEND );   
-				glBlendFunc( GL_SRC_ALPHA, GL_ONE  );				
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );				
 				//set model matrix
 				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
 				viewmodel.addScale(Vec3(scaleCloud,scaleCloud,scaleCloud));
 				glLoadMatrixf(viewmodel);
+				//set material
+				if(render->lightIsEnable())
+					render->setMaterial(ambient,diffuse,specular,emission,shininess);	
 				//bind texture
 				cloudTexture->bind(0);
-				//set black texture
-				if(render->lightIsEnable()) render->getTextureBlack().bind(1);
 				//draw
 				bindMesh();
-				//unbind black texture		
-				if(render->lightIsEnable()) render->getTextureBlack().unbind(1);
+				//reset old blend state  
+				render->setBlendState(stateBlend);
+		}
+	}
+}
+void Planet::drawAtmosphere(Camera& camera){	
+	if(atmGrad1&&atmGrad2&&atmRim){
+		////////////////////////////////////
+		//get values
+		const Mat4& thisMtx=getGlobalMatrix();
+		const Vec3& thisScale=thisMtx.getScale3D();
+		
+		float distToCam=camera.getPosition(true).distance(-getPosition(true));
+		float scaleAtmosphere=distToCam<800 ? 1.005f : 1.05f;
+		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleAtmosphere;
+		//culling
+		if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
+				//save blend
+				auto stateBlend=render->getBlendState();
+				//set additive blend
+				if(!stateBlend.enable) glEnable( GL_BLEND );   
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE );				
+				//set model matrix
+				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+				viewmodel.addScale(Vec3(scaleAtmosphere,scaleAtmosphere,scaleAtmosphere));
+				glLoadMatrixf(viewmodel);
+				//bind textures
+				atmGrad1->bind(0);
+				atmGrad2->bind(1);
+				atmRim->bind(2);
+				//draw
+				bindMesh();
+				//unbind textures
+				atmGrad1->unbind(0);
+				atmGrad2->unbind(1);
+				atmRim->unbind(2);
 				//reset old blend state  
 				render->setBlendState(stateBlend);
 		}

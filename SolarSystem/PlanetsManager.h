@@ -21,12 +21,14 @@ namespace SolarSystem {
 		SolarRender *render;
 		float scaleEllipses;
 		float scaleSun;
-		float scalePlanets;		
-		Shader blackMesh;
+		float scalePlanets;	
 		RenderTexture blackTexture;
 		Table configfile; 
 		///////////////////////////////
-		//shader id
+		struct BlackMesh{
+			Shader shader;
+		}blackMesh;
+		///////////////////////////////
 		struct Godrays{
 			uint glslExposure,
 				 glslDecay,
@@ -65,6 +67,32 @@ namespace SolarSystem {
 			Shader shader;
 			///////////////			
 		}sunLight;
+		struct SunLightCloud{
+
+			uint glCloudTexture;
+
+			void uniforming(){
+				shader.uniformInt(glCloudTexture,0);	
+			}
+			///////////////
+			Shader shader;
+			///////////////			
+		}sunLightCloud;
+		struct SunLightAtmosphere{
+			
+			uint glAtmGrad1,
+				 glAtmGrad2,
+				 atmRim;
+
+			void uniforming(){
+				shader.uniformInt(glAtmGrad1,0);
+				shader.uniformInt(glAtmGrad2,1);
+				shader.uniformInt(atmRim,2);
+			}
+			///////////////
+			Shader shader;
+			///////////////			
+		}sunLightAtmosphere;
 		///////////////////////////////
 
 
@@ -103,9 +131,9 @@ namespace SolarSystem {
 						   float shininess);
 		void setData(float day);
 		void draw();
-		void drawPlanets();
 		void drawPlanetssClouds();
 		void drawPlanetssCores();
+		void drawPlanetssAtmosphere();
 		void drawSun();
 	};
 

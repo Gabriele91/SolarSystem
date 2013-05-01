@@ -22,6 +22,7 @@ void SolarRender::init(){
 	//enable z buffer
 	glEnable(GL_DEPTH_TEST);
 	//enable texturing	
+	glEnable( GL_TEXTURE_1D );
 	glEnable( GL_TEXTURE_2D );
 	//enable state	
 	//always active!

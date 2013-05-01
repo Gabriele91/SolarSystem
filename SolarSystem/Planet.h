@@ -32,7 +32,10 @@ namespace SolarSystem {
 		//texture
 		Texture texture;	
 		Texture *cloudTexture;
-		Texture *blackTexture;		 
+		Texture *blackTexture;
+		Texture1D *atmGrad1;
+		Texture1D *atmGrad2;
+		Texture1D *atmRim;
 		//elliptical path
 		Vec2 radius;
 		float daysOfYear;
@@ -60,6 +63,7 @@ namespace SolarSystem {
 		void draw(Camera& camera);
 		void drawPlanet(Camera& camera);
 		void drawCloud(Camera& camera);
+		void drawAtmosphere(Camera& camera);
 		//set data
 		void setData(float day);
 		//set planet info
@@ -81,6 +85,9 @@ namespace SolarSystem {
 		//set extra texture
 		void setCloudTexture(const Utility::Path& texture);
 		void setBlackTexture(const Utility::Path& texture);
+		void setAtmosphereTexture(const Utility::Path& grad1,
+								  const Utility::Path& grad2,
+								  const Utility::Path& rim);
 		/*
 		todo add atmosfere like night and day texture
 		*/

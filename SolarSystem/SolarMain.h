@@ -20,6 +20,7 @@ namespace SolarSystem {
 		Camera camera;
 		Object obj;
 		float days;
+		float incDaysDt;
 
 	public:
 		SolarMain():
@@ -44,11 +45,14 @@ namespace SolarSystem {
 		camera.setRotation(quad);		
 		//start day
 		days=900;
+		incDaysDt=0.2;
 		/////////////////////////////////////////////	
 
 		}
-		virtual void run(float dt){				
-			days+=0.1f*dt;
+		virtual void run(float dt){		
+			incDaysDt+=(Application::instance()->getInput()->getKeyDown(Key::R)?0.2:0.0);
+			incDaysDt-=(Application::instance()->getInput()->getKeyDown(Key::T)?0.2:0.0);
+			days+=incDaysDt*dt;
 			//clear screen
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer
@@ -61,7 +65,7 @@ namespace SolarSystem {
 		}
 		
 		virtual void onKeyPress(Key::Keyboard key){
-			static const float v=100.0;
+			float v=(Application::instance()->getInput()->getKeyDown(Key::E)?1.0:200.0);
 			//rotation
 			Quaternion rot;
 			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	

@@ -74,7 +74,7 @@ void WindowsScreen::__initWindow(const char* appname,uint bites){
 		0,											// Shift Bit Ignored
 		0,											// No Accumulation Resource
 		0, 0, 0, 0,									// Accumulation Bits Ignored
-		16,											// 16Bit Z-Resource (Depth Resource)  
+		32,											// 32Bit Z-Resource (Depth Resource)  
 		0,											// No Stencil Resource
 		0,											// No Auxiliary Resource
 		PFD_MAIN_PLANE,								// Main Drawing Layer

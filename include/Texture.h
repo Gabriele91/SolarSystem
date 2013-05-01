@@ -55,13 +55,11 @@ namespace SolarSystem {
 
 	protected:
 
-		bool bBilinear,chBlr,bMipmaps,chMps;
+		bool bBilinear,chBlr;
 		uint width;
         uint gpuid;
 		Texture1D():bBilinear(true)
 				 ,chBlr(true)
-				 ,bMipmaps(true)
-				 ,chMps(true)
 				 ,width(0)
 				 ,gpuid(0){}
 
@@ -78,8 +76,6 @@ namespace SolarSystem {
 		//settings
 		bool bilinear();
 		bool bilinear(bool value);
-		bool mipmaps();
-		bool mipmaps(bool value);
 		//query
 		DFORCEINLINE uint getWidth()const{ return width; }    
 		DFORCEINLINE uint getGpuID()const{ return gpuid; }    

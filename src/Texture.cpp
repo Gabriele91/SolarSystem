@@ -140,8 +140,6 @@ bool Texture::operator !=(const Texture& t) const{
 Texture1D::Texture1D(const Utility::Path& path)
 					:bBilinear(true)
 					,chBlr(true)
-					,bMipmaps(true)
-					,chMps(true)
 					,width(0)
 					,gpuid(0){
 	/////////////////////////////////////////////////////////////////////
@@ -165,8 +163,6 @@ Texture1D::Texture1D(const Utility::Path& path)
 Texture1D::Texture1D(const Vec4& floatColor,uint newWidth)
 					:bBilinear(true)
 					,chBlr(true)
-					,bMipmaps(true)
-					,chMps(true)
 					,width(0)
 					,gpuid(0){
 	//build
@@ -192,8 +188,6 @@ void Texture1D::buildTexture1D(void *data,uint type){
 				 type,
 				 GL_UNSIGNED_BYTE,
 				 0);
-	//create mipmaps
-	glTexParameteri( GL_TEXTURE_1D, GL_GENERATE_MIPMAP, bMipmaps );	
 	//send to GPU
     glTexSubImage1D( GL_TEXTURE_1D, 0, 0, 
 					 width,
@@ -225,15 +219,12 @@ void Texture1D::bind(uint ntexture){
 	if(chBlr){
 		chBlr=false;
 		glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MAG_FILTER,bBilinear?GL_LINEAR:GL_NEAREST);
-	}
-	if(chMps){
-		chMps=false;
-		glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MIN_FILTER,bMipmaps?GL_LINEAR_MIPMAP_LINEAR:GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MIN_FILTER,bBilinear?GL_LINEAR:GL_NEAREST);
 	}
 }
 void Texture1D::unbind(uint ntexture){
 	glActiveTexture( GL_TEXTURE0 + ntexture );
-	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_1D);
 }
 //setting
 bool Texture1D::bilinear(){
@@ -242,13 +233,6 @@ bool Texture1D::bilinear(){
 bool Texture1D::bilinear(bool value){
 	chBlr=bBilinear!=value;
 	return bBilinear=value;
-}
-bool Texture1D::mipmaps(){
-	return bMipmaps;
-}
-bool Texture1D::mipmaps(bool value){
-	chMps=bMipmaps!=value;
-	return bMipmaps=value;
 }
 //operators
 bool Texture1D::operator ==(const Texture1D& t) const{
