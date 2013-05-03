@@ -32,30 +32,54 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	//get tables
 	const Table& sun=configfile.getTable("sun");
 	const Table& planets=configfile.getTable("planets");
-	//get shader info:
-	String semples("NUM_SAMPLES 100");	
-	godRays.uniformExposure = 0.0044f;
-	godRays.uniformDecay = 1.0f;
-	godRays.uniformDensity = 1.f;
-	godRays.uniformWeight = 3.65f;
-	if(sun.existsAsType("shader",Table::TABLE)){
-		const Table& shader=sun.getConstTable("shader");
-		semples=("NUM_SAMPLES "+String::toString((int)shader.getFloat("semples",100)));		
-		godRays.uniformExposure =shader.getFloat("exposure",godRays.uniformExposure);
-		godRays.uniformDecay =shader.getFloat("decady",godRays.uniformDecay);
-		godRays.uniformDensity =shader.getFloat("density",godRays.uniformDensity);
-		godRays.uniformWeight = shader.getFloat("weight",godRays.uniformWeight);
+	//enable bloom
+	if(enableBloom=(sun.getString("enableBloom","true")=="true")){
+		//BLOOM 
+		//get shader info:
+		String samplesBloom("NUM_SAMPLES 12");	
+		Vec2 screenInv(1.0f/Application::instance()->getScreen()->getWidth(),
+					   1.0f/Application::instance()->getScreen()->getHeight());
+		float quality=4.0f;
+		bloom.uniformInvSizeScreenMulQuality=screenInv*quality;
+		if(sun.existsAsType("bloom",Table::TABLE)){
+			const Table& bloomsh=sun.getConstTable("bloom");
+			samplesBloom=("NUM_SAMPLES "+String::toString((int)bloomsh.getFloat("samples",12)));
+			bloom.uniformInvSizeScreenMulQuality=screenInv*bloomsh.getFloat("quality",quality);
+		}
+		//////////////////////////////load shader//////////////////////////////
+		const char* defines[]={samplesBloom,NULL};
+		bloom.shader.loadShader("shader/bloom.vs","shader/bloom.ps",defines);
+		bloom.glslScreenTexture=bloom.shader.getUniformID("screenTexture");
+		bloom.glslInvSizeScreenMulQuality=bloom.shader.getUniformID("invSizeScreenMulQuality");
 	}
-	//////////////////////////////load shader//////////////////////////////
-	const char* defines[]={semples,NULL};
-	godRays.shader.loadShader("shader/godRays.vs","shader/godRays.ps",defines);
-	//get uniform
-	godRays.glslExposure=godRays.shader.getUniformID("exposure");
-	godRays.glslDecay=godRays.shader.getUniformID("decay");
-	godRays.glslDensity=godRays.shader.getUniformID("density");
-	godRays.glslWeight=godRays.shader.getUniformID("weight");
-	godRays.glslLightPositionOnScreen=godRays.shader.getUniformID("lightPositionOnScreen");
-	godRays.glslScreenTexture=godRays.shader.getUniformID("screenTexture");
+	//enable god rays
+	if(enableGodRays=(sun.getString("enableGodRays","true")=="true")){
+		//GOD RAYS
+		//get shader info:
+		String samplesGodRays("NUM_SAMPLES 100");	
+		godRays.uniformExposure = 0.0044f;
+		godRays.uniformDecay = 1.0f;
+		godRays.uniformDensity = 1.f;
+		godRays.uniformWeight = 3.65f;
+		if(sun.existsAsType("godRays",Table::TABLE)){
+			const Table& godRaysSh=sun.getConstTable("godRays");
+			samplesGodRays=("NUM_SAMPLES "+String::toString((int)godRaysSh.getFloat("samples",100)));		
+			godRays.uniformExposure =godRaysSh.getFloat("exposure",godRays.uniformExposure);
+			godRays.uniformDecay =godRaysSh.getFloat("decady",godRays.uniformDecay);
+			godRays.uniformDensity =godRaysSh.getFloat("density",godRays.uniformDensity);
+			godRays.uniformWeight = godRaysSh.getFloat("weight",godRays.uniformWeight);
+		}
+		//////////////////////////////load shader//////////////////////////////
+		const char* defines[]={samplesGodRays,NULL};
+		godRays.shader.loadShader("shader/godRays.vs","shader/godRays.ps",defines);
+		//get uniform
+		godRays.glslExposure=godRays.shader.getUniformID("exposure");
+		godRays.glslDecay=godRays.shader.getUniformID("decay");
+		godRays.glslDensity=godRays.shader.getUniformID("density");
+		godRays.glslWeight=godRays.shader.getUniformID("weight");
+		godRays.glslLightPositionOnScreen=godRays.shader.getUniformID("lightPositionOnScreen");
+		godRays.glslScreenTexture=godRays.shader.getUniformID("screenTexture");
+	}
 	///////////////////////////////////////////////////////////////////////
 	//get default material
 	Vec4 ambienMat(Vec3::ZERO,1.0f);
@@ -188,40 +212,15 @@ void PlanetsManager::setData(float day){
 }
 void PlanetsManager::draw(){
 	camera->update();
-	//save viewport
-	Vec4 oldViewport;
-	glGetFloatv(GL_VIEWPORT,&oldViewport.x);
-	//save blend
-	auto blendState=render->getBlendState();
-	////////////////////////////////////////////////////////////////////
-	//offscreen draw
-	blackTexture.enableRender();
-		//set viewport
-		glViewport(0, 0, blackTexture.getWidth(),
-						 blackTexture.getHeight());
-		//clear
-		render->setClearColor(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
-		//
-		drawSun();
-		blackMesh.shader.bind();
-			drawPlanetssCores();
-		blackMesh.shader.unbind();
-		//
-	blackTexture.disableRender();
-	////////////////////////////////////////////////////////////////////
-	//reset viewport
-	glViewport(oldViewport.x,oldViewport.y,oldViewport.z,oldViewport.w);
-	
 	//draw word
 	drawSun();
-	
 	//////////////////////////////////////////////////////////////////
 	//enable light
 	render->enableLight();
 	//load view matrix
 	glLoadMatrixf(camera->getGlobalMatrix());
 	//set lights
-	render->setLight(sun->getPosition()+Vec3(0,000,0), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
+	render->setLight(sun->getPosition(), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
 	//////////////////////////////////////////////////////////////////
 	//draw planets
 	sunLight.shader.bind();
@@ -242,19 +241,61 @@ void PlanetsManager::draw(){
 		drawPlanetssAtmosphere();
 	sunLightAtmosphere.shader.unbind();
 	//////////////////////////////////////////////////////////////////
-	//draw vbo
-	godRays.shader.bind();
-	godRays.uniforming();
-	godRays.shader.uniformVector2D(godRays.glslLightPositionOnScreen,
-								  camera->getPointIn3DSpace(sun->getPosition()));
-	//additive blend
-	glEnable( GL_BLEND );   
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE );
-	//
-	blackTexture.draw();
-	godRays.shader.unbind(); 
-	//reset old blend state   
-	render->setBlendState(blendState);
+	if(enableGodRays||enableBloom){
+
+		////////////////////////////////////////////////////////////////////
+		//save viewport
+		Vec4 oldViewport;
+		glGetFloatv(GL_VIEWPORT,&oldViewport.x);
+		//offscreen draw
+		blackTexture.enableRender();
+			//set viewport
+			glViewport(0, 0, blackTexture.getWidth(),
+							 blackTexture.getHeight());
+			//clear
+			render->setClearColor(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+			//
+			drawSun();
+			blackMesh.shader.bind();
+				drawPlanetssCores();
+			blackMesh.shader.unbind();
+			//
+		blackTexture.disableRender();	
+		//reset viewport
+		glViewport(oldViewport.x,oldViewport.y,oldViewport.z,oldViewport.w);
+		////////////////////////////////////////////////////////////////////
+
+		//save blend
+		auto blendState=render->getBlendState();
+		//additive blend
+		glEnable( GL_BLEND );   
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+		//disable zbuffer
+		render->disableZBuffer();
+		////////////////////////////////////////////////////////////////////
+		if(enableBloom){
+			//BLOOM	
+			bloom.shader.bind();
+			bloom.uniforming();
+			blackTexture.draw();
+			bloom.shader.unbind();
+		}
+		if(enableGodRays){
+			//GOD RAYS	
+			godRays.shader.bind();
+			godRays.uniforming();
+			godRays.shader.uniformVector2D(godRays.glslLightPositionOnScreen,
+										  camera->getPointIn3DSpace(sun->getPosition()));
+			blackTexture.draw();
+			godRays.shader.unbind();
+		}
+		////////////////////////////////////////////////////////////////////
+		//reset old state   
+		render->enableZBuffer();
+		render->setBlendState(blendState);
+	
+	}
+	
 }
 void PlanetsManager::drawPlanetssClouds(){
 	for(auto planet:planets)

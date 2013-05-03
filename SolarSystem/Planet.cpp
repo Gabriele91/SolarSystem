@@ -180,7 +180,7 @@ void Planet::drawCloud(Camera& camera){
 				auto stateBlend=render->getBlendState();
 				//set additive blend
 				if(!stateBlend.enable) glEnable( GL_BLEND );   
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );				
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA  );				
 				//set model matrix
 				//calc offset
 				if((cloudDayOffset.x+cloudDayOffset.y+cloudDayOffset.z)!=0.0f)

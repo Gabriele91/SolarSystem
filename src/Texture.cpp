@@ -343,32 +343,23 @@ void RenderTexture::draw(bool bindTexture){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//
-	float size=1.0;
-	static
-	const 
-	float vertexes[]={ 
-						-size,-size,0.0, 
-						-size, size,0.0, 
-						 size,-size,0.0, 
-						 size, size,0.0
-	                 };
-	
-	static
-	const 
-	float texCoord[]={ 
-						0.0,0.0, 
-						0.0,1.0, 
-						1.0,0.0, 
-						1.0,1.0
-	                 };
+	static const float
+	size=1.0;	
+	static const float
+	xyzUV[]={ 
+			-size,-size,0.0,0.0, 
+			-size, size,0.0,1.0,  
+			 size,-size,1.0,0.0, 
+			 size, size,1.0,1.0
+	        };
 
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ); 
 	//set texture
 	if(bindTexture) bind();
 	//set vertex
-	glVertexPointer(3, GL_FLOAT, 0, vertexes);
-    glTexCoordPointer(2, GL_FLOAT, 0, texCoord);
+	glVertexPointer(  2, GL_FLOAT, sizeof(float)*4,  &xyzUV[0]);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyzUV[2]);
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }

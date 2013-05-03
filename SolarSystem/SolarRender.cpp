@@ -71,6 +71,18 @@ bool SolarRender::lightIsEnable(){
 	return out;
 }
 
+void SolarRender::enableZBuffer(){	
+     glEnable(GL_DEPTH_TEST);
+}
+void SolarRender::disableZBuffer(){	
+     glDisable(GL_DEPTH_TEST);
+}
+bool SolarRender::zBufferIsEnable(){	
+	GLboolean out;
+	glGetBooleanv(GL_DEPTH_TEST,&out);
+	return out;
+}
+
 void SolarRender::setLight( const Vec3& posiction,
 							const Vec4& ambient,
 							const Vec4& diffuse,

@@ -33,10 +33,14 @@ namespace SolarSystem {
 
 		BlendState getBlendState();
 		void setBlendState(const BlendState& bs);
-
+		
 		void enableLight();
 		void disableLight();
 		bool lightIsEnable();
+
+		void enableZBuffer();
+		void disableZBuffer();
+		bool zBufferIsEnable();
 
 		void setLight(const Vec3& posiction,
 					  const Vec4& ambient,

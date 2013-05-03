@@ -24,10 +24,27 @@ namespace SolarSystem {
 		float scalePlanets;	
 		RenderTexture blackTexture;
 		Table configfile; 
+		bool enableBloom,enableGodRays;
 		///////////////////////////////
 		struct BlackMesh{
 			Shader shader;
 		}blackMesh;
+		///////////////////////////////
+		struct Bloom{	
+			uint glslScreenTexture,
+				 glslInvSizeScreenMulQuality;
+			//shader values
+			Vec2 uniformInvSizeScreenMulQuality;
+			//uniforming:
+			void uniforming(){
+				shader.uniformVector2D(glslInvSizeScreenMulQuality,
+									   uniformInvSizeScreenMulQuality);
+				shader.uniformInt(glslScreenTexture,0);	
+			}
+			///////////////
+			Shader shader;
+			///////////////
+		}bloom;
 		///////////////////////////////
 		struct Godrays{
 			uint glslExposure,
