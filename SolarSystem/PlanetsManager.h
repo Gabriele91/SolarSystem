@@ -10,6 +10,7 @@
 #include <Shader.h>
 #include <Table.h>
 #include <SolarRender.h>
+#include <SolarSky.h>
 
 namespace SolarSystem {
 
@@ -23,6 +24,7 @@ namespace SolarSystem {
 		float scaleSun;
 		float scalePlanets;	
 		RenderTexture blackTexture;
+		SolarSky skybox;
 		Table configfile; 
 		bool enableBloom,enableGodRays;
 		///////////////////////////////

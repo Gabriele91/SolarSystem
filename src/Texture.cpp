@@ -346,7 +346,7 @@ void RenderTexture::draw(bool bindTexture){
 	static const float
 	size=1.0;	
 	static const float
-	xyzUV[]={ 
+	xyUV[]={ 
 			-size,-size,0.0,0.0, 
 			-size, size,0.0,1.0,  
 			 size,-size,1.0,0.0, 
@@ -358,8 +358,8 @@ void RenderTexture::draw(bool bindTexture){
 	//set texture
 	if(bindTexture) bind();
 	//set vertex
-	glVertexPointer(  2, GL_FLOAT, sizeof(float)*4,  &xyzUV[0]);
-	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyzUV[2]);
+	glVertexPointer(  2, GL_FLOAT, sizeof(float)*4,  &xyUV[0]);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyUV[2]);
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }

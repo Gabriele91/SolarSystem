@@ -11,6 +11,13 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
+	,skybox(render,
+	        "img/sky/top.png",
+	        "img/sky/bottom.png",
+	        "img/sky/front.png",
+	        "img/sky/back.png",
+	        "img/sky/left.png",
+	        "img/sky/right.png")
 {
 	//black shader
 	blackMesh.shader.loadShader("shader/blackMesh.vs","shader/blackMesh.ps");
@@ -212,6 +219,11 @@ void PlanetsManager::setData(float day){
 }
 void PlanetsManager::draw(){
 	camera->update();
+	//draw skybox
+	render->setClearColor(Vec4(Vec3::ZERO,1.0f));
+	skybox.draw(*camera);
+	//clear screen
+	//////////////////////////////////////////////////////////////////
 	//draw word
 	drawSun();
 	//////////////////////////////////////////////////////////////////

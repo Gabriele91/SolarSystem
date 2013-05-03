@@ -55,8 +55,6 @@ namespace SolarSystem {
 			incDaysDt+=(Application::instance()->getInput()->getKeyHit(Key::F)?0.1:0.0);
 			incDaysDt-=(Application::instance()->getInput()->getKeyHit(Key::G)?0.1:0.0);
 			days+=incDaysDt*dt;
-			//clear screen
-			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//font buffer
 			system.setData(days);
 			system.draw();
