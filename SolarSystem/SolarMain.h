@@ -24,7 +24,7 @@ namespace SolarSystem {
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",1280,720,32,60,false)
+			MainInstance("Solar System",1920,1080,32,60,true)
 			,system("SolarSystem.conf",&camera,&render)
 		{
 		
@@ -35,8 +35,11 @@ namespace SolarSystem {
 		Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
 		//init render
 		render.init();
+
 		//setup camera
-		camera.setPerspective(45.0f,2.0f,1.0f,100000.0f);
+		//wfactor
+		float wfactor=(float)Application::instance()->getScreen()->getHeight()/Application::instance()->getScreen()->getWidth();
+		camera.setPerspective(-0.5, 0.5,-0.5*wfactor,0.5*wfactor, 1.0f,100000.0f);
 		Quaternion quad;
 		//quad.setFromEulero(Math::torad(-90),0,0);
 		//camera.setPosition(Vec3(0,-10000,0));
@@ -74,7 +77,7 @@ namespace SolarSystem {
 				return;
 			}
 			if((key==Key::UP)-(key==Key::DOWN)){ 	
-				rot.setFromEulero(0,0,0);		
+				rot.setFromEulero(Math::torad((key==Key::UP)-(key==Key::DOWN)),0,0);		
 				camera.setTurn(rot);  
 				return;
 			}

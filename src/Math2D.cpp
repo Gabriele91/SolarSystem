@@ -978,37 +978,18 @@ void Matrix4x4::setOrtho(float left, float right, float bottom,float top, float 
 	entries[13]=-(top+bottom)/(top-bottom);
 	entries[14]=-(f+n)/(f-n);
 }
-void Matrix4x4::setPerspective(float left, float right, float bottom,float top, float n, float f){
-
-	float nudge=0.999f;	//artificio per piano infinito
-
-	zero();
-
-	//verifico se divido per 0
-	if(left==right || top==bottom || n==f)
-		return;
-
-	entries[0]=(2*n)/(right-left);
-
-	entries[5]=(2*n)/(top-bottom);
-
-	entries[8]=(right+left)/(right-left);
-	entries[9]=(top+bottom)/(top-bottom);
-
-	if(f!=-1){
-		entries[10]=-(f+n)/(f-n);
-	}
-	else{	//if f==-1, use an infinite far plane
-		entries[10]=-nudge;
-	}
-	entries[11]=-1;
-
-	if(f!=-1){
-		entries[14]=-(2*f*n)/(f-n);
-	}
-	else{	//if f==-1, use an infinite far plane
-		entries[14]=-2*n*nudge;
-	}
+void Matrix4x4::setPerspective(float l, float r, 
+							   float b,float t, 
+							   float n, float f){
+	identity();
+	entries[0]  = 2 * n / (r - l);
+    entries[2]  = (r + l) / (r - l);
+    entries[5]  = 2 * n / (t - b);
+    entries[6]  = (t + b) / (t - b);
+    entries[10] = -(f + n) / (f - n);
+    entries[11] = -(2 * f * n) / (f - n);
+    entries[14] = -1;
+    entries[15] =  0;
 }
 void Matrix4x4::setPerspective(float fov, float aspect, float front, float back){
 

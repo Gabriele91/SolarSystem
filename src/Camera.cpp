@@ -18,6 +18,10 @@ void Camera::setPerspective(float angle,float spectre,float n,float f){
 	//set Perspective
 	mProjMatrix.setPerspective(angle,spectre,n,f);
 }
+void Camera::setPerspective(float left, float right, float bottom,float top, float n, float f){
+	//set Perspective
+	mProjMatrix.setPerspective(left,right,bottom,top,n,f);
+}
 //culling methods
 int Camera::sphereInFrustum(const Vec3& point, float radius){
 
