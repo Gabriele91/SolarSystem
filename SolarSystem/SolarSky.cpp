@@ -137,12 +137,14 @@ void SolarSky::draw(Camera& camera){
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);\
 	x.unbind(0);
 	
+	glColor4f(0.4,0.4,0.4,1.0);
 	BIND_BUFFER(front)
 	BIND_BUFFER(back)
 	BIND_BUFFER(top)
 	BIND_BUFFER(bottom)
 	BIND_BUFFER(left)
 	BIND_BUFFER(right)
+	glColor4f(1.0,1.0,1.0,1.0);
 
 #undef BIND_BUFFER
 
