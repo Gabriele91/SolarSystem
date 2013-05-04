@@ -4,19 +4,19 @@ uniform vec2 invSizeScreenMulQuality; //(1.0,1.0) / screenSize * quality
 
 void main(void){
 
-  vec4 source = texture2D(screenTexture, gl_TexCoord[0]);
+  vec4 source = texture2D(screenTexture, gl_TexCoord[0].xy);
   vec4 sum = vec4(0.0,0.0,.0,0.0);
   int diff = int((float(NUM_SAMPLES) - 1.0) / 2.0);
-  
+
   for (int x = -diff; x <= diff; x++)
   {
     for (int y = -diff; y <= diff; y++)
     {
       vec2 offset = vec2(x, y) * invSizeScreenMulQuality;
-      vec2 coord = clamp(gl_TexCoord[0] + offset,0.0,1.0);
+      vec2 coord = clamp(gl_TexCoord[0].xy + offset,0.0,1.0);
       sum += texture2D(screenTexture, coord);
     }
   }
-  
+
   gl_FragColor=((sum / vec4(NUM_SAMPLES * NUM_SAMPLES)) + source);
 }

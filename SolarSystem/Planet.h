@@ -11,8 +11,8 @@
 namespace SolarSystem {
 
 	class Planet : public Object {
-		
-	
+
+
 	private:
 		//gpu buffers
 		struct GLVertex{
@@ -30,7 +30,7 @@ namespace SolarSystem {
 		void buildMesh(int rings,int sectors);
 		void bindMesh();
 		//texture
-		Texture texture;	
+		Texture texture;
 		Texture *cloudTexture;
 		Texture *blackTexture;
 		Texture1D *atmGrad1;
@@ -55,7 +55,7 @@ namespace SolarSystem {
 		float shininess;
 
 	public:
-		
+
 		Planet(SolarRender *render,
 		       const Utility::Path& texture,
 			   int rings=64,
@@ -74,8 +74,8 @@ namespace SolarSystem {
 						   float daysOfYear,
 						   float rotationPeriod);
 		//set cloud info
-		void Planet::setCloudOffset(const Vec3& cloudOffset);
-		//set material		
+		void setCloudOffset(const Vec3& cloudOffset);
+		//set material
 		void setMaterial(const Vec4& ambient,
 						 const Vec4& diffuse,
 						 const Vec4& specular,

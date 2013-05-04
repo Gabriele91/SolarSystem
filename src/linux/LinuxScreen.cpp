@@ -121,7 +121,14 @@ void LinuxScreen::__createFullScreenWindow(){
         XFree(modes);
         //set window attributes
         winAttr.override_redirect = True;
-        winAttr.event_mask = WINDOW_ATTRIBUTE;
+        winAttr.event_mask = ExposureMask |
+                             KeyPressMask |
+                             KeyReleaseMask |
+                             ButtonPressMask |
+                             ButtonReleaseMask |
+                             PointerMotionMask |
+                             StructureNotifyMask |
+                             WINDOW_ATTRIBUTE ;
         window = XCreateWindow(display,
                                RootWindow(display, visual ->screen),
                                0, 0,
@@ -130,7 +137,7 @@ void LinuxScreen::__createFullScreenWindow(){
                                bitesOpenGL,
                                InputOutput,
                                visual->visual,
-                               CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect,
+                               CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect | CWOverrideRedirect,
                                &(winAttr));
         XWarpPointer(display, None, window, 0, 0, 0, 0, 0, 0);
         XMapRaised(display, window);
@@ -141,7 +148,15 @@ void LinuxScreen::__createWindow(){
         //set fullscreen=false
         fullscreen=false;
         //create a window in window mode
-        winAttr.event_mask = WINDOW_ATTRIBUTE;
+        winAttr.override_redirect = True;
+        winAttr.event_mask = ExposureMask |
+                             KeyPressMask |
+                             KeyReleaseMask |
+                             ButtonPressMask |
+                             ButtonReleaseMask |
+                             PointerMotionMask |
+                             StructureNotifyMask |
+                             WINDOW_ATTRIBUTE ;
         window =
         XCreateWindow(display, RootWindow(display, visual ->screen),
                         0, 0,

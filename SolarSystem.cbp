@@ -65,6 +65,8 @@
 		<Unit filename="SolarSystem/SolarMain.h" />
 		<Unit filename="SolarSystem/SolarRender.cpp" />
 		<Unit filename="SolarSystem/SolarRender.h" />
+		<Unit filename="SolarSystem/SolarSky.cpp" />
+		<Unit filename="SolarSystem/SolarSky.h" />
 		<Unit filename="include/Application.h" />
 		<Unit filename="include/Camera.h" />
 		<Unit filename="include/Config.h" />
@@ -88,6 +90,18 @@
 		<Unit filename="include/linux/LinuxScreen.h" />
 		<Unit filename="include/linux/OpenGLLinux.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="shader/blackMesh.ps" />
+		<Unit filename="shader/blackMesh.vs" />
+		<Unit filename="shader/bloom.ps" />
+		<Unit filename="shader/bloom.vs" />
+		<Unit filename="shader/godRays.ps" />
+		<Unit filename="shader/godRays.vs" />
+		<Unit filename="shader/sunLight.ps" />
+		<Unit filename="shader/sunLight.vs" />
+		<Unit filename="shader/sunLightAtmosphere.ps" />
+		<Unit filename="shader/sunLightAtmosphere.vs" />
+		<Unit filename="shader/sunLightClouds.ps" />
+		<Unit filename="shader/sunLightClouds.vs" />
 		<Unit filename="src/Application.cpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/Debug.cpp" />

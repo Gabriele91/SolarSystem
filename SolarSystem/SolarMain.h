@@ -42,14 +42,14 @@ namespace SolarSystem {
 		//camera.setPosition(Vec3(0,-10000,0));
 		quad.setFromEulero(Math::torad(0),0,0);
 		camera.setPosition(Vec3(0,0,-15000));
-		camera.setRotation(quad);		
+		camera.setRotation(quad);
 		//start day
 		days=900;
 		incDaysDt=0.2;
-		/////////////////////////////////////////////	
+		/////////////////////////////////////////////
 
 		}
-		virtual void run(float dt){		
+		virtual void run(float dt){
 			incDaysDt+=(Application::instance()->getInput()->getKeyDown(Key::R)?0.2:0.0);
 			incDaysDt-=(Application::instance()->getInput()->getKeyDown(Key::T)?0.2:0.0);
 			incDaysDt+=(Application::instance()->getInput()->getKeyHit(Key::F)?0.1:0.0);
@@ -63,48 +63,49 @@ namespace SolarSystem {
 		}
 		virtual void end(){
 		}
-		
+
 		virtual void onKeyDown(Key::Keyboard key){
-			DEBUG_MESSAGE("onKeyDown: "<<Key::stringKeyboard[key]);
 			float v=(Application::instance()->getInput()->getKeyDown(Key::E)?1.0:200.0);
 			//rotation
 			Quaternion rot;
-			if((key==Key::LEFT)-(key==Key::RIGHT)){ 	
-				rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);		
-				camera.setTurn(rot);  
+			if((key==Key::LEFT)-(key==Key::RIGHT)){
+				rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);
+				camera.setTurn(rot);
 				return;
 			}
-			if((key==Key::UP)-(key==Key::DOWN)){ 	
-				rot.setFromEulero(Math::torad((key==Key::UP)-(key==Key::DOWN)),0,0);		
-				camera.setTurn(rot);  
+			if((key==Key::UP)-(key==Key::DOWN)){
+				rot.setFromEulero(Math::torad((key==Key::UP)-(key==Key::DOWN)),0,0);
+				camera.setTurn(rot);
 				return;
 			}
 			//
 			if(key==Key::W)
 				camera.setMove(Vec3(0,0,v));
-			else 
+			else
 			if(key==Key::S)
 				camera.setMove(Vec3(0,0,-v));
 
-			else 
+			else
 			if(key==Key::A)
 				camera.setMove(Vec3(v,0,0));
-			else 
+			else
 			if(key==Key::D)
 				camera.setMove(Vec3(-v,0,0));
 
 			else
 			if(key==Key::Q)
 				camera.setMove(Vec3(0,-v,0));
-			else 
+			else
 			if(key==Key::Z)
-				camera.setMove(Vec3(0,v,0));	
+				camera.setMove(Vec3(0,v,0));
 		}
-		virtual void onKeyPress(Key::Keyboard key){}
+		virtual void onKeyPress(Key::Keyboard key){
+			DEBUG_MESSAGE("onKeyPress: "<<Key::stringKeyboard[key]);
+		}
 		virtual void onKeyRelease(Key::Keyboard key) {
 			//exit event
-			if(key==Key::ESCAPE) 
-				Application::instance()->exit();		
+			if(key==Key::ESCAPE)
+				Application::instance()->exit();
 		}
 
 		virtual void onMouseMove(Vec2 mousePosition) {}
