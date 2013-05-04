@@ -199,11 +199,13 @@ void WindowsInput::update(){
 	//update windows message
 	MSG		msg;
     //take message and send it...
-    if (PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
+    while (PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
 		    TranslateMessage(&msg);			
 			DispatchMessage(&msg);
 	}
-
+	//update event
+	ekeyboard.__update(this);
+	
 }
 
 
@@ -215,6 +217,10 @@ void WindowsInput::__callOnKeyPress(Key::Keyboard key) {
 void WindowsInput::__callOnKeyRelease(Key::Keyboard key) {
 	for(auto ih : vkeyboardh )
 		ih->onKeyRelease(key);
+}
+void WindowsInput::__callOnKeyDown(Key::Keyboard key) {
+	for(auto ih : vkeyboardh )
+		ih->onKeyDown(key);
 }
 //mouse
 void WindowsInput::__callOnMouseMove(Vec2 mousePosition) {
@@ -289,24 +295,24 @@ LRESULT CALLBACK WindowsInput::WndProc(   HWND hwnd, UINT message, WPARAM wparam
 
 			// KEYBOAR EVENT //
 			case WM_KEYDOWN:
-
-				if(wparam==VK_MENU){ //alt
-					winput->ekeyboard.__keyboardDown(lparam&(1<<24) ? Key::RALT : Key::LALT);
-					winput->__callOnKeyPress(lparam&(1<<24) ? Key::RALT : Key::LALT);
+				if((HIWORD(lparam) & KF_REPEAT) == 0){
+					if(wparam==VK_MENU){ //alt
+						winput->ekeyboard.__keyboardDown(lparam&(1<<24) ? Key::RALT : Key::LALT);
+						winput->__callOnKeyPress(lparam&(1<<24) ? Key::RALT : Key::LALT);
+					}
+					else if(wparam==VK_CONTROL){ //ctrl
+						winput->ekeyboard.__keyboardDown(lparam&(1<<24) ? Key::RCTRL : Key::LCTRL);
+						winput->__callOnKeyPress(lparam&(1<<24) ? Key::RCTRL : Key::LCTRL);
+					}
+					else if(wparam==VK_SHIFT){
+						winput->ekeyboard.__keyboardDown(GetKeyState(VK_RSHIFT) & 0x8000 ? Key::RSHIFT: Key::LSHIFT);
+						winput->__callOnKeyPress(GetKeyState(VK_RSHIFT) & 0x8000 ? Key::RSHIFT: Key::LSHIFT);
+					}
+					else{
+						winput->ekeyboard.__keyboardDown(keyMapWIN32[wparam]);
+						winput->__callOnKeyPress(keyMapWIN32[wparam]);
+					}
 				}
-				else if(wparam==VK_CONTROL){ //ctrl
-					winput->ekeyboard.__keyboardDown(lparam&(1<<24) ? Key::RCTRL : Key::LCTRL);
-					winput->__callOnKeyPress(lparam&(1<<24) ? Key::RCTRL : Key::LCTRL);
-				}
-				else if(wparam==VK_SHIFT){
-					winput->ekeyboard.__keyboardDown(GetKeyState(VK_RSHIFT) & 0x8000 ? Key::RSHIFT: Key::LSHIFT);
-					winput->__callOnKeyPress(GetKeyState(VK_RSHIFT) & 0x8000 ? Key::RSHIFT: Key::LSHIFT);
-				}
-				else{
-					winput->ekeyboard.__keyboardDown(keyMapWIN32[wparam]);
-					winput->__callOnKeyPress(keyMapWIN32[wparam]);
-				}
-
 			break;
 
 			case WM_KEYUP:				

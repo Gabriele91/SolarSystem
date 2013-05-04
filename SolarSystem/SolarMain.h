@@ -24,18 +24,15 @@ namespace SolarSystem {
 
 	public:
 		SolarMain():
-			MainInstance("Solar System",1920,1080,32,60,true)
+			MainInstance("Solar System",1280,768,32,60,false)
 			,system("SolarSystem.conf",&camera,&render)
-		{
-		
-		}
+		{}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
 		Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
 		//init render
 		render.init();
-
 		//setup camera
 		//wfactor
 		float wfactor=(float)Application::instance()->getScreen()->getHeight()/Application::instance()->getScreen()->getWidth();
@@ -67,7 +64,8 @@ namespace SolarSystem {
 		virtual void end(){
 		}
 		
-		virtual void onKeyPress(Key::Keyboard key){
+		virtual void onKeyDown(Key::Keyboard key){
+			DEBUG_MESSAGE("onKeyDown: "<<Key::stringKeyboard[key]);
 			float v=(Application::instance()->getInput()->getKeyDown(Key::E)?1.0:200.0);
 			//rotation
 			Quaternion rot;
@@ -100,10 +98,9 @@ namespace SolarSystem {
 				camera.setMove(Vec3(0,-v,0));
 			else 
 			if(key==Key::Z)
-				camera.setMove(Vec3(0,v,0));			
-			
-
+				camera.setMove(Vec3(0,v,0));	
 		}
+		virtual void onKeyPress(Key::Keyboard key){}
 		virtual void onKeyRelease(Key::Keyboard key) {
 			//exit event
 			if(key==Key::ESCAPE) 

@@ -168,6 +168,7 @@ namespace SolarSystem {
 					//keyboard
 					virtual void onKeyPress(Key::Keyboard key) {}
 					virtual void onKeyRelease(Key::Keyboard key) {}
+					virtual void onKeyDown(Key::Keyboard key) {}
             };	
 			class FingersHandler{
 				public:

@@ -141,10 +141,16 @@
   <ItemGroup>
     <None Include="shader\blackMesh.ps" />
     <None Include="shader\blackMesh.vs" />
+    <None Include="shader\bloom.ps" />
+    <None Include="shader\bloom.vs" />
     <None Include="shader\godRays.ps" />
     <None Include="shader\godRays.vs" />
     <None Include="shader\sunLight.ps" />
     <None Include="shader\sunLight.vs" />
+    <None Include="shader\sunLightAtmosphere.ps" />
+    <None Include="shader\sunLightAtmosphere.vs" />
+    <None Include="shader\sunLightClouds.ps" />
+    <None Include="shader\sunLightClouds.vs" />
     <None Include="SolarSystem.conf" />
     <None Include="src\Image\Image.inl" />
     <None Include="src\Thread\MutexWin32.inl" />

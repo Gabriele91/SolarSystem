@@ -247,5 +247,23 @@
     <None Include="SolarSystem.conf">
       <Filter>File di risorse</Filter>
     </None>
+    <None Include="shader\bloom.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\bloom.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightAtmosphere.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightAtmosphere.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightClouds.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightClouds.vs">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

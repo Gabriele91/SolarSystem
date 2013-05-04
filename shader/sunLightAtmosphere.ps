@@ -13,12 +13,12 @@ void main (void)
 	vec3 R = normalize(-reflect(L,N));
 	//sphere color
 	
-	float cameraIntensity = (dot(N,E)+1)*0.5;
-	float lightIntensity = (dot(N,L)+1)*0.5;
-	float lightCameraAligment = (dot(L,E)+1)*0.5;
+	float cameraIntensity = (dot(N,E)+1.0)*0.5;
+	float lightIntensity = (dot(N,L)+1.0)*0.5;
+	float lightCameraAligment = (dot(L,E)+1.0)*0.5;
 	float shadow              = dot(N,L)+1*0.25;
-	vec4 color1     = tex1D( atmGrad1, lightIntensity );
-	vec4 color2     = tex1D( atmGrad2, lightIntensity );
+	vec4 color1     = texture1D( atmGrad1, lightIntensity );
+	vec4 color2     = texture1D( atmGrad2, lightIntensity );
 	gl_FragColor    = lerp ( color2, color1, lightCameraAligment);
 	gl_FragColor    = lerp(vec4(0.0,0.0,0.0,1.0),gl_FragColor,shadow);
 	gl_FragColor.a *= tex1D( atmRim, cameraIntensity ).r;

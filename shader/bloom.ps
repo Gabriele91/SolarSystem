@@ -6,7 +6,7 @@ void main(void){
 
   vec4 source = texture2D(screenTexture, gl_TexCoord[0]);
   vec4 sum = vec4(0.0,0.0,.0,0.0);
-  int diff = (NUM_SAMPLES - 1.0) / 2.0;
+  int diff = int((float(NUM_SAMPLES) - 1.0) / 2.0);
   
   for (int x = -diff; x <= diff; x++)
   {
@@ -18,5 +18,5 @@ void main(void){
     }
   }
   
-  gl_FragColor=((sum / (NUM_SAMPLES * NUM_SAMPLES)) + source);
+  gl_FragColor=((sum / vec4(NUM_SAMPLES * NUM_SAMPLES)) + source);
 }
