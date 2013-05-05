@@ -136,6 +136,14 @@ namespace SolarSystem{
 		float distancePow2(const Vector3D& vec) const;
 		Vector3D cross(const Vector3D& vec) const;
 		Vector3D getNormalize() const;
+		void orthoNormalize(Vector3D& b){		
+			 this->normalize();
+			 b -= b.projectToNormal(*this);
+			 b.normalize();
+		}
+		Vector3D projectToNormal(const Vector3D& direction){
+			return direction * dot(direction);
+		}
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float squaredLength(){ return x*x+y*y+z*z; };
 		DFORCEINLINE void abs(){ x=fabs(x); y=fabs(y); z=fabs(z); }
@@ -405,6 +413,7 @@ namespace SolarSystem{
 		void setFromEulero(const Vec3& pyr){
 			setFromEulero(pyr.x,pyr.y,pyr.z);
 		}
+		void setLookRotation(const Vector3D &lookAt,Vector3D up);
 		///return pitch, yaw and roll
 		void getEulero(float &pitch, float &yaw, float &roll) const;
 		void getEulero(Vec3& pyr) const{

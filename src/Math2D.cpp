@@ -242,38 +242,71 @@ void Quaternion::getEulero(float &pitch, float &yaw, float &roll) const {
 		pitch =static_cast<float>( asin(2*abcd/unitLength)      );
 		yaw =  static_cast<float>( atan2(2*acbd, 1 - 2*(y2+x2)) );
 	}*/
-	float sqw = w*w;
-	float sqx = x*x;
-	float sqy = y*y;
-	float sqz = z*z;
+	float sqw = w*w;    
+	float sqx = x*x;    
+	float sqy = y*y;    
+	float sqz = z*z;    
 	/**
 	* OPENGL (h-left) (homogeneee)
 	* http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
-	*/
+	*/	
 	float unit = sqx + sqy + sqz + sqw;
     float test = x * y + z * w;
 
     if (test > 0.4999f * unit)                              // 0.4999f OR 0.5f - EPSILON
     {
-        // Singularity at north pole                        // directx
+        // Singularity at north pole                        // directx 
         yaw = 2.f * (float)atan2(x, w);                     // Yaw
         roll = Math::PI * 0.5f;                             // Pitch
         pitch = 0.f;                                        // Roll
     }
     else if (test < -0.4999f * unit)                        // -0.4999f OR -0.5f + EPSILON
     {
-        // Singularity at south pole                        // directx
+        // Singularity at south pole                        // directx 
         yaw = -2.f * (float)atan2(x, w);				    // Yaw
         roll = -Math::PI * 0.5f;                            // Pitch
         pitch = 0.f;                                        // Roll
     }
     else
-    {                                                                                 // directx
+    {                                                                                 // directx 
         yaw = (float)atan2f(2.f * y * w - 2.f * x * z, sqx - sqy - sqz + sqw);        // Yaw
         roll = (float)asinf(2.f * test / unit);                                       // Pitch
         pitch = (float)atan2f(2.f * x * w - 2.f * y * z, -sqx + sqy - sqz + sqw);     // Roll
     }
 
+   
+}
+void Quaternion::setLookRotation(const Vec3& lookAt,Vec3 upDirection) {
+
+	Vec3 forward = lookAt; Vec3 up = upDirection;
+	forward.orthoNormalize(up);
+	Vec3 right = up.cross(forward);
+
+#define m00 right.x
+#define m01 up.x
+#define m02 forward.x
+#define m10 right.y
+#define m11 up.y
+#define m12 forward.y
+#define m20 right.z
+#define m21 up.z
+#define m22 forward.z
+
+	w = std::sqrt(1.0f + m00 + m11 + m22) * 0.5f;
+	float w4_recip = 1.0f / (4.0f * w);
+	x = (m21 - m12) * w4_recip;
+	y = (m02 - m20) * w4_recip;
+	z = (m10 - m01) * w4_recip;
+
+#undef m00
+#undef m01
+#undef m02
+#undef m10
+#undef m11
+#undef m12
+#undef m20
+#undef m21
+#undef m22
 
 }
 void Quaternion::setFromAxisAngle(Vector3D &vt,float angle){
@@ -386,7 +419,7 @@ void Plane::setCoefficients(float a, float b, float c, float d){
 	normal.z/=leng;
 	//calc d
 	this->d=d/leng;
-}
+}	
 //Parametric rapresetation
 void Plane::setNormalAndOrigin(const Vector3D& normal,const Vector3D& origin){
 	this->normal=normal;
@@ -397,7 +430,7 @@ float Plane::distance(const Vector3D& point){
 	return normal.dot(point)+d;
 }
 //normalize
-void Plane::normalize(){
+void Plane::normalize(){	
 	//get length (for d)
 	float leng=normal.length();
 	//normalize (no length recalc)
@@ -978,8 +1011,8 @@ void Matrix4x4::setOrtho(float left, float right, float bottom,float top, float 
 	entries[13]=-(top+bottom)/(top-bottom);
 	entries[14]=-(f+n)/(f-n);
 }
-void Matrix4x4::setPerspective(float l, float r,
-							   float b,float t,
+void Matrix4x4::setPerspective(float l, float r, 
+							   float b,float t, 
 							   float n, float f){
 	identity();
 	entries[0]  = 2 * n / (r - l);
