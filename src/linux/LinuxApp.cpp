@@ -5,6 +5,7 @@
 #include <LinuxInput.h>
 #include <Debug.h>
 #include <sys/time.h>
+#include <unistd.h>
 ///////////////////////
 using namespace SolarSystem;
 

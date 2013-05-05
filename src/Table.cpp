@@ -7,7 +7,7 @@ using namespace SolarSystem;
 Table::Table(const Utility::Path& pathfile):index(0)
 {
 		//get raw file
-		void *data=NULL; uint len=0;
+		void *data=NULL; size_t len=0;
 		Application::instance()->loadData(pathfile,data,len);
 		//deserialize
 		deserialize(String((const char*)data));
@@ -33,7 +33,7 @@ enum Token{
 
 	TK_VECTOR_START,
 	TK_VECTOR_END,
-	
+
 	TK_BINARY_START,
 	TK_BINARY_MIDDLE,
 	TK_BINARY_END,
@@ -96,17 +96,17 @@ DFORCEINLINE Token getToken(char c){
 	if(isStartName(c)) return TK_NAME;
 	if(isStartString(c)) return TK_STRING;
 	if(isStartNumber(c)) return TK_NUMBER;
-	
+
 	if(isStartTable(c)) return TK_TABLE_START;
 	if(isEndTable(c)) return TK_TABLE_END;
 
 	if(isStartVector(c)) return TK_VECTOR_START;
 	if(isEndVector(c)) return TK_VECTOR_END;
-	
+
 	if(isStartBinary(c)) return TK_BINARY_START;
 	if(isMiddleBinary(c)) return TK_BINARY_MIDDLE;
 	if(isEndBinary(c)) return TK_BINARY_END;
-	
+
 	if(isEquals(c)) return TK_EQUALS;
 	if(isSpace(c)) return TK_SPACE;
 
@@ -168,20 +168,20 @@ DFORCEINLINE bool parseName(const char* in,String& out,const char** cout=NULL){
 		(*cout)=in;
         return true;
 }
-DFORCEINLINE void skeepLineComment(int& cntN,const char** inout){	
+DFORCEINLINE void skeepLineComment(int& cntN,const char** inout){
 		if(isLineComment(*inout)){
 			while(*(*inout)!=EOF &&
-				  *(*inout)!='\0'&& 
-				  *(*inout)!='\n') 
+				  *(*inout)!='\0'&&
+				  *(*inout)!='\n')
 				 ++(*inout);
 		}
 }
-DFORCEINLINE void skeepMultyLineComment(int& cntN,const char** inout){	
+DFORCEINLINE void skeepMultyLineComment(int& cntN,const char** inout){
 		if(isStartMultyLineComment(*inout)){
 			while(*(*inout)!=EOF &&
-				  *(*inout)!='\0'&& 
-				  !isEndMultyLineComment(*inout)){ 
-				  cntN+=(*(*inout))=='\n'; 
+				  *(*inout)!='\0'&&
+				  !isEndMultyLineComment(*inout)){
+				  cntN+=(*(*inout))=='\n';
 				  ++(*inout);
 			}
 			if((*(*inout))=='*') ++(*inout);
@@ -190,10 +190,10 @@ DFORCEINLINE void skeepMultyLineComment(int& cntN,const char** inout){
 DFORCEINLINE void skeepSpaceAndComment(int& cntN,const char** inout){
 	while(isSpace(*(*inout))||
 		  isLineComment(*inout)||
-		  isStartMultyLineComment(*inout)){ 
+		  isStartMultyLineComment(*inout)){
 		skeepLineComment(cntN,inout);
 		skeepMultyLineComment(cntN,inout);
-		cntN+=(*(*inout))=='\n'; 
+		cntN+=(*(*inout))=='\n';
 		++(*inout);
 	}
 }
@@ -212,12 +212,12 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 	//get {
 	skeepSpaceAndComment(cntEL,&prtC);
 	bool thiIsStarted=isStartTable(*prtC);
-	if(!thiIsStarted){ 
-		dErrors.push(cntEL,*prtC,"table: token '{' not found"); 
+	if(!thiIsStarted){
+		dErrors.push(cntEL,*prtC,"table: token '{' not found");
 		return false;
 	}
 	else ++prtC; //jmp {
-	
+
 	//tmp values
 	bool jmpNewKey=false;
 	Table::KeyTable key(0);
@@ -241,18 +241,18 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 		/* switch-case */
 		switch (getToken(*prtC)){
 			case TK_NAME:
-				if(!parseName(prtC,str,&prtC)){ 
-					dErrors.push(cntEL,*prtC,"name attribute: not valid"); 
+				if(!parseName(prtC,str,&prtC)){
+					dErrors.push(cntEL,*prtC,"name attribute: not valid");
 					return false;
 				}
 				//set key
 				key=Table::KeyTable(str);
 				jmpNewKey=true;
 				//
-				//search =		
-				skeepSpaceAndComment(cntEL,&prtC);		
-				if(!isEquals(*prtC)){ 
-					dErrors.push(cntEL,*prtC,"name attribute: token '=' not found"); 
+				//search =
+				skeepSpaceAndComment(cntEL,&prtC);
+				if(!isEquals(*prtC)){
+					dErrors.push(cntEL,*prtC,"name attribute: token '=' not found");
 					return false;
 				}
 				else ++prtC; //jmp =
@@ -260,12 +260,12 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				break;
 			case TK_STRING:
 				//parse string
-				if(!parseCString(prtC,str,&prtC)){ 
-					dErrors.push(cntEL,*prtC,"string: not valid"); 
+				if(!parseCString(prtC,str,&prtC)){
+					dErrors.push(cntEL,*prtC,"string: not valid");
 					return false;
 				}
-				//search =		
-				skeepSpaceAndComment(cntEL,&prtC);		
+				//search =
+				skeepSpaceAndComment(cntEL,&prtC);
 				if(isEquals(*prtC)){ //if found this is a key
 					//set key
 					key=Table::KeyTable(str);
@@ -277,14 +277,14 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 
 				break;
 			case TK_NUMBER:
-				if(!parseNumber(prtC,fl,&prtC)){ 
-					dErrors.push(cntEL,*prtC,"float number: not valid"); 
+				if(!parseNumber(prtC,fl,&prtC)){
+					dErrors.push(cntEL,*prtC,"float number: not valid");
 					return false;
 				}
 				setPt(key,fl);
 				break;
 			case TK_TABLE_START:
-				if(!(fl=(float)(tmp=&createTablePt(key))->__deserialize(prtC,&i,(unsigned int*)(&cntEL)))){				
+				if(!(fl=(float)(tmp=&createTablePt(key))->__deserialize(prtC,&i,(unsigned int*)(&cntEL)))){
 					dErrors.push(cntEL,*prtC,"error sub table: not valid:\n"+tmp->getDeserializeErros());
 					return false;
 				}
@@ -293,9 +293,9 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				break;
 			case TK_TABLE_END:
 				++prtC; //jmp }
-				if(lenRead) 
+				if(lenRead)
 					(*lenRead)=prtC-intextfile.c_str();
-				return cntEL;				
+				return cntEL;
 				/* end parse */
 				break;
 			case TK_VECTOR_START:
@@ -312,20 +312,20 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				else if(i==4) setPt(key,Vec4(vectorsTmp[0],vectorsTmp[1],vectorsTmp[2],vectorsTmp[3]));
 				else if(i==16) setPt(key,Matrix4x4(vectorsTmp));
 				else{
-					dErrors.push(cntEL,*prtC, "vector: number parameter are not valid"); 
+					dErrors.push(cntEL,*prtC, "vector: number parameter are not valid");
 					return false;
 				}
 
 				skeepSpaceAndComment(cntEL,&prtC);
-				if(!isEndVector(*prtC)){ 
-					dErrors.push(cntEL,*prtC,"vector: token ')' not found"); 
+				if(!isEndVector(*prtC)){
+					dErrors.push(cntEL,*prtC,"vector: token ')' not found");
 					return false;
 				}
 				else ++prtC; //jmp )
 
 				break;
 
-			case TK_BINARY_START:				
+			case TK_BINARY_START:
 				++prtC; //jmp @
 				//parse values
 				skeepSpaceAndComment(cntEL,&prtC);
@@ -333,8 +333,8 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				binary=(void*)malloc( (int)fl );
 				//find start binary
 				skeepSpaceAndComment(cntEL,&prtC);
-				if(!isMiddleBinary(*prtC)){ 
-					dErrors.push(cntEL,*prtC,"binary: token '[' not found"); 
+				if(!isMiddleBinary(*prtC)){
+					dErrors.push(cntEL,*prtC,"binary: token '[' not found");
 					return false;
 				}
 				else ++prtC; //jmp [
@@ -342,8 +342,8 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				memcpy(binary,prtC,(int)fl);
 				//find end binary
 				skeepSpaceAndComment(cntEL,&prtC);
-				if(!isEndBinary(*prtC)){ 
-					dErrors.push(cntEL,*prtC,"binary: token ']' not found"); 
+				if(!isEndBinary(*prtC)){
+					dErrors.push(cntEL,*prtC,"binary: token ']' not found");
 					return false;
 				}
 				else ++prtC; //jmp ]
@@ -356,19 +356,19 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				jmpNewKey=true;
 				break;
 
-			 /* ERRORs */	
+			 /* ERRORs */
 			case TK_BINARY_MIDDLE:
 			case TK_BINARY_END:
 			case TK_VECTOR_END:
 			case TK_EQUALS:
 			case TK_NONE:
-			default:				
-				dErrors.push(cntEL,*prtC,"token not valid"); 
+			default:
+				dErrors.push(cntEL,*prtC,"token not valid");
 				return false;
 			break;
 		}
 	}
-	dErrors.push(cntEL,*prtC,"table: token '}' not found"); 
+	dErrors.push(cntEL,*prtC,"table: token '}' not found");
 	return false;
 }
 String Table::__serialize(int countSpace,bool havename) const{
@@ -377,7 +377,7 @@ String Table::__serialize(int countSpace,bool havename) const{
 	//open table
 	String outtextfile(( havename? String("") :lspace )+ "{\n");
 	for(auto value :  *this ){
-		
+
 		int supSpace=1;
 		outtextfile+=lspace;
 
@@ -427,7 +427,7 @@ String Table::__serialize(int countSpace,bool havename) const{
 		}
 
 	}
-	
+
 	return outtextfile+lspace+"}\n";
 }
 

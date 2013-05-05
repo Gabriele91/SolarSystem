@@ -12,7 +12,7 @@ DFORCEINLINE static String textFileRead(const Utility::Path &path) {
 	/////////////////////////////////////////////////////////////////////
 	//cpu load
 	//get raw file
-	void *data=NULL; uint len=0;
+	void *data=NULL; size_t len=0;
 	Application::instance()->loadData(path,data,len);
 	out=(char*)data;
 	//free raw file
@@ -51,7 +51,7 @@ Shader::Shader(const Utility::Path& vs,
 //inizializza
 void Shader::loadShader(const Utility::Path& vsFile, const Utility::Path& fsFile, const char *list_define[]){
 	//delete last shader
-	this->~Shader();	
+	this->~Shader();
 	shader_fs=shader_vs=shader_id=0;
 	GLint compiled=0,linked=0;
 	// load shaders files
@@ -76,7 +76,7 @@ void Shader::loadShader(const Utility::Path& vsFile, const Utility::Path& fsFile
 			"#define _lowp\n"+
 			"#line 0\n"+
 			fileFS;
-	//create a pixel shader 
+	//create a pixel shader
 	shader_fs = glCreateShader(GL_FRAGMENT_SHADER);
 	//create a vertex shader
 	shader_vs = glCreateShader(GL_VERTEX_SHADER);
@@ -161,7 +161,7 @@ void Shader::uniformMat4Array(const char *name,Matrix4x4 *v,unsigned int n) { gl
 ///////////////////////////////////
 //get uniform id
 uint Shader::getUniformID(const char *name){ return glGetUniformLocation(shader_id, name); }
-//uniform whit id		
+//uniform whit id
 void Shader::uniformInt(uint id,int v){ glUniform1i(id, v); }
 void Shader::uniformFloat(uint id,float v){ glUniform1f(id, v); }
 void Shader::uniformTexture(uint id,const Texture& v){ glUniform1i(id, v.getGpuID()); }
