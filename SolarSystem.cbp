@@ -62,6 +62,8 @@
 		<Unit filename="SolarSystem/Planet.h" />
 		<Unit filename="SolarSystem/PlanetsManager.cpp" />
 		<Unit filename="SolarSystem/PlanetsManager.h" />
+		<Unit filename="SolarSystem/SolarFly.cpp" />
+		<Unit filename="SolarSystem/SolarFly.h" />
 		<Unit filename="SolarSystem/SolarMain.h" />
 		<Unit filename="SolarSystem/SolarRender.cpp" />
 		<Unit filename="SolarSystem/SolarRender.h" />

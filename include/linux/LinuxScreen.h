@@ -56,6 +56,10 @@ namespace SolarSystem {
 		*/
 		virtual void setCursor(bool show=true);
 		/**
+        * set position cursor
+        */
+        void setPositionCursor(const Vec2& pos);
+		/**
 		* return if cursor is shown or hidden
 		*/
 		virtual bool getCursor();

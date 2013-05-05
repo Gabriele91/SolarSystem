@@ -310,6 +310,14 @@ void LinuxScreen::setCursor(bool show){
 	}
 }
 /**
+* set position cursor
+*/
+void LinuxScreen::setPositionCursor(const Vec2& pos){
+    XWarpPointer(display, None, window, 0, 0, 0, 0, pos.x, pos.y);
+    XSync(display, False);
+    XFlush(display);
+}
+/**
 * return if cursor is shown or hidden
 */
 bool LinuxScreen::getCursor(){

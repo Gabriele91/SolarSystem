@@ -466,10 +466,11 @@
 	<Screen.h>
 	<EString.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/Screen.h
+1367712784 /home/gabriele/github/SolarSystem/include/Screen.h
 	<Config.h>
 	<MainInstance.h>
 	<Application.h>
+	<Math2D.h>
 
 1367707100 /home/gabriele/github/SolarSystem/include/Input.h
 	<Config.h>
@@ -490,7 +491,7 @@
 	<Application.h>
 	<SolarMain.h>
 
-1367708374 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
+1367712784 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
@@ -501,6 +502,7 @@
 	<SolarRender.h>
 	<Planet.h>
 	<PlanetsManager.h>
+	<SolarFly.h>
 
 1366565367 source:/home/gabriele/github/SolarSystem/src/Application.cpp
 	<stdafx.h>
@@ -631,7 +633,7 @@
 	<Debug.h>
 	<sys/time.h>
 
-1366565367 /home/gabriele/github/SolarSystem/include/linux/LinuxScreen.h
+1367712870 /home/gabriele/github/SolarSystem/include/linux/LinuxScreen.h
 	<X11/Xlib.h>
 	<X11/Xatom.h>
 	<X11/keysym.h>
@@ -654,7 +656,7 @@
 	<X11/keysym.h>
 	<X11/keysymdef.h>
 
-1367711243 source:/home/gabriele/github/SolarSystem/src/linux/LinuxScreen.cpp
+1367713597 source:/home/gabriele/github/SolarSystem/src/linux/LinuxScreen.cpp
 	<LinuxScreen.h>
 
 1366565368 source:/home/gabriele/github/SolarSystem/src/linux/OpenGLLinux.cpp
@@ -673,4 +675,14 @@
 	<stdafx.h>
 	<SolarSky.h>
 	<Debug.h>
+
+1367712784 /home/gabriele/github/SolarSystem/SolarSystem/SolarFly.h
+	<Config.h>
+	<Application.h>
+	<Math2D.h>
+	<Camera.h>
+
+1367712784 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarFly.cpp
+	<stdafx.h>
+	<SolarFly.h>
 
