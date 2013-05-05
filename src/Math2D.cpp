@@ -242,39 +242,39 @@ void Quaternion::getEulero(float &pitch, float &yaw, float &roll) const {
 		pitch =static_cast<float>( asin(2*abcd/unitLength)      );
 		yaw =  static_cast<float>( atan2(2*acbd, 1 - 2*(y2+x2)) );
 	}*/
-	float sqw = w*w;    
-	float sqx = x*x;    
-	float sqy = y*y;    
-	float sqz = z*z;    
+	float sqw = w*w;
+	float sqx = x*x;
+	float sqy = y*y;
+	float sqz = z*z;
 	/**
 	* OPENGL (h-left) (homogeneee)
 	* http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/
-	*/	
+	*/
 	float unit = sqx + sqy + sqz + sqw;
     float test = x * y + z * w;
 
     if (test > 0.4999f * unit)                              // 0.4999f OR 0.5f - EPSILON
     {
-        // Singularity at north pole                        // directx 
+        // Singularity at north pole                        // directx
         yaw = 2.f * (float)atan2(x, w);                     // Yaw
         roll = Math::PI * 0.5f;                             // Pitch
         pitch = 0.f;                                        // Roll
     }
     else if (test < -0.4999f * unit)                        // -0.4999f OR -0.5f + EPSILON
     {
-        // Singularity at south pole                        // directx 
+        // Singularity at south pole                        // directx
         yaw = -2.f * (float)atan2(x, w);				    // Yaw
         roll = -Math::PI * 0.5f;                            // Pitch
         pitch = 0.f;                                        // Roll
     }
     else
-    {                                                                                 // directx 
+    {                                                                                 // directx
         yaw = (float)atan2f(2.f * y * w - 2.f * x * z, sqx - sqy - sqz + sqw);        // Yaw
         roll = (float)asinf(2.f * test / unit);                                       // Pitch
         pitch = (float)atan2f(2.f * x * w - 2.f * y * z, -sqx + sqy - sqz + sqw);     // Roll
     }
 
-   
+
 }
 void Quaternion::setFromAxisAngle(Vector3D &vt,float angle){
 	float sinAngle;
@@ -386,7 +386,7 @@ void Plane::setCoefficients(float a, float b, float c, float d){
 	normal.z/=leng;
 	//calc d
 	this->d=d/leng;
-}	
+}
 //Parametric rapresetation
 void Plane::setNormalAndOrigin(const Vector3D& normal,const Vector3D& origin){
 	this->normal=normal;
@@ -397,7 +397,7 @@ float Plane::distance(const Vector3D& point){
 	return normal.dot(point)+d;
 }
 //normalize
-void Plane::normalize(){	
+void Plane::normalize(){
 	//get length (for d)
 	float leng=normal.length();
 	//normalize (no length recalc)
@@ -444,10 +444,10 @@ Matrix4x4::Matrix4x4(float e0,float e1,float e2,float e3,
 			entries[8]=e8; entries[9]=e9; entries[10]=e10; entries[11]=e11;
 			entries[12]=e12; entries[13]=e13; entries[14]=e14; entries[15]=e15;
 }
-DINLINE void Matrix4x4::identity(){
+void Matrix4x4::identity(){
 	memcpy(entries,Matrix4x4Identity,sizeof(float)*16);
 }
-DINLINE void Matrix4x4::zero(){
+void Matrix4x4::zero(){
 	memset(entries,0,sizeof(float)*16);
 }
 Matrix4x4 Matrix4x4::mul(const Matrix4x4 &m4x4) const {
@@ -978,8 +978,8 @@ void Matrix4x4::setOrtho(float left, float right, float bottom,float top, float 
 	entries[13]=-(top+bottom)/(top-bottom);
 	entries[14]=-(f+n)/(f-n);
 }
-void Matrix4x4::setPerspective(float l, float r, 
-							   float b,float t, 
+void Matrix4x4::setPerspective(float l, float r,
+							   float b,float t,
 							   float n, float f){
 	identity();
 	entries[0]  = 2 * n / (r - l);
