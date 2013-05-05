@@ -292,6 +292,16 @@ void WindowsScreen::setCursor(bool show){
 	ShowCursor(showmouse);
 }
 /**
+* set position cursor
+*/
+void WindowsScreen::setPositionCursor(const Vec2& pos){	
+	POINT mouse;
+	mouse.x=pos.x;
+	mouse.y=pos.y;
+    ClientToScreen(hWind, &mouse);
+	SetCursorPos(mouse.x,mouse.y);
+}
+/**
 * return if cursor is shown or hidden
 */
 bool WindowsScreen::getCursor(){

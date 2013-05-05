@@ -8,13 +8,13 @@
 #include <SolarRender.h>
 #include <Planet.h>
 #include <PlanetsManager.h>
+#include <SolarFly.h>
 
 namespace SolarSystem {
 
 	class SolarMain: public MainInstance,
-							Input::KeyboardHandler,
-							Input::MouseHandler{
-
+							Input::KeyboardHandler{
+		SolarFly	   cameraCtrl;
 		SolarRender    render;
 		PlanetsManager system;
 		Camera camera;
@@ -26,11 +26,13 @@ namespace SolarSystem {
 		SolarMain():
 			MainInstance("Solar System",1280,768,32,60,false)
 			,system("SolarSystem.conf",&camera,&render)
+			,cameraCtrl(&camera)
 		{}
 		virtual void start(){
 		//input
 		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
-		Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
+		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+		Application::instance()->getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
 		//init render
 		render.init();
 		//setup camera
@@ -47,7 +49,6 @@ namespace SolarSystem {
 		days=900;
 		incDaysDt=0.2;
 		/////////////////////////////////////////////
-
 		}
 		virtual void run(float dt){
 			incDaysDt+=(Application::instance()->getInput()->getKeyDown(Key::R)?0.2:0.0);
@@ -61,56 +62,19 @@ namespace SolarSystem {
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}
-		virtual void end(){
-		}
-
-		virtual void onKeyDown(Key::Keyboard key){
-			float v=(Application::instance()->getInput()->getKeyDown(Key::E)?1.0:200.0);
-			//rotation
-			Quaternion rot;
-			if((key==Key::LEFT)-(key==Key::RIGHT)){
-				rot.setFromEulero(0,Math::torad((key==Key::LEFT)-(key==Key::RIGHT)),0);
-				camera.setTurn(rot);
-				return;
-			}
-			if((key==Key::UP)-(key==Key::DOWN)){
-				rot.setFromEulero(Math::torad((key==Key::UP)-(key==Key::DOWN)),0,0);
-				camera.setTurn(rot);
-				return;
-			}
-			//
-			if(key==Key::W)
-				camera.setMove(Vec3(0,0,v));
-			else
-			if(key==Key::S)
-				camera.setMove(Vec3(0,0,-v));
-
-			else
-			if(key==Key::A)
-				camera.setMove(Vec3(v,0,0));
-			else
-			if(key==Key::D)
-				camera.setMove(Vec3(-v,0,0));
-
-			else
-			if(key==Key::Q)
-				camera.setMove(Vec3(0,-v,0));
-			else
-			if(key==Key::Z)
-				camera.setMove(Vec3(0,v,0));
-		}
-		virtual void onKeyPress(Key::Keyboard key){
-			DEBUG_MESSAGE("onKeyPress: "<<Key::stringKeyboard[key]);
+		virtual void end(){}
+		
+		virtual void onKeyPress(Key::Keyboard key) {
+			if(key==Key::E&&cameraCtrl.getMoveVelocity()!=Vec3(100.0,100.0,100.0))
+				cameraCtrl.setMoveVelocity(Vec3(100.0,100.0,100.0));
+			else if(key==Key::E)
+				cameraCtrl.setMoveVelocity(Vec3(10.0,10.0,10.0));			
 		}
 		virtual void onKeyRelease(Key::Keyboard key) {
 			//exit event
 			if(key==Key::ESCAPE)
 				Application::instance()->exit();
 		}
-
-		virtual void onMouseMove(Vec2 mousePosition) {}
-		virtual void onMousePress(Vec2 mousePosition, Key::Mouse button){}
-		virtual void onMouseRelease(Vec2 mousePosition, Key::Mouse button){}
-		virtual void onMouseScroll(short scrollDelta){}
+	
 	};
 };

@@ -4,6 +4,7 @@
 #include <Config.h>
 #include <MainInstance.h>
 #include <Application.h>
+#include <Math2D.h>
 
 namespace SolarSystem {
 
@@ -90,7 +91,11 @@ namespace SolarSystem {
 		* show or hide mouse cursor
 		* @param show, set true if you want show cursor otherwise false
 		*/
-		virtual void setCursor(bool show=true)=0;
+		virtual void setCursor(bool show=true)=0;		
+		/**
+		* set position cursor
+		*/
+		virtual void setPositionCursor(const Vec2& pos)=0;
 		/**
 		* return if cursor is shown or hidden
 		*/

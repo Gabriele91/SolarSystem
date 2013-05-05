@@ -205,6 +205,7 @@ void WindowsInput::update(){
 	}
 	//update event
 	ekeyboard.__update(this);
+	emouse.__update(this);
 	
 }
 
@@ -230,6 +231,10 @@ void WindowsInput::__callOnMouseMove(Vec2 mousePosition) {
 void WindowsInput::__callOnMousePress(Vec2 mousePosition, Key::Mouse button) {
 	for(auto ih : vmouseh )
 		ih->onMousePress(mousePosition,button);
+}
+void WindowsInput::__callOnMouseDown(Vec2 mousePosition, Key::Mouse button) {
+	for(auto ih : vmouseh )
+		ih->onMouseDown(mousePosition,button);
 }
 void WindowsInput::__callOnMouseRelease(Vec2 mousePosition, Key::Mouse button) {
 	for(auto ih : vmouseh )

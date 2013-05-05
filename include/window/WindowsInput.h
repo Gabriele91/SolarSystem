@@ -185,25 +185,38 @@ namespace SolarSystem {
 			}ewindow;
 			//mouse
 			struct EventMouse{					
-				int nPress;
+				int nPress,nDown;
 				short scroll;
 				Vec2 pos;
 				char status[Key::MOUSEMAX];
 				Key::Mouse hit[7];
+				Key::Mouse down[10];
+
 				void __init(){
 					memset(this,0,sizeof(EventMouse));
 				}
 				void __mouseDown(Key::Mouse k){
 					status[k]=(char)(0x0001 | 0x0002*(status[k]&0x0001));
+					down[nDown++]=k;
+					nDown%=10;
 				}
 				void __mouseUp(Key::Mouse k){
 					if(status[k]== 0x0001 && nPress<7)
 						hit[nPress++]=k;
+
+					for(auto& kd:down) if(kd==k) 
+							kd=Key::Mouse::MOUSE_NULL;
+
 					status[k]=false;
 				}				
 				void __clearHit(){
 					memset(hit,false,7);
 					nPress=0;
+				}
+				void __update(WindowsInput *self){
+					for(auto& kd:down) 
+					if(kd!=Key::Mouse::MOUSE_NULL) 
+						self->__callOnMouseDown(pos,kd);
 				}
 			}emouse;
 			//keyboard
@@ -246,6 +259,7 @@ namespace SolarSystem {
 			void __callOnKeyDown(Key::Keyboard key);
 			void __callOnMouseMove(Vec2 mousePosition);
 			void __callOnMousePress(Vec2 mousePosition, Key::Mouse button);
+			void __callOnMouseDown(Vec2 mousePosition, Key::Mouse button);
 			void __callOnMouseRelease(Vec2 mousePosition, Key::Mouse button);
 			void __callOnMouseScroll(short scrollDelta);
 			//hide constructor
