@@ -21,6 +21,36 @@ LinuxScreen::LinuxScreen()
 }
 ///////////////////////////////////////////////////////////
 typedef GLXContext (*glXCreateContextAttribsARBProc)(Display*, GLXFBConfig, GLXContext, Bool, const int*);
+static bool isExtensionSupported(const char *extList, const char *extension){
+
+  const char *start;
+  const char *where, *terminator;
+
+  /* Extension names should not have spaces. */
+  where = strchr(extension, ' ');
+  if ( where || *extension == '\0' )
+    return false;
+
+  /* It takes a bit of care to be fool-proof about parsing the
+     OpenGL extensions string. Don't be fooled by sub-strings,
+     etc. */
+  for ( start = extList; ; ) {
+    where = strstr( start, extension );
+
+    if ( !where )
+      break;
+
+    terminator = where + strlen( extension );
+
+    if ( where == start || *(where - 1) == ' ' )
+      if ( *terminator == ' ' || *terminator == '\0' )
+        return true;
+
+    start = terminator;
+  }
+
+  return false;
+}
 void LinuxScreen::__createGLXContext(uint bites){
 	///////////////////////////////////////////////////////////
     //SETUP openGL
@@ -59,16 +89,24 @@ void LinuxScreen::__createGLXContext(uint bites){
     //Get a framebuffer config using the default attributes
     GLXFBConfig framebufferConfig = (*glXChooseFBConfig(display, DefaultScreen(display), 0, &n));
     ///////////////////////////////////////////////////////////////////////
-    int context_attribs[] = {
-        GLX_CONTEXT_MAJOR_VERSION_ARB, 2,
-        GLX_CONTEXT_MINOR_VERSION_ARB, 1,
-        None
-    };
-    context = glXCreateContextAttribsARB( display,
-                                          framebufferConfig ,
-                                          0,
-                                          GL_TRUE,
-                                          context_attribs);
+    // Get the default screen's GLX extension list
+    const char *glxExts = glXQueryExtensionsString( display, DefaultScreen( display ) );
+    if ( !isExtensionSupported( glxExts, "GLX_ARB_create_context" ) ||   !glXCreateContextAttribsARB ){
+        DEBUG_MESSAGE( "glXCreateContextAttribsARB() not found, old-style GLX context" );
+        context = glXCreateNewContext( display, framebufferConfig, GLX_RGBA_TYPE, 0, True );
+      }
+      else{
+        int context_attribs[] = {
+            GLX_CONTEXT_MAJOR_VERSION_ARB, 1,
+            GLX_CONTEXT_MINOR_VERSION_ARB, 4,
+            None
+        };
+        context = glXCreateContextAttribsARB( display,
+                                              framebufferConfig ,
+                                              0,
+                                              GL_TRUE,
+                                              context_attribs);
+      }
     DEBUG_ASSERT(context);
 	///////////////////////////////////////////////////////////
     //COLOR MAP WINDOW
