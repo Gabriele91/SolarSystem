@@ -113,13 +113,13 @@ Planet::~Planet(){
 		delete atmRim;
 }
 //set extra texture
-void Planet::setCloudTexture(const Utility::Path& texture){
+void Planet::setCloudTexture(const Utility::Path& argtexture){
 	DEBUG_ASSERT(cloudTexture==NULL);
-	cloudTexture=new Texture(texture);
+	cloudTexture=new Texture(argtexture);
 }
-void Planet::setBlackTexture(const Utility::Path& texture){
+void Planet::setBlackTexture(const Utility::Path& argtexture){
 	DEBUG_ASSERT(blackTexture==NULL);
-	blackTexture=new Texture(texture);
+	blackTexture=new Texture(argtexture);
 };
 void Planet::setAtmosphereTexture(const Utility::Path& grad1,
 								  const Utility::Path& grad2,
