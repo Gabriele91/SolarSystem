@@ -484,13 +484,11 @@ void Image::flipX(){
 	delete [] tmp;
 
 }
-#include <iostream>
 void Image::flipY(){
 
   size_t lineLen=width*channels*sizeof(char);
   char* tmp=(char*)malloc(lineLen);
   size_t hOn2=height;
-  std::cout<< "w"<<width<<" h"<<height <<std::endl;
   hOn2/=2;
   for(int y=0;y<hOn2;++y){
 	  memcpy(tmp,&bytes[lineLen*y],lineLen);
