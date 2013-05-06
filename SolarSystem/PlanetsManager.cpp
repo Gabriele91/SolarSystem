@@ -11,13 +11,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
-	,skybox(render,
-	        "img/sky/top.png",
-	        "img/sky/bottom.png",
-	        "img/sky/front.png",
-	        "img/sky/back.png",
-	        "img/sky/left.png",
-	        "img/sky/right.png")
+	,skybox(NULL)
 {
 	//black shader
 	blackMesh.shader.loadShader("shader/blackMesh.vs","shader/blackMesh.ps");
@@ -34,11 +28,28 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	sunLightAtmosphere.glAtmGrad2=sunLightAtmosphere.shader.getUniformID("atmGrad2");	
 	sunLightAtmosphere.atmRim=sunLightAtmosphere.shader.getUniformID("atmRim");	
 	//setup config file:
+	DEBUG_ASSERT_MSG(configfile.existsAsType("skybox",Table::TABLE),"PlanetsManager error : not found skybox")
 	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
 	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found planets table");
 	//get tables
 	const Table& sun=configfile.getTable("sun");
 	const Table& planets=configfile.getTable("planets");
+	const Table& skybox=configfile.getTable("skybox");
+	//get skybox textures
+	DEBUG_ASSERT_MSG(skybox.existsAsType("top",Table::STRING)&&
+					 skybox.existsAsType("bottom",Table::STRING)&&
+					 skybox.existsAsType("front",Table::STRING)&&
+					 skybox.existsAsType("back",Table::STRING)&&
+					 skybox.existsAsType("left",Table::STRING)&&
+					 skybox.existsAsType("right",Table::STRING),
+					 "PlanetsManager error : not found top, bottom, front, back, left, right in skybox")
+	this->skybox=new SolarSky(render,
+							  skybox.getString("top"),
+							  skybox.getString("bottom"),
+							  skybox.getString("front"),
+							  skybox.getString("back"),
+							  skybox.getString("left"),
+							  skybox.getString("right"));
 	//enable bloom
 	if(enableBloom=(sun.getString("enableBloom","true")=="true")){
 		//BLOOM 
@@ -181,6 +192,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 PlanetsManager::~PlanetsManager(){	
 	for(auto planet:planets) delete planet;
 	if(sun) delete sun;
+	if(skybox) delete skybox;
 }
 
 void PlanetsManager::addSun(const Utility::Path &path,
@@ -221,7 +233,7 @@ void PlanetsManager::draw(){
 	camera->update();
 	//draw skybox
 	render->setClearColor(Vec4(Vec3::ZERO,1.0f));
-	skybox.draw(*camera);
+	skybox->draw(*camera);
 	//clear screen
 	//////////////////////////////////////////////////////////////////
 	//draw word

@@ -20,11 +20,11 @@ namespace SolarSystem {
 		std::vector<Planet*> planets;
 		Camera *camera;
 		SolarRender *render;
+		SolarSky *skybox;
 		float scaleEllipses;
 		float scaleSun;
 		float scalePlanets;	
 		RenderTexture blackTexture;
-		SolarSky skybox;
 		Table configfile; 
 		bool enableBloom,enableGodRays;
 		///////////////////////////////
