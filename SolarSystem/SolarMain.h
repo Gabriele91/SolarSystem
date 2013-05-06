@@ -23,9 +23,9 @@ namespace SolarSystem {
 		float incDaysDt;
 
 	public:
-		SolarMain():
+		SolarMain(const Utility::Path& config):
 			MainInstance("Solar System",1280,768,32,60,false)
-			,system("SolarSystem.conf",&camera,&render)
+			,system(config,&camera,&render)
 			,cameraCtrl(&camera)
 		{}
 		virtual void start(){
