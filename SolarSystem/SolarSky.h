@@ -31,6 +31,8 @@ namespace SolarSystem {
 		//
 		void buildSkyBox();
 		//
+		Vec4 color;
+		//
 	public:
 
 		SolarSky(SolarRender *render,
@@ -40,6 +42,10 @@ namespace SolarSystem {
 				 const Utility::Path& back,
 				 const Utility::Path& left,
 				 const Utility::Path& right);
+
+		DFORCEINLINE void setColor(const Vec4& argcolor){
+			color=argcolor;
+		}
 
 		void draw(Camera& camera);
 	};

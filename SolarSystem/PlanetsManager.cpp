@@ -19,6 +19,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	sunLight.shader.loadShader("shader/sunLight.vs","shader/sunLight.ps");
 	sunLight.glPlanetTexture=sunLight.shader.getUniformID("planetTexture");
 	sunLight.glPlanetNightTexture=sunLight.shader.getUniformID("planetNightTexture");
+	sunLight.glPlanetSpecularTexture=sunLight.shader.getUniformID("planetSpecularTexture");
 	//load shader sun light (clouds):
 	sunLightCloud.shader.loadShader("shader/sunLightClouds.vs","shader/sunLightClouds.ps");
 	sunLightCloud.glCloudTexture=sunLightCloud.shader.getUniformID("cloudTexture");
@@ -50,6 +51,9 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 								  skybox.getString("back"),
 								  skybox.getString("left"),
 								  skybox.getString("right"));
+		//color skybox
+		this->skybox->setColor(skybox.getVector4D("color",Vec4(1.0,1.0,1.0,1.0)));
+
 	}
 	//enable bloom
 	if(enableBloom=(sun.getString("enableBloom","true")=="true")){
@@ -123,11 +127,13 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		   sun.getVector3D("scale"),
 		   sun.getFloat("period"));
 	//get light info	
+	this->attenuation=Vec3(1.0,0.0,0.0);
 	Vec4 lightAmbient(1.0,1.0,1.0,1.0);
 	Vec4 lightDiffuse(1.0,1.0,1.0,1.0);
 	Vec4 lightSpecular(1.0,1.0,1.0,1.0);
 	if(sun.existsAsType("light",Table::TABLE)){
 		const Table& light=sun.getConstTable("light");
+		attenuation=sun.getVector3D("attenuation",this->attenuation);
 		lightAmbient=light.getVector4D("ambien",lightAmbient);
 		lightDiffuse=light.getVector4D("diffuse",lightDiffuse);
 		lightSpecular=light.getVector4D("specular",lightSpecular);
@@ -169,6 +175,8 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			ptr->setCloudTexture(planet.getString("cloud"));
 		if(planet.existsAsType("night",Table::STRING))
 			ptr->setBlackTexture(planet.getString("night"));
+		if(planet.existsAsType("specular",Table::STRING))
+			ptr->setSpecularTexture(planet.getString("specular"));
 		if(planet.existsAsType("atmosphere",Table::TABLE)){
 			const Table& atmosphere=planet.getConstTable("atmosphere");			
 			DEBUG_ASSERT_MSG(atmosphere.size()==3,"PlanetsManager error : in "<< (itTable.first.isString() ? 
@@ -246,6 +254,7 @@ void PlanetsManager::draw(){
 	glLoadMatrixf(camera->getGlobalMatrix());
 	//set lights
 	render->setLight(sun->getPosition(), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
+	render->setLightAttenuation(attenuation.x,attenuation.y,attenuation.z);
 	//////////////////////////////////////////////////////////////////
 	//draw planets
 	sunLight.shader.bind();

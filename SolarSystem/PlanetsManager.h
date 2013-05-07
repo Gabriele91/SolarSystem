@@ -27,6 +27,7 @@ namespace SolarSystem {
 		RenderTexture blackTexture;
 		Table configfile; 
 		bool enableBloom,enableGodRays;
+		Vec3 attenuation;
 		///////////////////////////////
 		struct BlackMesh{
 			Shader shader;
@@ -76,11 +77,13 @@ namespace SolarSystem {
 		struct SunLight{
 
 			uint glPlanetTexture,
-				 glPlanetNightTexture;
+				 glPlanetNightTexture,
+				 glPlanetSpecularTexture;
 
 			void uniforming(){
 				shader.uniformInt(glPlanetTexture,0);	
 				shader.uniformInt(glPlanetNightTexture,1);	
+				shader.uniformInt(glPlanetSpecularTexture,2);	
 			}
 			///////////////
 			Shader shader;

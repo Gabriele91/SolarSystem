@@ -41,11 +41,14 @@ namespace SolarSystem {
 		void enableZBuffer();
 		void disableZBuffer();
 		bool zBufferIsEnable();
-
+		
 		void setLight(const Vec3& posiction,
 					  const Vec4& ambient,
 					  const Vec4& diffuse,
 					  const Vec4& specular);
+		void setLightAttenuation(float constant,
+								 float linear,
+								 float quantistic);
 		void setMaterial(const Vec4& ambient,
 						 const Vec4& diffuse,
 						 const Vec4& specular,

@@ -95,7 +95,8 @@ SolarSky::SolarSky(  SolarRender *render,
 					,front(front)
 					,back(back)
 					,left(left)
-					,right(right){
+					,right(right)
+					,color(Vector4D::ONE){
 	memset(&buffer,0,sizeof(BuffersSkybox));
 
 	this->top.bilinear(true);
@@ -136,15 +137,19 @@ void SolarSky::draw(Camera& camera){
 	glTexCoordPointer( 2, GL_FLOAT, sizeof(float)*5,(GLvoid *)( sizeof(float)*3 ));\
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);\
 	x.unbind(0);
-	
-	glColor4f(0.4,0.4,0.4,1.0);
+	//save current color
+	Vec4 tmpColor;
+	glGetFloatv(GL_CURRENT_COLOR,&tmpColor.x);
+	//draw
+	glColor4f(color.x,color.y,color.z,color.w);
 	BIND_BUFFER(front)
 	BIND_BUFFER(back)
 	BIND_BUFFER(top)
 	BIND_BUFFER(bottom)
 	BIND_BUFFER(left)
 	BIND_BUFFER(right)
-	glColor4f(1.0,1.0,1.0,1.0);
+	//reset color
+	glColor4f(tmpColor.x,tmpColor.y,tmpColor.z,tmpColor.w);
 
 #undef BIND_BUFFER
 

@@ -93,6 +93,13 @@ void SolarRender::setLight( const Vec3& posiction,
      glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
      glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 }
+void SolarRender::setLightAttenuation(float constant,
+									  float linear,
+									  float quantistic){	
+	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, constant);
+	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, linear);
+	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, quantistic);
+}
 void SolarRender::setMaterial(  const Vec4& ambient,
 								const Vec4& diffuse,
 								const Vec4& specular,

@@ -33,6 +33,7 @@ namespace SolarSystem {
 		Texture texture;
 		Texture *cloudTexture;
 		Texture *blackTexture;
+		Texture *specularTexture;
 		Texture1D *atmGrad1;
 		Texture1D *atmGrad2;
 		Texture1D *atmRim;
@@ -90,6 +91,7 @@ namespace SolarSystem {
 		//set extra texture
 		void setCloudTexture(const Utility::Path& texture);
 		void setBlackTexture(const Utility::Path& texture);
+		void setSpecularTexture(const Utility::Path& texture);
 		void setAtmosphereTexture(const Utility::Path& grad1,
 								  const Utility::Path& grad2,
 								  const Utility::Path& rim);

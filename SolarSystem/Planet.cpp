@@ -88,6 +88,7 @@ Planet::Planet(SolarRender *render,
 			  ,texture(texture)
 			  ,cloudTexture(NULL)
 			  ,blackTexture(NULL)
+			  ,specularTexture(NULL)
 			  ,atmGrad1(NULL)
 			  ,atmGrad2(NULL)
 			  ,atmRim(NULL)
@@ -121,6 +122,10 @@ void Planet::setBlackTexture(const Utility::Path& argtexture){
 	DEBUG_ASSERT(blackTexture==NULL);
 	blackTexture=new Texture(argtexture);
 };
+void Planet::setSpecularTexture(const Utility::Path& argtexture){
+	DEBUG_ASSERT(specularTexture==NULL);
+	specularTexture=new Texture(argtexture);
+}
 void Planet::setAtmosphereTexture(const Utility::Path& grad1,
 								  const Utility::Path& grad2,
 								  const Utility::Path& rim){
@@ -146,8 +151,12 @@ void Planet::drawPlanet(Camera& camera){
 	if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) {
 		if(render->lightIsEnable()){	
 				render->setMaterial(ambient,diffuse,specular,emission,shininess);			
+				
 				if(blackTexture) blackTexture->bind(1);
-				else render->getTextureBlack().bind(1);
+				else render->getTextureBlack().bind(1);	
+
+				if(specularTexture) specularTexture->bind(2);
+				else render->getTextureWhite().bind(2);
 			}
 		//bind texture 
 		texture.bind(0);
@@ -159,7 +168,10 @@ void Planet::drawPlanet(Camera& camera){
 		//unbind
 		if(render->lightIsEnable()){			
 			if(blackTexture) blackTexture->unbind(1);
-			else render->getTextureBlack().unbind(1);
+			else render->getTextureBlack().unbind(1);			
+			
+			if(specularTexture) specularTexture->unbind(2);
+			else render->getTextureWhite().unbind(2);
 		}
 	}
 }
@@ -238,6 +250,7 @@ void Planet::drawAtmosphere(Camera& camera){
 		}
 	}
 }
+
 //set data
 void Planet::setData(float _day){
 	//save
