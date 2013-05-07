@@ -54,8 +54,8 @@ void SolarFly::onMouseDown(Vec2 mousePosition, Key::Mouse button){
 		if(dir.x>0) rot.setFromEulero(0,Math::torad(-1)*leng*turnVel.y,0);
 		if(dir.x<0) rot.setFromEulero(0,Math::torad(1)*leng*turnVel.y,0);
 		camera->setTurn(rot);
-		if(dir.y>0) rot.setFromEulero(Math::torad(1)*leng*turnVel.x,0,0);
-		if(dir.y<0) rot.setFromEulero(Math::torad(-1)*leng*turnVel.x,0,0);
+		if(dir.y>0) rot.setFromEulero(Math::torad(-1)*leng*turnVel.x,0,0);
+		if(dir.y<0) rot.setFromEulero(Math::torad(1)*leng*turnVel.x,0,0);
 		camera->setTurn(rot);
 	}
 }
