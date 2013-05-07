@@ -36,10 +36,10 @@ void main (void)
 	Ispec*=attenuation;
 							  
 	// get color texture
-	float alpha		 = dot(N,L)+1.0*0.25;
+	float shadow	 = dot(N,L)+1.0*0.25;
 	vec4 texcolor    = texture2D( cloudTexture, varTexCoord );
-	vec4 lerpcolor   = lerp(vec4(0.0,0.0,0.0,1.0),texcolor,alpha);
+	vec4 lerpcolor   = lerp(vec4(0.0,0.0,0.0,1.0),texcolor,shadow);
 
-	gl_FragColor.rgb = (Iamb+lerpcolor*Idiff+Ispec).rgb; 
+	gl_FragColor.rgb = (Iamb+lerpcolor*Idiff+Ispec*shadow).rgb; 
 	gl_FragColor.a = texcolor.a; 
 }

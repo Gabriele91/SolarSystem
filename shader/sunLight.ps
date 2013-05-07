@@ -45,13 +45,13 @@ void main (void)
 	//////////////////////////////////////////////////////////////
 	//texture color:
 	vec4 dayColor, nightColor;
-	float alpha		= clamp(max(dot(N,L), 0.0), 0.0, 1.0 );
+	float shadow	= clamp(max(dot(N,L),0.0), 0.0, 1.0 );
 	dayColor	    = texture2D( planetTexture, varTexCoord );
 	nightColor		= texture2D( planetNightTexture, varTexCoord );
-	vec4 texcolor   = lerp(nightColor,dayColor,alpha);
+	vec4 texcolor   = lerp(nightColor,dayColor,shadow);
 	//////////////////////////////////////////////////////////////
 
-	gl_FragColor.rgb = (Iamb+texcolor*Idiff+Ispec).rgb; 
+	gl_FragColor.rgb = (Iamb+texcolor*Idiff+Ispec*shadow).rgb; 
 	gl_FragColor.a   = texcolor.a; 
 
 }
