@@ -7,11 +7,13 @@ Object::Object()
 			   :data(NULL),
 		        parentMode(DISABLE_PARENT),
 		        parent(NULL),
-				changeValue(false){}
+				changeValue(false),
+				deleteHard(false){}
 Object::~Object(){
 	for(auto obj : *this){
 		obj->parent=NULL;
-		delete obj;
+		if(obj->deleteHard)
+			delete obj;
 	}
 	childs.clear();
 }
@@ -109,7 +111,7 @@ void Object::change(){
 		changeValue=true;
 	}
 }
-void Object::addChild(Object *child,ParentMode type){
+void Object::addChild(Object *child,ParentMode type,bool hard){
 
 	if(child->parent==this) return;
 	if(child==this) return;
@@ -117,6 +119,7 @@ void Object::addChild(Object *child,ParentMode type){
 
 	child->parent=this;
 	child->parentMode=type;
+	child->deleteHard=hard;
 	this->childs.push_back(child);
 
 }
@@ -124,6 +127,7 @@ void Object::erseChild(Object *child){
 	if(child->parent==this){
 		childs.remove(child);
 		child->parent=NULL;
+		child->deleteHard=false;
 	}
 }
 //
@@ -142,10 +146,7 @@ const Matrix4x4& Object::getGlobalMatrix(){
 			//calc values
 			mtmp=parent->getGlobalMatrix();
 			Vector3D tmpPos(mtmp.entries[12],mtmp.entries[13],mtmp.entries[14]);
-			Quaternion tmpRot;
-			tmpRot.setFromEulero(mtmp.getRotX(),
-								 mtmp.getRotY(),
-								 mtmp.getRotZ());
+			Quaternion tmpRot=mtmp.getQuaternion();
 			mtmp.identity();
 			//
 			if(parentMode & (ENABLE_PARENT)){
@@ -163,20 +164,16 @@ const Matrix4x4& Object::getGlobalMatrix(){
 				mtmp.entries[14]=tmpPos.z;	
 				//rotarion global
 				mtmp=mtmp.mul(tmpRot.getMatrix());		
-				//global*local
-				globalMat=mtmp.mul(globalMat);
+				//local*global
+				globalMat=globalMat.mul(mtmp);
 				//////////////////////////////////////////////
 			}
 
-			if(parentMode & ENABLE_SCALE){
-			   const Vector3D& vTScale=getGlobalParentScale();
-			   mtmp.setScale(vTScale);
-			   globalMat=globalMat.mul(mtmp);
-			}
-			else{
-			   mtmp.setScale(transform.scale);
-			   globalMat=globalMat.mul(mtmp);
-			}
+			if(parentMode & ENABLE_SCALE)
+			  globalMat.addScale(getGlobalParentScale());			
+			else
+			  globalMat.addScale(transform.scale);
+			
 
 		}
 		else{
@@ -187,15 +184,7 @@ const Matrix4x4& Object::getGlobalMatrix(){
 			//rotarion		
 			globalMat=globalMat.mul(transform.rotation.getMatrix());
 			//scale
-			globalMat.entries[0]*=transform.scale.x;
-			globalMat.entries[4]*=transform.scale.x;
-			globalMat.entries[8]*=transform.scale.x;
-			globalMat.entries[1]*=transform.scale.y;
-			globalMat.entries[5]*=transform.scale.y;
-			globalMat.entries[9]*=transform.scale.y;			
-			globalMat.entries[2]*=transform.scale.z;
-			globalMat.entries[6]*=transform.scale.z;
-			globalMat.entries[10]*=transform.scale.z;
+			globalMat.addScale(transform.scale);
 		}
 		//
 		changeValue=false;

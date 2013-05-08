@@ -17,7 +17,7 @@ namespace SolarSystem {
 	class PlanetsManager {
 
 		Planet* sun;
-		std::vector<Planet*> planets;
+		DUNORDERED_MAP<String,Planet*> planets;
 		Camera *camera;
 		SolarRender *render;
 		SolarSky *skybox;
@@ -138,7 +138,8 @@ namespace SolarSystem {
 		void addSun(const Utility::Path &path,
 			        const Vec3& scale,
 					float rotationPeriod);
-		Planet* addPlanet( //texture
+		Planet* addPlanet( const String & name,
+						   //texture
 						   const Utility::Path &path,
 						   //physics
 						   const Vec2& ellipse,

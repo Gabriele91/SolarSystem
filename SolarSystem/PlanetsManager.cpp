@@ -13,6 +13,13 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 				  Application::instance()->getScreen()->getHeight())
 	,skybox(NULL)
 {
+	//get erros parse:
+	auto errors=configfile.getDeserializeErros();
+	if(errors.size()){
+		for(auto & error:errors)
+			DEBUG_MESSAGE(error);
+		DEBUG_ASSERT_MSG(0,"errors in configure file");
+	}
 	//black shader
 	blackMesh.shader.loadShader("shader/blackMesh.vs","shader/blackMesh.ps");
 	//load shader sun light (planets):
@@ -157,8 +164,10 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		    emission=material.getVector4D("emission",emissionMat);
 			shininess=material.getFloat("shininess",shininessMat);
 		}
+		String namePlanet= (itTable.first.isString() ? itTable.first.string() : String::toString(itTable.first.integer()));
 		Planet *ptr=
-		addPlanet(planet.getString("image"),
+		addPlanet(  namePlanet,
+					planet.getString("image"),
 					planet.getVector2D("ellipse"),
 					planet.getVector3D("scale"),
 					planet.getFloat("daysInYear"),
@@ -177,19 +186,20 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			ptr->setBlackTexture(planet.getString("night"));
 		if(planet.existsAsType("specular",Table::STRING))
 			ptr->setSpecularTexture(planet.getString("specular"));
+		if(planet.existsAsType("satelliteOf",Table::STRING)){
+			const String& name=planet.getString("satelliteOf");
+			DEBUG_ASSERT_MSG(this->planets.count(name)==1,
+							 "PlanetsManager error : in "<<namePlanet<<", satelliteOf not valid");
+			this->planets[name]->addChild(ptr,Object::ENABLE_PARENT,false);
+		}
 		if(planet.existsAsType("atmosphere",Table::TABLE)){
 			const Table& atmosphere=planet.getConstTable("atmosphere");			
-			DEBUG_ASSERT_MSG(atmosphere.size()==3,"PlanetsManager error : in "<< (itTable.first.isString() ? 
-																						itTable.first.string() : 
-																						String::toString(itTable.first.integer()))
-																			  <<", atmosphere table must to be size 3");
+			DEBUG_ASSERT_MSG(atmosphere.size()==3,
+				            "PlanetsManager error : in "<<namePlanet<<", atmosphere table must to be size 3");
 			DEBUG_ASSERT_MSG(atmosphere.existsAsType(0,Table::STRING)&&
 							 atmosphere.existsAsType(1,Table::STRING)&&
-							 atmosphere.existsAsType(2,Table::STRING)
-							,"PlanetsManager error : in "<< (itTable.first.isString() ? 
-															 itTable.first.string() : 
-															 String::toString(itTable.first.integer()))
-														  <<", atmosphere table must contain 3 strings")																			
+							 atmosphere.existsAsType(2,Table::STRING),
+							 "PlanetsManager error : in "<<namePlanet<<", atmosphere table must contain 3 strings")																			
 			ptr->setAtmosphereTexture(atmosphere.getString(0),
 									  atmosphere.getString(1),
 									  atmosphere.getString(2));
@@ -199,7 +209,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 
 }
 PlanetsManager::~PlanetsManager(){	
-	for(auto planet:planets) delete planet;
+	for(auto& planet:planets) delete planet.second;
 	if(sun) delete sun;
 	if(skybox) delete skybox;
 }
@@ -212,7 +222,8 @@ void PlanetsManager::addSun(const Utility::Path &path,
 	sun->setScale(scale*scaleSun);
 }
 
-Planet* PlanetsManager::addPlanet( //texture
+Planet* PlanetsManager::addPlanet( const String& name,
+								   //texture
 								   const Utility::Path &path,
 								   //physics
 								   const Vec2& ellipse,
@@ -229,13 +240,13 @@ Planet* PlanetsManager::addPlanet( //texture
 	planet->setPlanetInfo(ellipse*scaleEllipses,daysInYear,rotationPeriod);
 	planet->setMaterial(ambient,diffuse,specular,emission,shininess);
 	planet->setScale(scale*scalePlanets);
-	planets.push_back(planet);
+	planets[name]=planet;
 	return planet;
 }
 
 void PlanetsManager::setData(float day){
-	for(auto planet:planets)
-		planet->setData(day);
+	for(auto& planet:planets)
+		planet.second->setData(day);
 	if(sun) sun->setData(day);
 }
 void PlanetsManager::draw(){
@@ -332,16 +343,20 @@ void PlanetsManager::draw(){
 	
 }
 void PlanetsManager::drawPlanetssClouds(){
-	for(auto planet:planets)
-		planet->drawCloud(*camera);
+	for(auto& planet:planets)
+		planet.second->drawCloud(*camera);
 }
 void PlanetsManager::drawPlanetssAtmosphere(){
-	for(auto planet:planets)
-		planet->drawAtmosphere(*camera);
+	for(auto& planet:planets)
+		planet.second->drawAtmosphere(*camera);
 }
 void PlanetsManager::drawPlanetssCores(){
-	for(auto planet:planets)
-		planet->drawPlanet(*camera);
+	for(auto& planet:planets){
+		if(planet.first=="moon") {
+			DEBUG_MESSAGE("moon");
+		}
+		planet.second->drawPlanet(*camera);
+	}
 }
 void PlanetsManager::drawSun(){
 	sun->draw(*camera);

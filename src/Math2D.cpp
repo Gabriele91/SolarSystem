@@ -998,6 +998,134 @@ void Matrix4x4::setQuaternion(Quaternion &qt){
 	identity();
 	memcpy(entries, qt.getMatrix().entries, 16*sizeof(float));
 }
+///get quaternion transformation
+Quaternion Matrix4x4::getQuaternionFast(){
+		//from GLM
+		#define m00 entries[0]
+		#define m11 entries[5]
+		#define m22 entries[10]
+
+		float fourXSquaredMinus1 = m00 - m11 - m22;
+		float fourYSquaredMinus1 = m11 - m00 - m22;
+		float fourZSquaredMinus1 = m22 - m00 - m11;
+		float fourWSquaredMinus1 = m00 + m11 + m22;
+
+		int biggestIndex = 0;
+		float fourBiggestSquaredMinus1 = fourWSquaredMinus1;
+
+		if(fourXSquaredMinus1 > fourBiggestSquaredMinus1)
+		{
+			fourBiggestSquaredMinus1 = fourXSquaredMinus1;
+			biggestIndex = 1;
+		}
+		if(fourYSquaredMinus1 > fourBiggestSquaredMinus1)
+		{
+			fourBiggestSquaredMinus1 = fourYSquaredMinus1;
+			biggestIndex = 2;
+		}
+		if(fourZSquaredMinus1 > fourBiggestSquaredMinus1)
+		{
+			fourBiggestSquaredMinus1 = fourZSquaredMinus1;
+			biggestIndex = 3;
+		}
+
+		float biggestVal = std::sqrt(fourBiggestSquaredMinus1 + 1.0f) * (0.5f);
+		float mult = (0.25f) / biggestVal;
+		
+		#define m01 entries[4]
+		#define m02 entries[8]
+
+		#define m10 entries[1]
+		#define m12 entries[9]
+		
+		#define m20 entries[2]
+		#define m21 entries[9]
+
+		Quaternion Result;
+		switch(biggestIndex)
+		{
+		case 0:
+			Result.w = biggestVal; 
+			Result.x = (m12 - m21) * mult;
+			Result.y = (m20 - m02) * mult;
+			Result.z = (m01 - m10) * mult;
+			break;
+		case 1:
+			Result.w = (m12 - m21) * mult;
+			Result.x = biggestVal;
+			Result.y = (m01 + m10) * mult;
+			Result.z = (m20 + m02) * mult;
+			break;
+		case 2:
+			Result.w = (m20 - m02) * mult;
+			Result.x = (m01 + m10) * mult;
+			Result.y = biggestVal;
+			Result.z = (m12 + m21) * mult;
+			break;
+		case 3:
+			Result.w = (m01 - m10) * mult;
+			Result.x = (m20 + m02) * mult;
+			Result.y = (m12 + m21) * mult;
+			Result.z = biggestVal;
+			break;
+
+        default:                
+			// Silence a -Wswitch-default warning in GCC. Should never actually get here. Assert is just for sanity.
+            assert(false);
+            break;
+		}
+		return Result;
+
+		#undef m00
+		#undef m01
+		#undef m02
+
+		#undef m10
+		#undef m11
+		#undef m12
+		
+		#undef m20
+		#undef m21
+		#undef m22
+}
+Quaternion Matrix4x4::getQuaternion(){
+	Quaternion quaternion,Q;
+
+	#define m00 entries[0]
+	#define m01 entries[4]
+	#define m02 entries[8]
+
+	#define m10 entries[1]
+	#define m11 entries[5]
+	#define m12 entries[9]
+
+	#define m20 entries[2]
+	#define m22 entries[10]
+	#define m21 entries[9]		
+
+	quaternion.w = std::sqrt( Math::max( 0.0f, 1 + m00 + m11 + m22 ) ) / 2;
+	quaternion.x = std::sqrt( Math::max( 0.0f, 1 + m00 - m11 - m22 ) ) / 2;
+	quaternion.y = std::sqrt( Math::max( 0.0f, 1 - m00 + m11 - m22 ) ) / 2;
+	quaternion.z = std::sqrt( Math::max( 0.0f, 1 - m00 - m11 + m22 ) ) / 2;
+	Q.x = _copysign( Q.x, m21 - m12 );
+	Q.y = _copysign( Q.y, m02 - m20 );
+	Q.z = _copysign( Q.z, m10 - m01 );
+
+	return Q;
+
+	#undef m00
+	#undef m01
+	#undef m02
+
+	#undef m10
+	#undef m11
+	#undef m12
+		
+	#undef m20
+	#undef m21
+	#undef m22
+}
+
 void Matrix4x4::setOrtho(float left, float right, float bottom,float top, float n, float f){
 	identity();
 

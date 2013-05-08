@@ -29,7 +29,7 @@ namespace SolarSystem{
 		void setMove(const Vector3D &move);
 		void setTurn(const Quaternion& rotation);
 		//childs
-		void addChild(Object *child,ParentMode type=ENABLE_ALL);
+		void addChild(Object *child,ParentMode type=ENABLE_ALL,bool hard=true);
 		void erseChild(Object *child);
 		void changeParentMode(ParentMode type);
 		//
@@ -76,6 +76,7 @@ namespace SolarSystem{
 		//parent
 		ParentMode parentMode;
 		Object* parent;
+		bool deleteHard;
 		Vector3D   getGlobalParentScale();
 		//
 	};

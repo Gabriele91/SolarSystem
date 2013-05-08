@@ -577,6 +577,9 @@ namespace SolarSystem{
 		void setFastTransform2DS(float* list);
 		///set quaternion transformation
 		void setQuaternion(Quaternion &qt);
+		///get quaternion transformation
+		Quaternion getQuaternion();
+		Quaternion getQuaternionFast();
 		///set orthogonal transformation (projection matrix)
 		void setOrtho(float left, float right, float bottom,float top, float n, float f);
 		///set projection transformation (projection matrix)

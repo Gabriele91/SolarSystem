@@ -255,31 +255,35 @@ void Planet::drawAtmosphere(Camera& camera){
 void Planet::setData(float _day){
 	//save
 	day=_day;
-	//calc angle
-	float angle=(day/daysOfYear)*Math::PI2;
-	//calc Position
-	Vec3 pos;	
-	pos.x = cos(angle) * radius.x;
-    pos.z = sin(angle) * radius.y;
-	//////////////////////////////
-	//calc offset sun
-	float value=(radius.x-radius.y)/2.0;
-	//////////////////////////////
-	if(value<0.0f)
-		pos.z+=value;
-	else
-	if(value>0.0f)
-		pos.x-=value;
-	//set Position
-	setPosition(pos);
-	//calc rotation
-	float rotationDay=day/rotationPeriod*Math::PI2;
-	Quaternion rot;
-	rot.setFromEulero(0,rotationDay,0);
-	setRotation(rot);
-	//calc offset
-	if((cloudOffset.x+cloudOffset.y+cloudOffset.z)!=0.0f)
-		cloudDayOffset=cloudOffset*rotationDay;
+	if(daysOfYear!=0.0f){
+		//calc angle
+		float angle=(day/daysOfYear)*Math::PI2;
+		//calc Position
+		Vec3 pos;	
+		pos.x = cos(angle) * radius.x;
+		pos.z = sin(angle) * radius.y;
+		//////////////////////////////
+		//calc offset sun
+		float value=(radius.x-radius.y)/2.0;
+		//////////////////////////////
+		if(value<0.0f)
+			pos.z+=value;
+		else
+		if(value>0.0f)
+			pos.x-=value;
+		//set Position
+		setPosition(pos);
+	}
+	if(rotationPeriod!=0.0f){
+		//calc rotation
+		float rotationDay=day/rotationPeriod*Math::PI2;
+		Quaternion rot;
+		rot.setFromEulero(0,rotationDay,0);
+		setRotation(rot);
+		//calc offset
+		if((cloudOffset.x+cloudOffset.y+cloudOffset.z)!=0.0f)
+			cloudDayOffset=cloudOffset*rotationDay;
+	}
 }
 //set planet info
 void Planet::setPlanetInfo(const Vec2& _radius, 
