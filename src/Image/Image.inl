@@ -468,11 +468,9 @@ void Image::freeImage(){
 }
 //capovolgi immagine
 void Image::flipX(){
-#ifndef alloca
-	BYTE* tmp=(BYTE*)malloc(channels);
-#else
-	BYTE* tmp=(BYTE*)alloca(channels);
-#endif
+
+	BYTE *tmp=new BYTE[this->channels];
+
 	for (unsigned int y=0; y<height; y++) {
 		for (unsigned int x=0; x<width/2; x++) {
 			for(unsigned int c=0;c<this->channels;c++){
@@ -482,42 +480,42 @@ void Image::flipX(){
 			}
 		}
 	}
-#ifndef alloca
-  free(tmp);
-#endif
+
+	delete [] tmp;
+
 }
 void Image::flipY(){
 
   size_t lineLen=width*channels*sizeof(char);
-
-#ifndef alloca
   char* tmp=(char*)malloc(lineLen);
-#else
-  char* tmp=(char*)alloca(lineLen);
-#endif
-
   size_t hOn2=height;
   hOn2/=2;
-  /////////////////////////////
-  BYTE *ptrUp=bytes;
-  BYTE *ptrDown=bytes+lineLen*(height-1);
-  int y=0;
-  /////////////////////////////
-  while(y<hOn2){
-	  /////////////////////////////
-	  memcpy(tmp,ptrUp,lineLen);
-	  memcpy(ptrUp,ptrDown,lineLen);
-	  memcpy(ptrDown,tmp,lineLen);
-	  /////////////////////////////	  
-	  ++y;
-	  ptrDown-=lineLen;
-	  ptrUp+=lineLen;
+  for(int y=0;y<hOn2;++y){
+	  memcpy(tmp,&bytes[lineLen*y],lineLen);
+	  memcpy(&bytes[lineLen*y],&bytes[lineLen*(height-y-1)],lineLen);
+	  memcpy(&bytes[lineLen*(height-y-1)],tmp,lineLen);
   }
-
-#ifndef alloca
   free(tmp);
-#endif
+/*
+  unsigned char bTemp;
+  unsigned char *pLine1, *pLine2;
+  int iLineLen,iIndex;
 
+  iLineLen=width*channels;
+  pLine1=bytes;
+  pLine2=&bytes[iLineLen * (height - 1)];
+
+   for( ;pLine1<pLine2;pLine2-=(iLineLen*2))
+    {
+     for(iIndex=0;iIndex!=iLineLen;pLine1++,pLine2++,iIndex++)
+      {
+       bTemp=*pLine1;
+       *pLine1=*pLine2;
+       *pLine2=bTemp;
+      }
+    }
+
+*/
 }
 void Image::convert16to24bit(bool freebuffer){
 

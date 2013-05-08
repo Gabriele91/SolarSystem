@@ -352,9 +352,6 @@ void PlanetsManager::drawPlanetssAtmosphere(){
 }
 void PlanetsManager::drawPlanetssCores(){
 	for(auto& planet:planets){
-		if(planet.first=="moon") {
-			DEBUG_MESSAGE("moon");
-		}
 		planet.second->drawPlanet(*camera);
 	}
 }
