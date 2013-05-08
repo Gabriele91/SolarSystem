@@ -101,7 +101,24 @@ namespace SolarSystem {
 		//draw in fullScreen
 		void draw(bool bindTexture=true);
 	};
+	
+	class ShadowTexture : public Texture {
 
+		uint fboid;
+
+	public:
+
+		//costructor
+		ShadowTexture(uint width,uint height);	
+		//destructor
+		virtual ~ShadowTexture();
+		//start draw
+		void enableRender();
+		//end draw
+		void disableRender();
+		//draw in fullScreen
+		void draw(bool bindTexture=true);
+	};
 };
 
 #endif

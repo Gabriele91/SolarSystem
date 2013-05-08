@@ -365,3 +365,100 @@ void RenderTexture::draw(bool bindTexture){
 }
 //////////////////////////////////////////////
 
+
+//////////////////////////////////////////////
+//render texture:
+//costructor
+ShadowTexture::ShadowTexture(uint argwidth,uint argheight):Texture(),fboid(0){
+	//not work midmaps
+	bMipmaps=false;	
+	// Try to use a texture depth component
+	glGenTextures(1, &gpuid);
+	glBindTexture(GL_TEXTURE_2D, gpuid);	
+	// GL_LINEAR does not make sense for depth texture. However, next tutorial shows usage of GL_LINEAR and PCF. Using GL_NEAREST
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);	
+	// Remove artefact on the edges of the shadowmap
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );	
+	// This is to allow usage of shadow2DProj function in the shader
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
+
+	glBindTexture( GL_TEXTURE_2D, 0 ); 
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+	//////////////////////////////////
+	//create VBO
+	glGenFramebuffersEXT(1, &fboid);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboid);	
+	// Instruct openGL that we won't bind a color texture with the currently binded FBO
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	// Instruct openGL that we won't bind a depth texture with the currently binded FBO
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,
+							  GL_DEPTH_ATTACHMENT_EXT ,
+							  GL_TEXTURE_2D,
+							  gpuid,
+							  0);
+	//get errors...
+	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+	if(status != GL_FRAMEBUFFER_COMPLETE_EXT){
+		DEBUG_MESSAGE("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+	}
+	// disabilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	//////////////////////////////////
+	//get errors...
+	CHECK_GPU_ERRORS();
+}
+//destructor
+ShadowTexture::~ShadowTexture(){
+
+	//unload
+	DEBUG_ASSERT(gpuid);
+	glDeleteFramebuffersEXT(1, &fboid);
+}
+//start draw
+void ShadowTexture::enableRender(){
+	//abilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboid);
+}
+//end draw
+void ShadowTexture::disableRender(){
+	//disabilita fbo
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+}
+//draw in fullScreen
+void ShadowTexture::draw(bool bindTexture){
+	//reset projection matrix
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//reset model matrix
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//
+	static const float
+	size=1.0;
+	static const float
+	xyUV[]={
+			-size,-size,0.0,0.0,
+			-size, size,0.0,1.0,
+			 size,-size,1.0,0.0,
+			 size, size,1.0,1.0
+	        };
+
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	//set texture
+	if(bindTexture) bind();
+	//set vertex
+	glVertexPointer(  2, GL_FLOAT, sizeof(float)*4,  &xyUV[0]);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyUV[2]);
+	//draw
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+//////////////////////////////////////////////
+
