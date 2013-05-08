@@ -274,6 +274,9 @@ void Planet::setData(float _day){
 		//set Position
 		setPosition(pos);
 	}
+	else{
+		setPosition(Vec3(radius.x,0.0,radius.y));
+	}
 	if(rotationPeriod!=0.0f){
 		//calc rotation
 		float rotationDay=day/rotationPeriod*Math::PI2;

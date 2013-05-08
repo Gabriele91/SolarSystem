@@ -16,8 +16,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	//get erros parse:
 	auto errors=configfile.getDeserializeErros();
 	if(errors.size()){
-		for(auto & error:errors)
-			DEBUG_MESSAGE(error);
+		DEBUG_MESSAGE(errors);
 		DEBUG_ASSERT_MSG(0,"errors in configure file");
 	}
 	//black shader
