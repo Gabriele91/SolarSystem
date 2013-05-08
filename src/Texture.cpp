@@ -362,6 +362,8 @@ void RenderTexture::draw(bool bindTexture){
 	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyUV[2]);
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//disable texture
+	if(bindTexture) unbind();
 }
 //////////////////////////////////////////////
 
@@ -371,7 +373,10 @@ void RenderTexture::draw(bool bindTexture){
 //costructor
 ShadowTexture::ShadowTexture(uint argwidth,uint argheight):Texture(),fboid(0){
 	//not work midmaps
-	bMipmaps=false;	
+	bMipmaps=false;		
+	//save width end height
+	width=argwidth;
+	height=argheight;
 	// Try to use a texture depth component
 	glGenTextures(1, &gpuid);
 	glBindTexture(GL_TEXTURE_2D, gpuid);	
@@ -385,6 +390,15 @@ ShadowTexture::ShadowTexture(uint argwidth,uint argheight):Texture(),fboid(0){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
+
+	glTexImage2D( GL_TEXTURE_2D, 
+		          0, 
+		          GL_DEPTH_COMPONENT, 
+				  width, 
+				  height, 
+				  0, 
+				  GL_DEPTH_COMPONENT, 
+				  GL_UNSIGNED_BYTE, 0);
 
 	glBindTexture( GL_TEXTURE_2D, 0 ); 
 	//////////////////////////////////
@@ -459,6 +473,8 @@ void ShadowTexture::draw(bool bindTexture){
 	glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4,  &xyUV[2]);
 	//draw
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	//disable texture
+	if(bindTexture) unbind();
 }
 //////////////////////////////////////////////
 

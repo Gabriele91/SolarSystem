@@ -30,6 +30,7 @@ namespace SolarSystem {
 		void setPerspective(float angle,float n,float f);
 		void setPerspective(float angle,float spectre,float n,float f);
 		void setPerspective(float left, float right, float bottom,float top, float n, float f);
+		void setOrtogonal(float left, float right, float bottom,float top, float n, float f);
 		//culling methods
 		enum {OUTSIDE, INTERSECT, INSIDE};
 		int sphereInFrustum(const Vec3& point, float radius);

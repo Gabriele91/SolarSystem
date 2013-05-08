@@ -22,6 +22,10 @@ void Camera::setPerspective(float left, float right, float bottom,float top, flo
 	//set Perspective
 	mProjMatrix.setPerspective(left,right,bottom,top,n,f);
 }
+void Camera::setOrtogonal(float left, float right, float bottom,float top, float n, float f){
+	//set Perspective
+	mProjMatrix.setOrtho(left,right,bottom,top,n,f);
+}
 //culling methods
 int Camera::sphereInFrustum(const Vec3& point, float radius){
 

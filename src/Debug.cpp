@@ -45,12 +45,15 @@ void Debug::gpucheckerrors(const char* fileSource,int line){
 		{
 			case GL_NO_ERROR:
 				return;
-			case GL_INVALID_ENUM:           err = "GL_INVALID_ENUM";        break;
-			case GL_INVALID_VALUE:          err = "GL_INVALID_VALUE";       break;
-			case GL_INVALID_OPERATION:		err = "GL_INVALID_OPERATION";   break;
-			case GL_STACK_OVERFLOW:         err = "GL_STACK_OVERFLOW";      break;
-			case GL_STACK_UNDERFLOW:		err = "GL_STACK_UNDERFLOW";     break;
-			case GL_OUT_OF_MEMORY:          err = "GL_OUT_OF_MEMORY";       break;
+			case GL_INVALID_ENUM:					err = "GL_INVALID_ENUM";                  break;
+			case GL_INVALID_VALUE:					err = "GL_INVALID_VALUE";                 break;
+			case GL_INVALID_OPERATION:				err = "GL_INVALID_OPERATION";             break;
+			case GL_STACK_OVERFLOW:					err = "GL_STACK_OVERFLOW";                break;
+			case GL_STACK_UNDERFLOW:				err = "GL_STACK_UNDERFLOW";               break;
+			case GL_OUT_OF_MEMORY:					err = "GL_OUT_OF_MEMORY";				  break;
+			case GL_TABLE_TOO_LARGE:	            err = "GL_TABLE_TOO_LARGE";               break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:	err = "GL_INVALID_FRAMEBUFFER_OPERATION"; break;
+			default:								err = "?????";				              break;
 		};
 		DEBUG_MESSAGE( "OpenGL Error : " << err <<" : "<< line <<" : "<< fileSource  );
 	}
