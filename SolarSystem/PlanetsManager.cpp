@@ -11,6 +11,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
+	,solarShadow(render)
 	,skybox(NULL)
 {
 	//get erros parse:
@@ -249,6 +250,19 @@ void PlanetsManager::setData(float day){
 	if(sun) sun->setData(day);
 }
 void PlanetsManager::draw(){
+	////////////////////////////////////////////////////////////////
+	//make shadow
+	/*
+	solarShadow.changeDir(planets["earth"]->getPosition());
+	solarShadow.enableRender();
+	
+	planets["earth"]->drawBase(solarShadow.getLightCamera());
+	planets["moon"]->drawBase(solarShadow.getLightCamera());
+
+	solarShadow.disableRender();
+	solarShadow.draw();
+	return;*/
+	////////////////////////////////////////////////////////////////
 	camera->update();
 	//draw skybox
 	render->setClearColor(Vec4(Vec3::ZERO,1.0f));

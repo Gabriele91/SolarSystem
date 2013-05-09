@@ -114,6 +114,9 @@
     <ClCompile Include="SolarSystem\SolarFly.cpp">
       <Filter>SolarSystem</Filter>
     </ClCompile>
+    <ClCompile Include="SolarSystem\SolarShadow.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -219,6 +222,9 @@
       <Filter>SolarSystem</Filter>
     </ClInclude>
     <ClInclude Include="SolarSystem\SolarFly.h">
+      <Filter>SolarSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem\SolarShadow.h">
       <Filter>SolarSystem</Filter>
     </ClInclude>
   </ItemGroup>

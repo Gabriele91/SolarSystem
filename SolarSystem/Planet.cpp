@@ -141,6 +141,16 @@ void Planet::draw(Camera& camera){
 	drawPlanet(camera);
 	drawCloud(camera);
 }
+void Planet::drawBase(Camera& camera){
+		//set model matrix
+		Mat4 viewmodel=camera
+			           .getGlobalMatrix()
+					   .mul(getGlobalMatrix());
+		glLoadMatrixf(viewmodel);
+		//draw
+		bindMesh();
+		//
+}
 void Planet::drawPlanet(Camera& camera){
 	////////////////////////////////////
 	//get values

@@ -11,6 +11,7 @@
 #include <Table.h>
 #include <SolarRender.h>
 #include <SolarSky.h>
+#include <SolarShadow.h>
 
 namespace SolarSystem {
 
@@ -21,6 +22,7 @@ namespace SolarSystem {
 		Camera *camera;
 		SolarRender *render;
 		SolarSky *skybox;
+		SolarShadow solarShadow;
 		float scaleEllipses;
 		float scaleSun;
 		float scalePlanets;	

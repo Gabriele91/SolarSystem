@@ -65,6 +65,7 @@ namespace SolarSystem {
 		virtual ~Planet();
 		//draw
 		void draw(Camera& camera);
+		void drawBase(Camera& camera);
 		void drawPlanet(Camera& camera);
 		void drawCloud(Camera& camera);
 		void drawAtmosphere(Camera& camera);

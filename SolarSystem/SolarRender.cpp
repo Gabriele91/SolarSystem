@@ -43,7 +43,7 @@ void SolarRender::setClearColor(const Vec4& color){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 }
 
-SolarRender::BlendState SolarRender::getBlendState(){	
+SolarRender::BlendState SolarRender::getBlendState() const{	
 	SolarRender::BlendState bs;
 	//save blend
 	glGetIntegerv(GL_BLEND_SRC_RGB , &bs.src);
@@ -57,6 +57,26 @@ void SolarRender::setBlendState(const BlendState& bs){
 	glBlendFunc( bs.src, bs.dst );
 }
 
+SolarRender::MatrixsState SolarRender::getMatrixsState() const{	
+	SolarRender::MatrixsState ms;
+	//save matrixs
+	glGetFloatv(GL_BLEND_DST_RGB ,  ms.projection );
+	glGetFloatv(GL_MODELVIEW_MATRIX , ms.modelview );
+	return ms;
+}
+void SolarRender::getMatrixsState(SolarRender::MatrixsState& ms) const{	
+	//save matrixs
+	glGetFloatv(GL_BLEND_DST_RGB ,  ms.projection );
+	glGetFloatv(GL_MODELVIEW_MATRIX , ms.modelview );
+}
+void SolarRender::setMatrixsState(const MatrixsState& ms){	
+	//restore old matrixs state   
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(ms.projection);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(ms.modelview);
+}
+
 void SolarRender::enableLight(){	
      glEnable(GL_LIGHTING);
      glEnable(GL_LIGHT0);
@@ -65,7 +85,7 @@ void SolarRender::disableLight(){
      glDisable(GL_LIGHT0);
      glDisable(GL_LIGHTING);
 }
-bool SolarRender::lightIsEnable(){	
+bool SolarRender::lightIsEnable() const{	
 	GLboolean out;
 	glGetBooleanv(GL_LIGHTING,&out);
 	return out;
@@ -77,7 +97,7 @@ void SolarRender::enableZBuffer(){
 void SolarRender::disableZBuffer(){	
      glDisable(GL_DEPTH_TEST);
 }
-bool SolarRender::zBufferIsEnable(){	
+bool SolarRender::zBufferIsEnable()const{	
 	GLboolean out;
 	glGetBooleanv(GL_DEPTH_TEST,&out);
 	return out;
