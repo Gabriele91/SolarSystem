@@ -7,20 +7,26 @@ using namespace SolarSystem;
 ///////////////////////
 
 SolarShadow::SolarShadow(SolarRender* render,
-						 const Vec3& point)
+						 const Vec3& point,						 
+						 uint width,
+						 uint height,
+						 const Vec2& xyFactor)
 						:render(render)
-						,texture(512,512)
+						,texture(2048,128)
 {
 	changeDir(point);
-	float factor=0.5;
-	float factorX=factor*texture.getWidth();
-	float factorY=factor*texture.getHeight();
+	float factorX=0.05*texture.getWidth();
+	float factorY=0.012*texture.getHeight();
 	shadowLight.setOrtogonal( -factorX,
 							   factorX,
 							  -factorY,
 							   factorY,
-							   1.0f,
-							   100000.0f);
+							     1.0f,
+							     100000.0f);
+	shadowTextureShader.loadShader("shader/shadowTexture.vs",
+								   "shader/shadowTexture.ps");
+	shadowShader.loadShader("shader/shadow.vs",
+						    "shader/shadow.ps");
 }
 
 void SolarShadow::changeDir(const Vec3& point){
@@ -30,7 +36,7 @@ void SolarShadow::changeDir(const Vec3& point){
 	shadowLight.setPosition(Vector3D::ZERO);
 }
 
-void SolarShadow::enableRender(){		
+void SolarShadow::madeShadowMap(Planet *planet){		
 	//save viewport
 	glGetFloatv(GL_VIEWPORT,&globalViewport.x);
 	//save matrixs
@@ -41,42 +47,58 @@ void SolarShadow::enableRender(){
 	texture.enableRender();
 	//set viewport
     glViewport(0, 0,  texture.getWidth(), texture.getHeight());
-#ifdef SHADOW_SHOW_CAMERA
-	render->setClearColor(Vec4(0.2,0.5,1.0,1.0));
-#else
-	//disable render on color buffer
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); 
-	//clear z buffer
-	glClear(GL_COLOR_BUFFER_BIT);
-#endif
 	//disable textures
 	glDisable(GL_TEXTURE_1D);
 	glDisable(GL_TEXTURE_2D);
-	//Using the fixed pipeline
-	glUseProgram(0);
-
-}
-void SolarShadow::disableRender(){	
+	//disable render on color buffer
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); 
+	//clear z buffer
+	glClear(GL_DEPTH_BUFFER_BIT);
+	//Using shader texture
+	shadowTextureShader.bind();
+	//draw planet
+	planet->drawBase(shadowLight);
+	//disable shader texture
+	shadowTextureShader.unbind();
+	//enable render on color buffer
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	//disable shadow render(return to front buffer)
 	texture.disableRender();
-	//reset old matrix
-	render->setMatrixsState(globalMState);
 	//reset view port
     glViewport(globalViewport.x,
 			   globalViewport.y,
 			   globalViewport.z,
 			   globalViewport.w);
-
-#if !defined(SHADOW_SHOW_CAMERA)
-	//enable render on color buffer
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-#endif
+	//reset old matrix
+	render->setMatrixsState(globalMState);
 	//renable textures
 	glEnable(GL_TEXTURE_1D);
 	glEnable(GL_TEXTURE_2D);
 	//get GPU errors
 	CHECK_GPU_ERRORS();
 
+}
+void SolarShadow::drawShadow(Camera *camera,Planet *planet){
+	//get model matrix
+	Mat4 model=planet->getGlobalMatrix();
+	model.addScale(Vec3(1.01,1.01,1.01));
+	//bind shader
+	shadowShader.bind();
+	//calc delphMVP   (Proj*View)*model
+	Mat4 delphMVP=shadowLight.getViewProjMatrix().mul(model);
+	shadowShader.uniformMatrix4x4("delphMVP",  delphMVP );
+	//calc MV (P in gpu)
+	Mat4 viewmodel=camera->getGlobalMatrix().mul(model);
+	glLoadMatrixf(viewmodel);
+	//bind texture
+	texture.bind(0);
+	shadowShader.uniformInt("shadowMap",0);
+	//draw planet
+	planet->drawSphere();
+	//unbind texture
+	texture.unbind(0);
+	//unbind shader
+	shadowShader.unbind();
 }
 void SolarShadow::draw(){
 	if(render->zBufferIsEnable()){

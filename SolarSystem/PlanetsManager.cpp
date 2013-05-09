@@ -249,25 +249,13 @@ void PlanetsManager::setData(float day){
 		planet.second->setData(day);
 	if(sun) sun->setData(day);
 }
-void PlanetsManager::draw(){
-	////////////////////////////////////////////////////////////////
-	//make shadow
-	/*
-	solarShadow.changeDir(planets["earth"]->getPosition());
-	solarShadow.enableRender();
-	
-	planets["earth"]->drawBase(solarShadow.getLightCamera());
-	planets["moon"]->drawBase(solarShadow.getLightCamera());
-
-	solarShadow.disableRender();
-	solarShadow.draw();
-	return;*/
+void PlanetsManager::draw(){	
 	////////////////////////////////////////////////////////////////
 	camera->update();
+	////////////////////////////////////////////////////////////////
 	//draw skybox
 	render->setClearColor(Vec4(Vec3::ZERO,1.0f));
 	if(skybox) skybox->draw(*camera);
-	//clear screen
 	//////////////////////////////////////////////////////////////////
 	//draw word
 	drawSun();
@@ -292,12 +280,22 @@ void PlanetsManager::draw(){
 	sunLightCloud.shader.unbind();
 	//////////////////////////////////////////////////////////////////
 	render->disableLight();
-	//////////////////////////////////////////////////////////////////
 	//draw atmosphere
 	sunLightAtmosphere.shader.bind();
 	sunLightAtmosphere.uniforming();	
 		drawPlanetssAtmosphere();
 	sunLightAtmosphere.shader.unbind();
+	//////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	//make shadow	
+	solarShadow.changeDir(planets["earth"]->getPosition());
+	solarShadow.madeShadowMap(planets["moon"]);		
+	//debug shadow map
+	if(Application::instance()->getInput()->getKeyDown(Key::B))
+		solarShadow.draw();		
+	//draw shadow map
+	solarShadow.drawShadow(camera,planets["earth"]);
+	//////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////
 	if(enableGodRays||enableBloom){
 
@@ -351,9 +349,9 @@ void PlanetsManager::draw(){
 		//reset old state   
 		render->enableZBuffer();
 		render->setBlendState(blendState);
-	
+
 	}
-	
+
 }
 void PlanetsManager::drawPlanetssClouds(){
 	for(auto& planet:planets)

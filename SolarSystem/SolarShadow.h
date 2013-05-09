@@ -4,34 +4,37 @@
 #include <SolarRender.h>
 #include <Config.h>
 #include <Texture.h>
+#include <Shader.h>
 #include <Camera.h>
+#include <Planet.h>
 //#define SHADOW_SHOW_CAMERA
 
 namespace SolarSystem {
 
 	class SolarShadow {
 
-#ifdef SHADOW_SHOW_CAMERA
-		RenderTexture texture;
-#else
-		ShadowTexture texture;
-#endif
-		
+		ShadowTexture texture;		
 		Vec4 globalViewport;
 		Camera shadowLight;
 		SolarRender *render;
 		SolarRender::MatrixsState globalMState;
+		Shader shadowTextureShader;
+		Shader shadowShader;
 
 	public:
 		
 		SolarShadow(SolarRender* render,
-					const Vec3& point=Vec3::ZERO);
+					const Vec3& point=Vec3::ZERO,
+					uint width=512,
+					uint height=512,
+					const Vec2& xyFactor=Vec2(.25,.25));
 		Camera& getLightCamera(){ 
 			return shadowLight;
 		}
 		void changeDir(const Vec3& point);
-		void enableRender();
-		void disableRender();
+		void madeShadowMap(Planet *planet);
+		void drawShadow(Camera *camera,Planet *planet);
+
 		void draw();
 
 	};

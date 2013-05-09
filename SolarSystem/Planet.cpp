@@ -141,6 +141,9 @@ void Planet::draw(Camera& camera){
 	drawPlanet(camera);
 	drawCloud(camera);
 }
+void Planet::drawSphere(){
+		bindMesh();
+}
 void Planet::drawBase(Camera& camera){
 		//set model matrix
 		Mat4 viewmodel=camera

@@ -149,6 +149,10 @@
     <None Include="shader\bloom.vs" />
     <None Include="shader\godRays.ps" />
     <None Include="shader\godRays.vs" />
+    <None Include="shader\shadow.ps" />
+    <None Include="shader\shadow.vs" />
+    <None Include="shader\shadowTexture.ps" />
+    <None Include="shader\shadowTexture.vs" />
     <None Include="shader\sunLight.ps" />
     <None Include="shader\sunLight.vs" />
     <None Include="shader\sunLightAtmosphere.ps" />

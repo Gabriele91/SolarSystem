@@ -60,13 +60,13 @@ void SolarRender::setBlendState(const BlendState& bs){
 SolarRender::MatrixsState SolarRender::getMatrixsState() const{	
 	SolarRender::MatrixsState ms;
 	//save matrixs
-	glGetFloatv(GL_BLEND_DST_RGB ,  ms.projection );
+	glGetFloatv(GL_PROJECTION_MATRIX ,  ms.projection );
 	glGetFloatv(GL_MODELVIEW_MATRIX , ms.modelview );
 	return ms;
 }
 void SolarRender::getMatrixsState(SolarRender::MatrixsState& ms) const{	
 	//save matrixs
-	glGetFloatv(GL_BLEND_DST_RGB ,  ms.projection );
+	glGetFloatv(GL_PROJECTION_MATRIX,  ms.projection );
 	glGetFloatv(GL_MODELVIEW_MATRIX , ms.modelview );
 }
 void SolarRender::setMatrixsState(const MatrixsState& ms){	

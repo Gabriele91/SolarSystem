@@ -277,5 +277,17 @@
     <None Include="shader\sunLightClouds.vs">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\shadowTexture.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\shadowTexture.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\shadow.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\shadow.vs">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
