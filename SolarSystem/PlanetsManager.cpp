@@ -210,21 +210,30 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		const Table& planets=configfile.getTable("shadows");
 		for(auto& table:planets){
 			if(table.second->asType(Table::TABLE)){
+				SolarShadowObjects sdo;
 				const Table& shadowTb=table.second->get<Table>();
-				const String& source=shadowTb.getString("source");
-				const String& dest=shadowTb.getString("dest");
+
+				sdo.sizeObjectInShadow=shadowTb.getVector3D("size",Vec3::ONE);
+				sdo.intesity=shadowTb.getFloat("intesity",1.0f);
+
 				Vec2 sizeTex=shadowTb.getVector2D("textureSize",Vec2(512,512));
 				Vec2 zoom=shadowTb.getVector2D("zoom",Vec2(0.25,0.25));
-				SolarShadowObjects sdo;
 				sdo.shadowLight=new SolarShadow(render,
 												Vec3::ZERO,
 											    (uint)sizeTex.x,
 												(uint)sizeTex.y,
 												zoom);
+
+				const String& source=shadowTb.getString("source");
+				const String& dest=shadowTb.getString("dest");
+				const String& target=shadowTb.getString("target");
+
 				sdo.source=this->planets[source];
 				DEBUG_ASSERT_MSG(sdo.source,"PlanetsManager error : shadow, source planet not exist");
 				sdo.dest=this->planets[dest];
 				DEBUG_ASSERT_MSG(sdo.dest,"PlanetsManager error : shadow, dest planet not exist");
+				sdo.target=this->planets[target];
+				DEBUG_ASSERT_MSG(sdo.dest,"PlanetsManager error : shadow, target planet not exist");
 				shadows.push_back(sdo);
 			}
 			else{

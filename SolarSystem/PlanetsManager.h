@@ -21,14 +21,15 @@ namespace SolarSystem {
 		////////////////////
 		struct SolarShadowObjects{
 			SolarShadow* shadowLight;
-			Planet* source;
-			Planet* dest;
+			Planet* source,*dest,*target;
+			Vec3 sizeObjectInShadow;
+			float intesity;
 			void drawShadow(Camera *camera){
 				//make shadow	
-				shadowLight->changeDir(dest->getPosition());
-				shadowLight->madeShadowMap(source);	
+				shadowLight->changeDir(target->getPosition(true));
+				shadowLight->madeShadowMap(source,sizeObjectInShadow);	
 				//draw shadow map
-				shadowLight->drawShadow(camera,dest);				
+				shadowLight->drawShadow(camera,dest,intesity);				
 			}
 		};
 		std::vector<SolarShadowObjects> shadows;
@@ -174,6 +175,9 @@ namespace SolarSystem {
 		void drawPlanetssCores();
 		void drawPlanetssAtmosphere();
 		void drawSun();
+		Planet& getPlanet(const String& name){
+			return *(planets[name]);
+		}
 	};
 
 };

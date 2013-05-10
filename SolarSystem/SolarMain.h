@@ -65,12 +65,14 @@ namespace SolarSystem {
 		virtual void end(){}
 		
 		virtual void onKeyPress(Key::Keyboard key) {
-			if(key==Key::E&&cameraCtrl.getMoveVelocity()==Vec3(100.0,100.0,100.0))
-				cameraCtrl.setMoveVelocity(Vec3(1000.0,1000.0,1000.0));
-			else if(key==Key::E&&cameraCtrl.getMoveVelocity()==Vec3(10.0,10.0,10.0))
-				cameraCtrl.setMoveVelocity(Vec3(100.0,100.0,100.0));
-			else if(key==Key::E)
+			if(key==Key::N1)
+				cameraCtrl.setMoveVelocity(Vec3(1,1,1));
+			else if(key==Key::N2)
 				cameraCtrl.setMoveVelocity(Vec3(10.0,10.0,10.0));
+			else if(key==Key::N3)
+				cameraCtrl.setMoveVelocity(Vec3(100.0,100.0,100.0));
+			else if(key==Key::N4)
+				cameraCtrl.setMoveVelocity(Vec3(1000.0,1000.0,1000.0));
 
 		}
 		virtual void onKeyDown(Key::Keyboard key) {
@@ -78,6 +80,13 @@ namespace SolarSystem {
 			if(key==Key::X){
 				Quaternion rot;
 				rot.setLookRotation(-camera.getPosition(),Vec3(0,1,0));
+				camera.setRotation(rot);  
+			}
+			else if(key==Key::E){
+				Quaternion rot;
+				rot.setLookRotation(-system.getPlanet("earth").getPosition()
+									-camera.getPosition(),
+									Vec3(0,1,0));
 				camera.setRotation(rot);  
 			}
 		

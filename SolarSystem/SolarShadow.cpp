@@ -37,7 +37,7 @@ void SolarShadow::changeDir(const Vec3& point){
 	shadowLight.setPosition(Vector3D::ZERO);
 }
 
-void SolarShadow::madeShadowMap(Planet *planet){		
+void SolarShadow::madeShadowMap(Planet *planet,const Vec3& addScale){		
 	//save viewport
 	glGetFloatv(GL_VIEWPORT,&globalViewport.x);
 	//save matrixs
@@ -59,7 +59,7 @@ void SolarShadow::madeShadowMap(Planet *planet){
 	shadowTextureShader.bind();	
 	//get model matrix
 	Mat4 model=planet->getGlobalMatrix();
-	model.addScale(Vec3(1.0,1.0,1.0));
+	model.addScale(addScale);
 	//calc MV (P in gpu)
 	Mat4 viewmodel=shadowLight.getGlobalMatrix().mul(model);
 	glLoadMatrixf(viewmodel);
@@ -85,10 +85,13 @@ void SolarShadow::madeShadowMap(Planet *planet){
 	CHECK_GPU_ERRORS();
 
 }
-void SolarShadow::drawShadow(Camera *camera,Planet *planet){
+void SolarShadow::drawShadow(Camera *camera,Planet *planet,float intesity){
+	//z-buffer fixed
+	float distToCam=camera->getPosition(true).distance(-planet->getPosition(true));
+	float scaleShadow=distToCam<planet->getScale().length()*10 ? 1.01f : 1.1f;
 	//get model matrix
 	Mat4 model=planet->getGlobalMatrix();
-	model.addScale(Vec3(1.01,1.01,1.01));
+	model.addScale(Vec3(scaleShadow,scaleShadow,scaleShadow));
 	//bind shader
 	shadowShader.bind();
 	//calc delphMVP   (Proj*View)*model
@@ -100,6 +103,7 @@ void SolarShadow::drawShadow(Camera *camera,Planet *planet){
 	//bind texture
 	texture.bind(0);
 	shadowShader.uniformInt("shadowMap",0);
+	shadowShader.uniformFloat("intesity",intesity);
 	//draw planet
 	planet->drawSphere();
 	//unbind texture

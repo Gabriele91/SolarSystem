@@ -32,8 +32,8 @@ namespace SolarSystem {
 			return shadowLight;
 		}
 		void changeDir(const Vec3& point);
-		void madeShadowMap(Planet *planet);
-		void drawShadow(Camera *camera,Planet *planet);
+		void madeShadowMap(Planet *planet,const Vec3& addScale=Vec3::ONE);
+		void drawShadow(Camera *camera,Planet *planet,float intesity=1.0);
 
 		void draw();
 

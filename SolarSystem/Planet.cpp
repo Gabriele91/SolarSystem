@@ -196,7 +196,7 @@ void Planet::drawCloud(Camera& camera){
 		const Vec3& thisScale=thisMtx.getScale3D();
 		//z-buffer fixed
 		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleCloud=distToCam<800 ? 1.003f : 1.03f;
+		float scaleCloud=distToCam<400 ? 1.003f : 1.03f;
 		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
 		//culling
@@ -234,7 +234,7 @@ void Planet::drawAtmosphere(Camera& camera){
 		const Vec3& thisScale=thisMtx.getScale3D();		
 		//z-buffer fixed
 		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleAtmosphere=distToCam<800 ? 1.006f : 1.06f;
+		float scaleAtmosphere=distToCam<400 ? 1.006f : 1.06f;
 		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleAtmosphere;
 		//culling

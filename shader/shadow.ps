@@ -1,4 +1,5 @@
 uniform sampler2D shadowMap;
+uniform float intesity;
 varying vec4 shadowCoord;
 
 void main(){
@@ -10,10 +11,10 @@ void main(){
 	texture2D(shadowMap,shadowCoordinateWdivide.st).z;
 	
 	
-	float shadow = 1.0;
+	float shadow = 0.0;
 	if (shadowCoord.w > 0.0)
-		shadow = distanceFromLight < shadowCoordinateWdivide.z ? 0.0 : 1.0 ;
+		shadow = distanceFromLight < shadowCoordinateWdivide.z ? intesity : 0.0 ;
 
 	gl_FragColor.rgb =	vec3(0.0);
-	gl_FragColor.a=shadow< 1.0 ? 0.6 : 0.0;
+	gl_FragColor.a=shadow;
 }
