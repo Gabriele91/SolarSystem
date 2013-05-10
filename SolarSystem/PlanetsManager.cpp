@@ -11,7 +11,6 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
-	,solarShadow(render)
 	,skybox(NULL)
 {
 	//get erros parse:
@@ -206,7 +205,33 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		}
 		
 	}
-
+	//////////////////////////////////////////////////////////////
+	if(configfile.existsAsType("shadows",Table::TABLE)){
+		const Table& planets=configfile.getTable("shadows");
+		for(auto& table:planets){
+			if(table.second->asType(Table::TABLE)){
+				const Table& shadowTb=table.second->get<Table>();
+				const String& source=shadowTb.getString("source");
+				const String& dest=shadowTb.getString("dest");
+				Vec2 sizeTex=shadowTb.getVector2D("textureSize",Vec2(512,512));
+				Vec2 zoom=shadowTb.getVector2D("zoom",Vec2(0.25,0.25));
+				SolarShadowObjects sdo;
+				sdo.shadowLight=new SolarShadow(render,
+												Vec3::ZERO,
+											    (uint)sizeTex.x,
+												(uint)sizeTex.y,
+												zoom);
+				sdo.source=this->planets[source];
+				DEBUG_ASSERT_MSG(sdo.source,"PlanetsManager error : shadow, source planet not exist");
+				sdo.dest=this->planets[dest];
+				DEBUG_ASSERT_MSG(sdo.dest,"PlanetsManager error : shadow, dest planet not exist");
+				shadows.push_back(sdo);
+			}
+			else{
+				DEBUG_ASSERT_MSG(0,"PlanetsManager error : shadow must to be conteiner only tables");
+			}
+		}
+	}
 }
 PlanetsManager::~PlanetsManager(){	
 	for(auto& planet:planets) delete planet.second;
@@ -286,16 +311,9 @@ void PlanetsManager::draw(){
 		drawPlanetssAtmosphere();
 	sunLightAtmosphere.shader.unbind();
 	//////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////
-	//make shadow	
-	solarShadow.changeDir(planets["earth"]->getPosition());
-	solarShadow.madeShadowMap(planets["moon"]);		
-	//debug shadow map
-	if(Application::instance()->getInput()->getKeyDown(Key::B))
-		solarShadow.draw();		
-	//draw shadow map
-	solarShadow.drawShadow(camera,planets["earth"]);
-	//////////////////////////////////////////////////////////////////
+	//draw shadows
+	for(auto& shadow:shadows) 
+		shadow.drawShadow(camera);
 	//////////////////////////////////////////////////////////////////
 	if(enableGodRays||enableBloom){
 

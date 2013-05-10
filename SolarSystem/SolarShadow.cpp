@@ -12,15 +12,16 @@ SolarShadow::SolarShadow(SolarRender* render,
 						 uint height,
 						 const Vec2& xyFactor)
 						:render(render)
-						,texture(2048,128)
+						,texture(width,height)
 {
 	changeDir(point);
-	float factorX=0.05*texture.getWidth();
-	float factorY=0.012*texture.getHeight();
-	shadowLight.setOrtogonal( -factorX,
-							   factorX,
-							  -factorY,
-							   factorY,
+	
+	Vec2 factor=xyFactor*Vec2(texture.getWidth(),
+							  texture.getHeight());
+	shadowLight.setOrtogonal( -factor.x,
+							   factor.x,
+							  -factor.y,
+							   factor.y,
 							     1.0f,
 							     100000.0f);
 	shadowTextureShader.loadShader("shader/shadowTexture.vs",
@@ -55,9 +56,15 @@ void SolarShadow::madeShadowMap(Planet *planet){
 	//clear z buffer
 	glClear(GL_DEPTH_BUFFER_BIT);
 	//Using shader texture
-	shadowTextureShader.bind();
+	shadowTextureShader.bind();	
+	//get model matrix
+	Mat4 model=planet->getGlobalMatrix();
+	model.addScale(Vec3(1.0,1.0,1.0));
+	//calc MV (P in gpu)
+	Mat4 viewmodel=shadowLight.getGlobalMatrix().mul(model);
+	glLoadMatrixf(viewmodel);
 	//draw planet
-	planet->drawBase(shadowLight);
+	planet->drawSphere();
 	//disable shader texture
 	shadowTextureShader.unbind();
 	//enable render on color buffer

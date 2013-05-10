@@ -18,11 +18,25 @@ namespace SolarSystem {
 	class PlanetsManager {
 
 		Planet* sun;
+		////////////////////
+		struct SolarShadowObjects{
+			SolarShadow* shadowLight;
+			Planet* source;
+			Planet* dest;
+			void drawShadow(Camera *camera){
+				//make shadow	
+				shadowLight->changeDir(dest->getPosition());
+				shadowLight->madeShadowMap(source);	
+				//draw shadow map
+				shadowLight->drawShadow(camera,dest);				
+			}
+		};
+		std::vector<SolarShadowObjects> shadows;
+		////////////////////
 		DUNORDERED_MAP<String,Planet*> planets;
 		Camera *camera;
 		SolarRender *render;
 		SolarSky *skybox;
-		SolarShadow solarShadow;
 		float scaleEllipses;
 		float scaleSun;
 		float scalePlanets;	
