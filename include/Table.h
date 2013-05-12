@@ -81,13 +81,14 @@ namespace SolarSystem{
 			//
 			TypeDate type;
 			Value( TypeDate type ):type(type){}
+			virtual ~Value(){}
 			//
 			bool asType(TypeDate tp){
 				return type==tp;
 			}
 			//
-			virtual void* getValue()=0;
-			virtual Value* clone()=0;
+			virtual void* getValue(){};
+			virtual Value* clone(){};
 			//return generic
 			template<typename T> T& get(){
 				return *((T*)getValue());
@@ -136,7 +137,7 @@ namespace SolarSystem{
 		Table();
 		Table(const Utility::Path& pathfile);
 		/* destructor */
-		~Table();
+		virtual ~Table();
 		/* c++11 for each */
 		UNMAPTable::iterator begin(){ return table.begin(); }
 		UNMAPTable::const_iterator begin() const { return table.cbegin(); }
