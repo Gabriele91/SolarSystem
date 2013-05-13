@@ -87,8 +87,8 @@ namespace SolarSystem{
 				return type==tp;
 			}
 			//
-			virtual void* getValue(){};
-			virtual Value* clone(){};
+			virtual void* getValue(){return NULL;};
+			virtual Value* clone(){return NULL;};
 			//return generic
 			template<typename T> T& get(){
 				return *((T*)getValue());
