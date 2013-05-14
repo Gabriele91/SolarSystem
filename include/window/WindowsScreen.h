@@ -3,6 +3,7 @@
 
 #include <Config.h>
 #include <WindowsApp.h>
+#include <WindowsInput.h>
 #include <String.h>
 #include <Screen.h>
 
@@ -109,6 +110,7 @@ namespace SolarSystem {
 		bool showmouse;
 		//friends class
 		friend class WindowsApp;
+		friend class WindowsInput;
 	};
 
 

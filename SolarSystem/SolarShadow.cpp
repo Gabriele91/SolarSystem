@@ -48,9 +48,6 @@ void SolarShadow::madeShadowMap(Planet *planet,const Vec3& addScale){
 	texture.enableRender();
 	//set viewport
     glViewport(0, 0,  texture.getWidth(), texture.getHeight());
-	//disable textures
-	glDisable(GL_TEXTURE_1D);
-	glDisable(GL_TEXTURE_2D);
 	//disable render on color buffer
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); 
 	//clear z buffer
@@ -78,12 +75,9 @@ void SolarShadow::madeShadowMap(Planet *planet,const Vec3& addScale){
 			   globalViewport.w);
 	//reset old matrix
 	render->setMatrixsState(globalMState);
-	//renable textures
-	glEnable(GL_TEXTURE_1D);
-	glEnable(GL_TEXTURE_2D);
 	//get GPU errors
 	CHECK_GPU_ERRORS();
-
+	
 }
 void SolarShadow::drawShadow(Camera *camera,Planet *planet,float intesity){
 	//z-buffer fixed
