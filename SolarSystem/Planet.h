@@ -7,6 +7,7 @@
 #include <Texture.h>
 #include <Camera.h>
 #include <SolarRender.h>
+#include <SolarRings.h>
 
 namespace SolarSystem {
 
@@ -54,6 +55,8 @@ namespace SolarSystem {
 		Vec4 specular;
 		Vec4 emission;
 		float shininess;
+		//rings
+		SolarRings *rings;
 
 	public:
 
@@ -66,10 +69,15 @@ namespace SolarSystem {
 		//draw
 		void draw(Camera& camera);
 		void drawSphere();
+		void drawCircle();
 		void drawBase(Camera& camera);
+		void drawBaseRings(Camera& camera);
 		void drawPlanet(Camera& camera);
 		void drawCloud(Camera& camera);
 		void drawAtmosphere(Camera& camera);
+		void drawRings(Camera& camera);
+		//info planet
+		bool inCamera(Camera& camera);
 		//set data
 		void setData(float day);
 		//set planet info
@@ -97,6 +105,7 @@ namespace SolarSystem {
 		void setAtmosphereTexture(const Utility::Path& grad1,
 								  const Utility::Path& grad2,
 								  const Utility::Path& rim);
+		void setRings(const Utility::Path& texture,float nr=0.5,float fr=1.0);
 		/*
 		todo add atmosfere like night and day texture
 		*/

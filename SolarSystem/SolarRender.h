@@ -37,6 +37,9 @@ namespace SolarSystem {
 		SolarRender();
 
 		void init();
+		void disableCullFace();
+		void enableCullFace();
+		bool cullFaceIsEnable();
 		void setCullFace(CULLFACE type);
 		void setClearColor(const Vec4& color);
 

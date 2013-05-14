@@ -12,6 +12,7 @@
 #include <SolarRender.h>
 #include <SolarSky.h>
 #include <SolarShadow.h>
+#include <SolarRings.h>
 
 namespace SolarSystem {
 
@@ -25,11 +26,13 @@ namespace SolarSystem {
 			Vec3 sizeObjectInShadow;
 			float intesity;
 			void drawShadow(Camera *camera){
-				//make shadow	
-				shadowLight->changeDir(target->getPosition(true));
-				shadowLight->madeShadowMap(source,sizeObjectInShadow);	
-				//draw shadow map
-				shadowLight->drawShadow(camera,dest,intesity);				
+				if(dest->inCamera(*camera)){
+					//make shadow	
+					shadowLight->changeDir(target->getPosition(true));
+					shadowLight->madeShadowMap(source,sizeObjectInShadow);	
+					//draw shadow map
+					shadowLight->drawShadow(camera,dest,intesity);	
+				}
 			}
 		};
 		std::vector<SolarShadowObjects> shadows;
@@ -133,6 +136,17 @@ namespace SolarSystem {
 			///////////////			
 		}sunLightAtmosphere;
 		///////////////////////////////
+		struct SunLightRings{
+
+			uint glRingsTexture;
+
+			void uniforming(){
+				shader.uniformInt(glRingsTexture,0);
+			}
+
+			Shader shader;
+		}sunLightRings;
+		///////////////////////////////
 
 
 	public:
@@ -174,6 +188,7 @@ namespace SolarSystem {
 		void drawPlanetssClouds();
 		void drawPlanetssCores();
 		void drawPlanetssAtmosphere();
+		void drawPlanetssRings();
 		void drawSun();
 		Planet& getPlanet(const String& name){
 			return *(planets[name]);

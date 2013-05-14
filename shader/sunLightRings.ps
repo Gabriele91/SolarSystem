@@ -1,0 +1,44 @@
+uniform sampler1D ringsTexture;
+
+varying vec3 N;
+varying vec3 v;
+varying vec2 varTexCoord;
+varying float constantAttenuation;
+varying float linearAttenuation;
+varying float quadraticAttenuation;
+
+
+void main (void)
+{
+
+	//calculate pos linght
+	vec3 posL = gl_LightSource[0].position.xyz - v;
+	//calculate distance
+	float distL = length(posL); 
+	//directions
+	vec3 L = normalize( posL ); 
+	vec3 E = normalize(-v); // we are in Eye Coordinates, so EyePos is (0,0,0)
+	vec3 R = normalize(-reflect(L,N));
+
+	//calculate Ambient Term:
+	vec4 Iamb = gl_FrontLightProduct[0].ambient;
+	//calculate Diffuse Term:
+	vec4 Idiff = gl_FrontLightProduct[0].diffuse;
+	// calculate attenuation
+	float attenuation = 1.0/ ( constantAttenuation + 
+							  (linearAttenuation*distL) + 
+							  (quadraticAttenuation*distL*distL) );
+	//calculate attenuation
+	Idiff*=attenuation;	
+	//////////////////////////////////////////////////////////////
+	//texture color:
+	vec4 dayColor, nightColor;
+	float shadow	= clamp((dot(N,L)+1.0)*0.5, 0.0, 1.0 );
+	dayColor	    = texture1D( ringsTexture, varTexCoord.x );
+	vec4 texcolor   = lerp(vec4(0.0,0.0,0.0,1.0),dayColor,shadow);
+	//////////////////////////////////////////////////////////////
+
+	gl_FragColor.rgb = (Iamb+texcolor*Idiff).rgb; 
+	gl_FragColor.a   = texcolor.a; 
+
+}

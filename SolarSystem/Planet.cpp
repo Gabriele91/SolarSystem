@@ -92,6 +92,7 @@ Planet::Planet(SolarRender *render,
 			  ,atmGrad1(NULL)
 			  ,atmGrad2(NULL)
 			  ,atmRim(NULL)
+			  ,rings(NULL)
 			  ,render(render)
 			  ,ambient(Vec3::ZERO,1.0f)
 			  ,diffuse(Vec3::ZERO,1.0f)
@@ -112,6 +113,8 @@ Planet::~Planet(){
 		delete atmGrad2;
 	if(atmRim) 
 		delete atmRim;
+	//if(rings)
+		//delete rings;
 }
 //set extra texture
 void Planet::setCloudTexture(const Utility::Path& argtexture){
@@ -136,13 +139,32 @@ void Planet::setAtmosphereTexture(const Utility::Path& grad1,
 		atmGrad2=new Texture1D(grad2);
 		atmRim=new Texture1D(rim);
 }
+void Planet::setRings(const Utility::Path& argtexture,
+					  float nr,
+					  float fr){
+	DEBUG_ASSERT(rings==NULL);
+	rings=new SolarRings(render,argtexture,nr,fr);
+	addChild(rings,Object::ENABLE_ALL,true);
+}
 //draw
 void Planet::draw(Camera& camera){
 	drawPlanet(camera);
 	drawCloud(camera);
 }
+bool Planet::inCamera(Camera& camera){
+	const Mat4& thisMtx=getGlobalMatrix();
+	const Vec3& thisScale=thisMtx.getScale3D();
+	const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z));
+	//culling
+	return camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE;	
+}
 void Planet::drawSphere(){
 		bindMesh();
+}
+void Planet::drawCircle(){		
+	if(rings){
+		rings->drawRing();
+	}
 }
 void Planet::drawBase(Camera& camera){
 		//set model matrix
@@ -153,6 +175,11 @@ void Planet::drawBase(Camera& camera){
 		//draw
 		bindMesh();
 		//
+}
+void Planet::drawBaseRings(Camera& camera){	
+	if(rings){
+		rings->drawBase(camera);
+	}
 }
 void Planet::drawPlanet(Camera& camera){
 	////////////////////////////////////
@@ -178,6 +205,8 @@ void Planet::drawPlanet(Camera& camera){
 		glLoadMatrixf(viewmodel);
 		//draw
 		bindMesh();
+		//unbind texture 
+		texture.unbind(0);
 		//unbind
 		if(render->lightIsEnable()){			
 			if(blackTexture) blackTexture->unbind(1);
@@ -221,6 +250,8 @@ void Planet::drawCloud(Camera& camera){
 				cloudTexture->bind(0);
 				//draw
 				bindMesh();
+				//bind texture
+				cloudTexture->unbind(0);
 				//reset old blend state  
 				render->setBlendState(stateBlend);
 		}
@@ -263,7 +294,11 @@ void Planet::drawAtmosphere(Camera& camera){
 		}
 	}
 }
-
+void Planet::drawRings(Camera& camera){
+	if(rings){
+		rings->draw(camera);
+	}
+}
 //set data
 void Planet::setData(float _day){
 	//save

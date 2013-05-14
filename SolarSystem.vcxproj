@@ -77,6 +77,7 @@
     <ClCompile Include="SolarSystem\PlanetsManager.cpp" />
     <ClCompile Include="SolarSystem\SolarFly.cpp" />
     <ClCompile Include="SolarSystem\SolarRender.cpp" />
+    <ClCompile Include="SolarSystem\SolarRings.cpp" />
     <ClCompile Include="SolarSystem\SolarShadow.cpp" />
     <ClCompile Include="SolarSystem\SolarSky.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="SolarSystem\SolarFly.h" />
     <ClInclude Include="SolarSystem\SolarMain.h" />
     <ClInclude Include="SolarSystem\SolarRender.h" />
+    <ClInclude Include="SolarSystem\SolarRings.h" />
     <ClInclude Include="SolarSystem\SolarShadow.h" />
     <ClInclude Include="SolarSystem\SolarSky.h" />
     <ClInclude Include="src\Image\Image.h" />

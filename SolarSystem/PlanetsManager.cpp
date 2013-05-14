@@ -29,6 +29,9 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	//load shader sun light (clouds):
 	sunLightCloud.shader.loadShader("shader/sunLightClouds.vs","shader/sunLightClouds.ps");
 	sunLightCloud.glCloudTexture=sunLightCloud.shader.getUniformID("cloudTexture");
+	//shader  light  on rings
+	sunLightRings.shader.loadShader("shader/sunLightRings.vs","shader/sunLightRings.ps");
+	sunLightRings.glRingsTexture=sunLightRings.shader.getUniformID("ringsTexture");
 	//load shader sun light (atmospheres):
 	sunLightAtmosphere.shader.loadShader("shader/sunLightAtmosphere.vs","shader/sunLightAtmosphere.ps");
 	sunLightAtmosphere.glAtmGrad1=sunLightAtmosphere.shader.getUniformID("atmGrad1");
@@ -202,8 +205,13 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			ptr->setAtmosphereTexture(atmosphere.getString(0),
 									  atmosphere.getString(1),
 									  atmosphere.getString(2));
+		}		
+		if(planet.existsAsType("rings",Table::TABLE)){
+			const Table& rings=planet.getConstTable("rings");	
+			ptr->setRings(rings.getString("image"),
+						  rings.getFloat("near",0.5),
+						  rings.getFloat("far",1.0));
 		}
-		
 	}
 	//////////////////////////////////////////////////////////////
 	if(configfile.existsAsType("shadows",Table::TABLE)){
@@ -311,7 +319,12 @@ void PlanetsManager::draw(){
 	sunLightCloud.shader.bind();
 	sunLightCloud.uniforming();	
 		drawPlanetssClouds();
-	sunLightCloud.shader.unbind();
+	sunLightCloud.shader.unbind();	
+	//draw rings
+	sunLightRings.shader.bind();
+	sunLightRings.uniforming();	
+	drawPlanetssRings();
+	sunLightRings.shader.unbind();
 	//////////////////////////////////////////////////////////////////
 	render->disableLight();
 	//draw atmosphere
@@ -319,10 +332,9 @@ void PlanetsManager::draw(){
 	sunLightAtmosphere.uniforming();	
 		drawPlanetssAtmosphere();
 	sunLightAtmosphere.shader.unbind();
-	//////////////////////////////////////////////////////////////////
 	//draw shadows
 	for(auto& shadow:shadows) 
-		shadow.drawShadow(camera);
+			shadow.drawShadow(camera);
 	//////////////////////////////////////////////////////////////////
 	if(enableGodRays||enableBloom){
 
@@ -391,6 +403,11 @@ void PlanetsManager::drawPlanetssAtmosphere(){
 void PlanetsManager::drawPlanetssCores(){
 	for(auto& planet:planets){
 		planet.second->drawPlanet(*camera);
+	}
+}
+void PlanetsManager::drawPlanetssRings(){
+	for(auto& planet:planets){
+		planet.second->drawRings(*camera);
 	}
 }
 void PlanetsManager::drawSun(){
