@@ -246,7 +246,7 @@ bool Texture1D::operator !=(const Texture1D& t) const{
 //////////////////////////////////////////////
 //render texture:
 //costructor
-RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0),depthid(0){
+RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0),depthid(0),defaultFBO(0){
 	//create an GPU texture
 	glGenTextures( 1, &gpuid );
 	//not work midmaps
@@ -325,14 +325,16 @@ RenderTexture::~RenderTexture(){
 	glDeleteFramebuffersEXT(1, &fboid);
 }
 //start draw
-void RenderTexture::enableRender(){
+void RenderTexture::enableRender(){    
+	//get default fbo
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
 	//abilita fbo
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboid);
 }
 //end draw
 void RenderTexture::disableRender(){
 	//disabilita fbo
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,defaultFBO);
 }
 //draw in fullScreen
 void RenderTexture::draw(bool bindTexture){
@@ -371,7 +373,7 @@ void RenderTexture::draw(bool bindTexture){
 //////////////////////////////////////////////
 //render texture:
 //costructor
-ShadowTexture::ShadowTexture(uint argwidth,uint argheight):Texture(),fboid(0){
+ShadowTexture::ShadowTexture(uint argwidth,uint argheight):Texture(),fboid(0),defaultFBO(0){
 	//not work midmaps
 	bMipmaps=false;		
 	//save width end height
@@ -438,13 +440,15 @@ ShadowTexture::~ShadowTexture(){
 }
 //start draw
 void ShadowTexture::enableRender(){
+	//get default fbo
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
 	//abilita fbo
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,fboid);
 }
 //end draw
 void ShadowTexture::disableRender(){
 	//disabilita fbo
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,defaultFBO);
 }
 //draw in fullScreen
 void ShadowTexture::draw(bool bindTexture){

@@ -149,6 +149,7 @@
     <None Include="shader\blackMesh.vs" />
     <None Include="shader\bloom.ps" />
     <None Include="shader\bloom.vs" />
+    <None Include="shader\fxaa.ps" />
     <None Include="shader\godRays.ps" />
     <None Include="shader\godRays.vs" />
     <None Include="shader\shadow.ps" />

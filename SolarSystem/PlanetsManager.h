@@ -147,7 +147,22 @@ namespace SolarSystem {
 			Shader shader;
 		}sunLightRings;
 		///////////////////////////////
+		struct Fxaa{
+			uint glScreenTexture;
+			uint glTexcoordOffset;
 
+			Vec2 invScreen;
+
+			void uniforming(){
+				shader.uniformInt(glScreenTexture,0);
+				shader.uniformVector2D(glTexcoordOffset,invScreen);
+			}
+		
+			Shader shader;
+		}fxaa;		
+		RenderTexture worldTexture;
+		bool enableFxaa;
+		///////////////////////////////
 
 	public:
 		
@@ -164,6 +179,12 @@ namespace SolarSystem {
 		}
 		DFORCEINLINE void setScalePlanets(float scale){
 			scalePlanets=(1.0f/scale)*0.5f;
+		}
+		DFORCEINLINE void setFxaa(bool enable){
+			enableFxaa=enable;
+		}
+		DFORCEINLINE bool fxaaIsEnable(){
+			return enableFxaa;		
 		}
 		
 		void addSun(const Utility::Path &path,
@@ -190,6 +211,7 @@ namespace SolarSystem {
 		void drawPlanetssAtmosphere();
 		void drawPlanetssRings();
 		void drawSun();
+
 		Planet& getPlanet(const String& name){
 			return *(planets[name]);
 		}

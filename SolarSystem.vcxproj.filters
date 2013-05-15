@@ -295,5 +295,8 @@
     <None Include="shader\shadow.vs">
       <Filter>shader</Filter>
     </None>
+    <None Include="shader\fxaa.ps">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

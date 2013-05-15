@@ -87,6 +87,7 @@ namespace SolarSystem {
 	class RenderTexture : public Texture {
 
 		uint fboid,depthid;
+		GLint defaultFBO;
 
 	public:
 
@@ -105,6 +106,7 @@ namespace SolarSystem {
 	class ShadowTexture : public Texture {
 
 		uint fboid;
+		GLint defaultFBO;
 
 	public:
 

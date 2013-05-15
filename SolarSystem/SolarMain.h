@@ -79,11 +79,17 @@ namespace SolarSystem {
 				auto img=Image::getImageFromScreen(
 					Application::instance()->getScreen()->getWidth(),
 					Application::instance()->getScreen()->getHeight()
-					);
-				img->save("Debug/screen.tga");
+					);					
+					Utility::Path filePath("Debug/screen.tga");
+					for(int i=0;filePath.existsFile();++i){
+						filePath=Utility::Path("Debug/screen"+String::toString	(i)+".tga");
+					}
+					img->save(filePath);
 				delete img;
+			}			
+			else if(key==Key::O){
+				system.setFxaa(!system.fxaaIsEnable());
 			}
-
 		}
 		virtual void onKeyDown(Key::Keyboard key) {
 		

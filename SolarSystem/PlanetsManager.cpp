@@ -11,7 +11,10 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	:sun(0),camera(camera),render(render),configfile(path)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
+	,worldTexture(Application::instance()->getScreen()->getWidth(),
+				  Application::instance()->getScreen()->getHeight())
 	,skybox(NULL)
+	,enableFxaa(false)
 {
 	//get erros parse:
 	auto errors=configfile.getDeserializeErros();
@@ -37,6 +40,15 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	sunLightAtmosphere.glAtmGrad1=sunLightAtmosphere.shader.getUniformID("atmGrad1");
 	sunLightAtmosphere.glAtmGrad2=sunLightAtmosphere.shader.getUniformID("atmGrad2");	
 	sunLightAtmosphere.atmRim=sunLightAtmosphere.shader.getUniformID("atmRim");	
+	//shader fxaa
+	fxaa.shader.loadShader("shader/fxaa.vs","shader/fxaa.ps");
+	fxaa.glScreenTexture=fxaa.shader.getUniformID("screenTexture");
+	fxaa.glTexcoordOffset=fxaa.shader.getUniformID("texcoordOffset");
+	fxaa.invScreen=Vec2(1.0/(float)Application::instance()->getScreen()->getWidth(),
+					    1.0/(float)Application::instance()->getScreen()->getHeight());
+	if(configfile.existsAsType("enableFxaa",Table::STRING)){
+		enableFxaa=configfile.getString("enableFxaa")=="true";
+	}
 	//setup config file:
 	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
 	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found planets table");
@@ -292,6 +304,8 @@ void PlanetsManager::setData(float day){
 	if(sun) sun->setData(day);
 }
 void PlanetsManager::draw(){	
+	//all word draw in a texture (n.b. fxaa)
+	if(enableFxaa) worldTexture.enableRender();
 	////////////////////////////////////////////////////////////////
 	camera->update();
 	////////////////////////////////////////////////////////////////
@@ -389,6 +403,20 @@ void PlanetsManager::draw(){
 		render->enableZBuffer();
 		render->setBlendState(blendState);
 
+	}
+	////////////////////////////////////////////////////////////////////////
+	//draw texture to window framebuffer
+	if(enableFxaa){
+		worldTexture.disableRender(); //enable framebuffer
+		//enable fxaa
+		fxaa.shader.bind();
+		fxaa.uniforming();
+		//draw texture
+		render->disableZBuffer();
+		worldTexture.draw();
+		render->enableZBuffer();
+		//disable fxaa
+		fxaa.shader.bind();
 	}
 
 }
