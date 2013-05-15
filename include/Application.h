@@ -27,6 +27,10 @@ namespace SolarSystem {
 		*/
 		static Application *create();
 		/**
+		* delete singleton (if not created raises an exception)
+		*/
+		static void close();
+		/**
 		* return singleton istance
 		*/
 		static Application *instance();

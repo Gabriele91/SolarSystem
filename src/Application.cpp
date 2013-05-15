@@ -39,14 +39,17 @@ Application *Application::create(){
 	appSingleton=new LinuxApp();
 #elif defined( PLATFORM_ANDROID )
 #endif
-	//registration delete at exit
-	atexit([](){ 
-		delete Application::instance(); 
-	});
-	//
 	return appSingleton;
 }
 
 Application *Application::instance(){
 	return appSingleton;
+}
+
+void Application::close(){	
+	DEBUG_ASSERT(appSingleton);
+	//exit to instance
+	::Application::appSingleton->exit();
+	//delete instance
+	delete ::Application::appSingleton; 
 }

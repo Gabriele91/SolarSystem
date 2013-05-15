@@ -24,7 +24,7 @@ namespace SolarSystem {
 
 	public:
 		SolarMain(const Utility::Path& config):
-			MainInstance("Solar System",1280,768,32,60,false)
+			MainInstance("Solar System",1920,1080,32,60,true)
 			,system(config,&camera,&render)
 			,cameraCtrl(&camera)
 		{}

@@ -265,7 +265,7 @@ void WindowsInput::__callOnMouseScroll(short scrollDelta) {
 //window events:
 LRESULT CALLBACK WindowsInput::WndProc(   HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam ){
 	
-	if(Application::instance()){		
+	if(Application::instance()!=NULL){		
 		
 		WindowsInput *winput=(WindowsInput*)Application::instance()->getInput();
 		DEBUG_ASSERT(winput);
@@ -306,6 +306,7 @@ LRESULT CALLBACK WindowsInput::WndProc(   HWND hwnd, UINT message, WPARAM wparam
 				winput->ewindow.windowResize.x=LOWORD(lparam);
 				winput->ewindow.windowResize.y=HIWORD(lparam);
 			break;
+			case WM_NCDESTROY:
 			case WM_DESTROY:
 			case WM_QUIT:
 			case WM_CLOSE:

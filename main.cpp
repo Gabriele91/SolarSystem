@@ -5,10 +5,10 @@
 using namespace SolarSystem;
 
 int main(int argc,const char** args){
-	String configfile("SolarSystem.conf");
-	if(argc>=2)	configfile=args[1];
+	String configfile(argc>=2?args[1]:"SolarSystem.conf");
 	Application::create();
 	Application::instance()->exec(new SolarMain(configfile));
 	delete Application::instance()->getMainInstance();
+	Application::close();
 	return 0; 
 }
