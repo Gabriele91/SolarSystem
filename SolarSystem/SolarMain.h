@@ -9,6 +9,8 @@
 #include <Planet.h>
 #include <PlanetsManager.h>
 #include <SolarFly.h>
+#define NOT_INCLUDE_INL
+#include "../src/Image/Image.h"
 
 namespace SolarSystem {
 
@@ -73,6 +75,14 @@ namespace SolarSystem {
 				cameraCtrl.setMoveVelocity(Vec3(100.0,100.0,100.0));
 			else if(key==Key::N4)
 				cameraCtrl.setMoveVelocity(Vec3(1000.0,1000.0,1000.0));
+			else if(key==Key::P){
+				auto img=Image::getImageFromScreen(
+					Application::instance()->getScreen()->getWidth(),
+					Application::instance()->getScreen()->getHeight()
+					);
+				img->save("Debug/screen.tga");
+				delete img;
+			}
 
 		}
 		virtual void onKeyDown(Key::Keyboard key) {

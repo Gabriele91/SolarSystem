@@ -156,7 +156,8 @@ class Image{
 
 
 };
-
-#include "Image.inl"
+#ifndef NOT_INCLUDE_INL
+	#include "Image.inl"
+#endif
 
 #endif

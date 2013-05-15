@@ -138,10 +138,12 @@ void Image::makeImage(int width,int height,int bits,bool set_default_color,const
 void Image::loadImage(const std::string& path){
     ////////////////////////////////////
 	//get ext
-    char tempstring[4] = {0};
-	IMG_STRNCPY(tempstring, path.c_str() + path.size()-3, 3);
+	std::string ext;
+	ext+=path[path.size()-3];
+	ext+=path[path.size()-2];
+	ext+=path[path.size()-1];
 	//load from file
-	switch (getTypeFromExtetion(tempstring))
+	switch (getTypeFromExtetion(ext))
 	{
 	case Image::PNG:
         load_PNG(this,path);
@@ -216,24 +218,25 @@ void Image::loadFromData(void *data,unsigned int size,ImageType type){
 }
 //salvo in un file TGA
 void Image::save(const std::string& path){
-
     ////////////////////////////////////
-    char tempstring[5] = {0};
-	IMG_STRNCPY(tempstring, path.c_str() + path.size()-4, 4);
-    char c;
-    int i=0;
-    while (tempstring[i])
-    {
-     c=tempstring[i];
-     tempstring[i]=tolower(c);
-     i++;
-    }
+	//get ext
+	std::string ext;
+	ext+=path[path.size()-3];
+	ext+=path[path.size()-2];
+	ext+=path[path.size()-1];
     ////////////////////////////////////
-	if(!strcmp(tempstring, ".bmp")){
-			save_BMP(this,path);
-	}else
-	 if(!strcmp(tempstring, ".tga")){
-			save_TGA(this,path);
+	switch (getTypeFromExtetion(ext))
+	{
+	case Image::PNG:break;
+	case Image::JPEG:break;
+	case Image::TGA:
+        save_TGA(this,path);
+		break;
+	case Image::BMP:
+		save_BMP(this,path);
+		break;
+	default:
+		break;
 	}
 
 }
@@ -538,9 +541,9 @@ void Image::convert16to24bit(bool freebuffer){
 }
 void Image::swapRandBbits(){
 	for(unsigned int  i = 0; i < width * height ; ++i){
-		bytes[i * channels + 0] = bytes[i * channels + 2];
-		bytes[i * channels + 1] = bytes[i * channels + 1];
-		bytes[i * channels + 2] = bytes[i * channels + 0];
+		Image::BYTE bTmp=bytes[i * channels + 2]; //save B
+		bytes[i * channels + 2] = bytes[i * channels + 0]; // B <- R
+		bytes[i * channels + 0] = bTmp; // R <- B
 	}
 }
 void Image::decoderRLE(bool freebuffer){
