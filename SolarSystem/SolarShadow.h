@@ -19,7 +19,15 @@ namespace SolarSystem {
 		SolarRender *render;
 		SolarRender::MatrixsState globalMState;
 		Shader shadowTextureShader;
-		Shader shadowShader;
+		struct ShadowShader{
+		
+			uint glDelphMVP,
+				 glShadowMap,
+				 glIntesity;
+
+			Shader shader;
+
+		}shadowShader;
 
 	public:
 		

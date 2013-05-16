@@ -24,10 +24,16 @@ SolarShadow::SolarShadow(SolarRender* render,
 							   factor.y,
 							     1.0f,
 							     100000.0f);
+	/////////////////////////////////////////////////////////////////////////
 	shadowTextureShader.loadShader("shader/shadowTexture.vs",
 								   "shader/shadowTexture.ps");
-	shadowShader.loadShader("shader/shadow.vs",
-						    "shader/shadow.ps");
+	/////////////////////////////////////////////////////////////////////////
+	shadowShader.shader.loadShader("shader/shadow.vs",
+								   "shader/shadow.ps");
+	shadowShader.glDelphMVP=shadowShader.shader.getUniformID("delphMVP");
+	shadowShader.glShadowMap=shadowShader.shader.getUniformID("shadowMap");
+	shadowShader.glIntesity=shadowShader.shader.getUniformID("intesity");
+	/////////////////////////////////////////////////////////////////////////
 }
 
 void SolarShadow::changeDir(const Vec3& point){
@@ -87,23 +93,23 @@ void SolarShadow::drawShadow(Camera *camera,Planet *planet,float intesity){
 	Mat4 model=planet->getGlobalMatrix();
 	model.addScale(Vec3(scaleShadow,scaleShadow,scaleShadow));
 	//bind shader
-	shadowShader.bind();
+	shadowShader.shader.bind();
 	//calc delphMVP   (Proj*View)*model
 	Mat4 delphMVP=shadowLight.getViewProjMatrix().mul(model);
-	shadowShader.uniformMatrix4x4("delphMVP",  delphMVP );
+	shadowShader.shader.uniformMatrix4x4(shadowShader.glDelphMVP,  delphMVP );
 	//calc MV (P in gpu)
 	Mat4 viewmodel=camera->getGlobalMatrix().mul(model);
 	glLoadMatrixf(viewmodel);
 	//bind texture
 	texture.bind(0);
-	shadowShader.uniformInt("shadowMap",0);
-	shadowShader.uniformFloat("intesity",intesity);
+	shadowShader.shader.uniformInt(shadowShader.glShadowMap,0);
+	shadowShader.shader.uniformFloat(shadowShader.glIntesity,intesity);
 	//draw planet
 	planet->drawSphere();
 	//unbind texture
 	texture.unbind(0);
 	//unbind shader
-	shadowShader.unbind();
+	shadowShader.shader.unbind();
 }
 void SolarShadow::draw(){
 	if(render->zBufferIsEnable()){
