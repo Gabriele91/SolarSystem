@@ -1,6 +1,9 @@
 *.7z
 *.exe
 
+#print screen
+[Ss]creen*/*.tga
+
 #doxy ignore
 [Dd]oxygen*/
 

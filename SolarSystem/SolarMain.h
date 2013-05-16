@@ -80,9 +80,9 @@ namespace SolarSystem {
 					Application::instance()->getScreen()->getWidth(),
 					Application::instance()->getScreen()->getHeight()
 					);					
-					Utility::Path filePath("Debug/screen.tga");
+					Utility::Path filePath("Screen/screen.tga");
 					for(int i=0;filePath.existsFile();++i){
-						filePath=Utility::Path("Debug/screen"+String::toString	(i)+".tga");
+						filePath=Utility::Path("Screen/screen"+String::toString	(i)+".tga");
 					}
 					img->save(filePath);
 				delete img;
