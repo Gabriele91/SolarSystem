@@ -69,6 +69,8 @@
 		<Unit filename="SolarSystem/SolarMain.h" />
 		<Unit filename="SolarSystem/SolarRender.cpp" />
 		<Unit filename="SolarSystem/SolarRender.h" />
+		<Unit filename="SolarSystem/SolarRings.cpp" />
+		<Unit filename="SolarSystem/SolarRings.h" />
 		<Unit filename="SolarSystem/SolarShadow.cpp" />
 		<Unit filename="SolarSystem/SolarShadow.h" />
 		<Unit filename="SolarSystem/SolarSky.cpp" />

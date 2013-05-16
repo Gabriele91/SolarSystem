@@ -183,10 +183,32 @@ void LinuxInput::__update(XEvent &event){
         break;
         //focus event
         case FocusIn:
+            //reset windows input
+            if(!ewindow.focus){
+                //reset window
+                ewindow.__init();
+                //reset keyboard hit
+                ekeyboard.__init();
+                //reset mouse hit
+                emouse.__init();
+            }
+            //
             ewindow.focus=true;
+            //
         break;
         case FocusOut:
+            //reset windows input
+            if(ewindow.focus){
+                //reset window
+                ewindow.__init();
+                //reset keyboard hit
+                ekeyboard.__init();
+                //reset mouse hit
+                emouse.__init();
+            }
+            //
             ewindow.focus=false;
+            //
         break;
         //close event
         case ClientMessage:
@@ -290,7 +312,7 @@ void LinuxInput::__update(XEvent &event){
 void LinuxInput::update(){
 	//update input
 	//reset input window
-	ewindow.__init();
+	ewindow.resize=false;
 	//update hit
 	ekeyboard.__clearHit();
 	emouse.__clearHit();
@@ -300,6 +322,7 @@ void LinuxInput::update(){
             XNextEvent(display, &event);
             __update(event);
     }
+	///////////////////////////LOOP EVENT
 	//update down keys
 	ekeyboard.__update(this);
 	emouse.__update(this);
