@@ -183,15 +183,6 @@ void LinuxInput::__update(XEvent &event){
         break;
         //focus event
         case FocusIn:
-            //reset windows input
-            if(!ewindow.focus){
-                //reset window
-                ewindow.__init();
-                //reset keyboard hit
-                ekeyboard.__init();
-                //reset mouse hit
-                emouse.__init();
-            }
             //
             ewindow.focus=true;
             //
