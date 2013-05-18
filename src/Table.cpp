@@ -4,17 +4,29 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-Table::Table(const Utility::Path& pathfile):index(0)
+Table::Table(const Utility::Path& pathfile):index(0),pathTable("")
 {
+	loadFromFile(pathfile);
+}
+Table::Table():index(0),pathTable(""){}
+
+
+bool Table::loadFromFile(const Utility::Path& pathfile){
+		//clear memory
+		//this->~Table();
+		//save path
+		pathTable=pathfile;
 		//get raw file
 		void *data=NULL; size_t len=0;
 		Application::instance()->loadData(pathfile,data,len);
 		//deserialize
-		deserialize(String((const char*)data));
+		bool out=deserialize(String((const char*)data));
 		//free memory
 		free(data);
+		//
+		return out;
 }
-Table::Table():index(0){}
+
 Table::~Table(){
 	//clear all table
 	index=0;
@@ -40,6 +52,8 @@ enum Token{
 
 	TK_EQUALS,
 	TK_SPACE,
+	TK_INCLUDE_START,
+	TK_INCLUDE_END,
 	TK_NONE
 };
 /* PARSE FUNCTIONS */
@@ -91,6 +105,12 @@ DFORCEINLINE bool isStartMultyLineComment(const char* c){
 DFORCEINLINE bool isEndMultyLineComment(const char* c){
 	return (*c)=='*' && (*(c+1))=='/';
 }
+DFORCEINLINE bool isIncludeStart(char c){
+	return (c=='<');
+}
+DFORCEINLINE bool isIncludeEnd(char c){
+	return (c=='>');
+}
 DFORCEINLINE Token getToken(char c){
 
 	if(isStartName(c)) return TK_NAME;
@@ -109,6 +129,8 @@ DFORCEINLINE Token getToken(char c){
 
 	if(isEquals(c)) return TK_EQUALS;
 	if(isSpace(c)) return TK_SPACE;
+	if(isIncludeStart(c)) return TK_INCLUDE_START;
+	if(isIncludeEnd(c)) return 	TK_INCLUDE_END;
 
 	return TK_NONE;
 }
@@ -122,7 +144,7 @@ DFORCEINLINE bool parseNumber(const char* in,float& out,const char** cout=NULL){
 
 	return tmp!=in;
 }
-DFORCEINLINE bool parseCString(const char* in,String& out,const char** cout=NULL){
+DFORCEINLINE bool parseCString(int& countln,const char* in,String& out,const char** cout=NULL){
         const char *tmp=in;
         out="";
         //if(jumpSpace(in,&tmp)==FIND_GOOD){//[  "...."]
@@ -142,8 +164,8 @@ DFORCEINLINE bool parseCString(const char* in,String& out,const char** cout=NULL
                             case '?': out+='\?'; break;
                             case '\'': out+='\''; break;
                             case '\"': out+='\"'; break;
-                            case '\n': /* jump unix */ break;
-                            case '\r': /* jump mac */
+							case '\n': /* jump unix */ ++countln; break;
+                            case '\r': /* jump mac */  ++countln;
                                 if((*(tmp+1))=='\n') ++tmp; /* jump window (\r\n)*/
                             break;
                             default: return true; break;
@@ -168,6 +190,7 @@ DFORCEINLINE bool parseName(const char* in,String& out,const char** cout=NULL){
 		(*cout)=in;
         return true;
 }
+
 DFORCEINLINE void skeepLineComment(int& cntN,const char** inout){
 		if(isLineComment(*inout)){
 			while(*(*inout)!=EOF &&
@@ -196,6 +219,19 @@ DFORCEINLINE void skeepSpaceAndComment(int& cntN,const char** inout){
 		cntN+=(*(*inout))=='\n';
 		++(*inout);
 	}
+}
+
+DFORCEINLINE bool parseInclude(int& countln,const char* in,String& out,const char** cout=NULL){
+        if (!isIncludeStart(*in)) false;
+		++in;//jmp <
+		skeepSpaceAndComment(countln,&in);//jump space
+		while(!isIncludeEnd(*in)&&(*in)!='\0'&&(*in)!=EOF){
+			countln+=(*in)=='\n'; 
+			out+=*in; 
+			++in;
+		}
+		(*cout)=in;
+        return isIncludeEnd(*in);
 }
 
 int Table::deserialize(const String& intextfile){
@@ -260,7 +296,7 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				break;
 			case TK_STRING:
 				//parse string
-				if(!parseCString(prtC,str,&prtC)){
+				if(!parseCString(cntEL,prtC,str,&prtC)){
 					dErrors.push(cntEL,*prtC,"string: not valid");
 					return false;
 				}
@@ -324,7 +360,30 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				else ++prtC; //jmp )
 
 				break;
+			case TK_INCLUDE_START:
+				//<
+				if(!parseInclude(cntEL,prtC,str,&prtC)){
+					dErrors.push(cntEL,*prtC,"include: token '>' not found");
+					return false;					
+				}
+				//create table
+				tmp=&createTablePt(key);
+				//set path
+				str=pathTable.getDirectory()+str;
+				//load table
+				tmp->loadFromFile(str);
+				//get errors			
+				if(tmp->dErrors.hasErrors()){
+					dErrors.push(cntEL,*prtC,"error sub table("+
+											 tmp->pathTable.getPath()+
+						                     ") :\n"+
+											 tmp->getDeserializeErros());
+					return false;
+				}		
+				//jmp >		
+				++prtC;
 
+				break;
 			case TK_BINARY_START:
 				++prtC; //jmp @
 				//parse values

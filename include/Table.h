@@ -136,6 +136,8 @@ namespace SolarSystem{
 		/* costructor */
 		Table();
 		Table(const Utility::Path& pathfile);
+		/* load table from file */
+		bool loadFromFile(const Utility::Path& pathfile);
 		/* destructor */
 		virtual ~Table();
 		/* c++11 for each */
@@ -389,6 +391,7 @@ namespace SolarSystem{
 		/* table */
 		UNMAPTable table;
 		unsigned int index;
+		Utility::Path pathTable;
 		/* errors */
 		class DeserializeErros{
 		protected:
@@ -406,6 +409,7 @@ namespace SolarSystem{
 			const String& toString(){
 				return errors;
 			}
+			bool hasErrors(){ return errors.size()>0; }
 		};
 		DeserializeErros dErrors;
 
