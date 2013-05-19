@@ -369,7 +369,7 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				//create table
 				tmp=&createTablePt(key);
 				//set path
-				str=pathTable.getDirectory()+str;
+				str=pathTable.getDirectory()+"/"+str;
 				//load table
 				tmp->loadFromFile(str);
 				//get errors			

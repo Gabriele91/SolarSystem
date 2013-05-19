@@ -144,6 +144,9 @@ Path::Path(const String& _path){
 Path::Path(const char* _path){
 	costructor(String(_path));
 }
+Path::Path(const std::string&  _path){
+	costructor(String(_path));
+}
 void Path::costructor(const String& _path){
 	//to canonical path
 	path=_path;

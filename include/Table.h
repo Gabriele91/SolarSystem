@@ -320,6 +320,10 @@ namespace SolarSystem{
 		const String& getDeserializeErros(){
 			return dErrors.toString();
 		}
+		/** return path where is loaded */
+		const Utility::Path& getTablePath() const {
+			return pathTable;
+		}
 
 	private:
 		/* private deserialize/serialize */

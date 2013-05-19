@@ -179,9 +179,10 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			shininess=material.getFloat("shininess",shininessMat);
 		}
 		String namePlanet= (itTable.first.isString() ? itTable.first.string() : String::toString(itTable.first.integer()));
+		String pathFiles=planet.getTablePath().getDirectory()+"/";
 		Planet *ptr=
 		addPlanet(  namePlanet,
-					planet.getString("image"),
+					pathFiles+planet.getString("image"),
 					planet.getVector2D("ellipse"),
 					planet.getVector3D("scale"),
 					planet.getFloat("daysInYear"),
@@ -195,11 +196,11 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		if(planet.existsAsType("cloudOffset",Table::VECTOR3D))
 			ptr->setCloudOffset(planet.getVector3D("cloudOffset"));
 		if(planet.existsAsType("cloud",Table::STRING))
-			ptr->setCloudTexture(planet.getString("cloud"));
+			ptr->setCloudTexture(pathFiles+planet.getString("cloud"));
 		if(planet.existsAsType("night",Table::STRING))
-			ptr->setBlackTexture(planet.getString("night"));
+			ptr->setBlackTexture(pathFiles+planet.getString("night"));
 		if(planet.existsAsType("specular",Table::STRING))
-			ptr->setSpecularTexture(planet.getString("specular"));
+			ptr->setSpecularTexture(pathFiles+planet.getString("specular"));
 		if(planet.existsAsType("satelliteOf",Table::STRING)){
 			const String& name=planet.getString("satelliteOf");
 			DEBUG_ASSERT_MSG(this->planets.count(name)==1,
@@ -214,9 +215,9 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 							 atmosphere.existsAsType(1,Table::STRING)&&
 							 atmosphere.existsAsType(2,Table::STRING),
 							 "PlanetsManager error : in "<<namePlanet<<", atmosphere table must contain 3 strings")																			
-			ptr->setAtmosphereTexture(atmosphere.getString(0),
-									  atmosphere.getString(1),
-									  atmosphere.getString(2));
+			ptr->setAtmosphereTexture(pathFiles+atmosphere.getString(0),
+									  pathFiles+atmosphere.getString(1),
+									  pathFiles+atmosphere.getString(2));
 		}		
 		if(planet.existsAsType("rings",Table::TABLE)){
 			const Table& rings=planet.getConstTable("rings");	
