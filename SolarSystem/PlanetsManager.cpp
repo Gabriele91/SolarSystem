@@ -58,6 +58,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	//get skybox textures
 	if(configfile.existsAsType("skybox",Table::TABLE)){
 		const Table& skybox=configfile.getTable("skybox");
+		String pathFilesSkybox=skybox.getTablePath().getDirectory()+"/";
 		DEBUG_ASSERT_MSG(skybox.existsAsType("top",Table::STRING)&&
 						 skybox.existsAsType("bottom",Table::STRING)&&
 						 skybox.existsAsType("front",Table::STRING)&&
@@ -66,12 +67,12 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 						 skybox.existsAsType("right",Table::STRING),
 						 "PlanetsManager error : not found top, bottom, front, back, left, right in skybox")
 		this->skybox=new SolarSky(render,
-								  skybox.getString("top"),
-								  skybox.getString("bottom"),
-								  skybox.getString("front"),
-								  skybox.getString("back"),
-								  skybox.getString("left"),
-								  skybox.getString("right"));
+								  pathFilesSkybox+skybox.getString("top"),
+								  pathFilesSkybox+skybox.getString("bottom"),
+								  pathFilesSkybox+skybox.getString("front"),
+								  pathFilesSkybox+skybox.getString("back"),
+								  pathFilesSkybox+skybox.getString("left"),
+								  pathFilesSkybox+skybox.getString("right"));
 		//color skybox
 		this->skybox->setColor(skybox.getVector4D("color",Vec4(1.0,1.0,1.0,1.0)));
 
@@ -144,7 +145,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	setScalePlanets(configfile.getFloat("scalePlanets",0.15));
 	setScaleSun(configfile.getFloat("scaleSun",1.5));
 	//add sun
-	addSun(sun.getString("image"),
+	addSun(sun.getTablePath().getDirectory()+"/"+sun.getString("image"),
 		   sun.getVector3D("scale"),
 		   sun.getFloat("period"));
 	//get light info	
@@ -160,7 +161,8 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		lightSpecular=light.getVector4D("specular",lightSpecular);
 	}
 	this->sun->setMaterial(lightAmbient,lightDiffuse,lightSpecular,Vec4::ZERO,1.0);
-	//add planets:
+	//add planets:		
+	String pathFilesPlanet=planets.getTablePath().getDirectory()+"/";
 	for(auto& itTable:planets){
 		
 		Vec4 ambien(ambienMat);
@@ -179,10 +181,9 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 			shininess=material.getFloat("shininess",shininessMat);
 		}
 		String namePlanet= (itTable.first.isString() ? itTable.first.string() : String::toString(itTable.first.integer()));
-		String pathFiles=planet.getTablePath().getDirectory()+"/";
 		Planet *ptr=
 		addPlanet(  namePlanet,
-					pathFiles+planet.getString("image"),
+					pathFilesPlanet+planet.getString("image"),
 					planet.getVector2D("ellipse"),
 					planet.getVector3D("scale"),
 					planet.getFloat("daysInYear"),
@@ -196,11 +197,11 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 		if(planet.existsAsType("cloudOffset",Table::VECTOR3D))
 			ptr->setCloudOffset(planet.getVector3D("cloudOffset"));
 		if(planet.existsAsType("cloud",Table::STRING))
-			ptr->setCloudTexture(pathFiles+planet.getString("cloud"));
+			ptr->setCloudTexture(pathFilesPlanet+planet.getString("cloud"));
 		if(planet.existsAsType("night",Table::STRING))
-			ptr->setBlackTexture(pathFiles+planet.getString("night"));
+			ptr->setBlackTexture(pathFilesPlanet+planet.getString("night"));
 		if(planet.existsAsType("specular",Table::STRING))
-			ptr->setSpecularTexture(pathFiles+planet.getString("specular"));
+			ptr->setSpecularTexture(pathFilesPlanet+planet.getString("specular"));
 		if(planet.existsAsType("satelliteOf",Table::STRING)){
 			const String& name=planet.getString("satelliteOf");
 			DEBUG_ASSERT_MSG(this->planets.count(name)==1,
@@ -215,13 +216,13 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 							 atmosphere.existsAsType(1,Table::STRING)&&
 							 atmosphere.existsAsType(2,Table::STRING),
 							 "PlanetsManager error : in "<<namePlanet<<", atmosphere table must contain 3 strings")																			
-			ptr->setAtmosphereTexture(pathFiles+atmosphere.getString(0),
-									  pathFiles+atmosphere.getString(1),
-									  pathFiles+atmosphere.getString(2));
+			ptr->setAtmosphereTexture(pathFilesPlanet+atmosphere.getString(0),
+									  pathFilesPlanet+atmosphere.getString(1),
+									  pathFilesPlanet+atmosphere.getString(2));
 		}		
 		if(planet.existsAsType("rings",Table::TABLE)){
 			const Table& rings=planet.getConstTable("rings");	
-			ptr->setRings(rings.getString("image"),
+			ptr->setRings(pathFilesPlanet+rings.getString("image"),
 						  rings.getFloat("near",0.5),
 						  rings.getFloat("far",1.0));
 		}

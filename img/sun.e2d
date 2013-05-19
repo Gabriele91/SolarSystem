@@ -1,0 +1,21 @@
+{
+	image="sun.png"
+	scale=( 1500 1500 1500 )
+	period=25.379995
+	bloom={
+		samples=10
+		quality=5.0
+	}    
+	godRays={
+		samples=100
+		exposure=0.0044
+		decady=0.98 
+		density=1.0  
+		weight=3.65   
+	}
+	light={
+		attenuation=(1.0 0.0001 0.0)
+	}
+}
+
+	
