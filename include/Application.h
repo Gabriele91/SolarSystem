@@ -2,10 +2,10 @@
 #define APPLICATION_H
 
 #include <Config.h>
-#include <MainInstance.h>
 #include <EString.h>
 #include <Screen.h>
 #include <Input.h>
+#include <MainInstance.h>
 
 
 namespace SolarSystem {

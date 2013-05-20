@@ -20,7 +20,8 @@ namespace SolarSystem {
 					 uint height, 
 					 uint bites=32,
 					 uint FreamPerSecond=60,
-					 bool fullscreen=false);
+					 bool fullscreen=false,
+					 int AntiAliasing=0);
 
 		virtual ~MainInstance(){};
 		virtual void start()=0;

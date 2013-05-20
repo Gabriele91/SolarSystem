@@ -12,6 +12,20 @@ namespace SolarSystem {
 	
 	public:		
 		/**
+		* Screen Anti Aliasing enum
+		* @enum AntiAliasing
+		*/
+		enum AntiAliasing{
+			NOAA=0,
+			MSAAx2=2,
+			MSAAx4=4,
+			MSAAx8=8,
+			MSAAx16=16,
+			CSAA=32,
+			CSAAQ=64,
+			BESTAA=128
+		};
+		/**
 		* Screen orientation enum
 		* @enum SceenOrientation
 		*/
@@ -122,7 +136,8 @@ namespace SolarSystem {
 								  uint height,
 								  uint bites,
 								  uint freamPerSecond,
-								  bool fullscreen)=0;
+								  bool fullscreen,
+								  AntiAliasing dfAA=NOAA)=0;
 		/**
 		* close window
 		*/

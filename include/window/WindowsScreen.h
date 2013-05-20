@@ -2,10 +2,10 @@
 #define WINDOWSSCREEN_H
 
 #include <Config.h>
-#include <WindowsApp.h>
-#include <WindowsInput.h>
 #include <String.h>
 #include <Screen.h>
+#include <WindowsApp.h>
+#include <WindowsInput.h>
 
 namespace SolarSystem {
 
@@ -80,7 +80,8 @@ namespace SolarSystem {
 								  uint height,
 								  uint bites,
 								  uint freamPerSecond,
-								  bool fullscreen);
+								  bool fullscreen,
+								  AntiAliasing dfAA=NOAA);
 		/**
 		* close window
 		*/
@@ -88,7 +89,7 @@ namespace SolarSystem {
 
 	private:
 		//window methods
-		void __initWindow(const char* appname,unsigned int bites);
+		void __initWindow(const char* appname,unsigned int bites,AntiAliasing dfAA);
 		void __destroyWindow();
 
 		///window application instance
