@@ -21,9 +21,11 @@ namespace SolarSystem {
 			MSAAx4=4,
 			MSAAx8=8,
 			MSAAx16=16,
-			CSAA=32,
-			CSAAQ=64,
-			BESTAA=128
+			MSAAx32=32,
+			MSAAx64=64,
+			CSAA=128,
+			CSAAQ=256,
+			BESTAA=512
 		};
 		/**
 		* Screen orientation enum

@@ -94,7 +94,7 @@ void WindowsScreen::__initWindow(const char* appname,uint bites,AntiAliasing dfA
 	if(dfAA==NOAA){
 		DEBUG_ASSERT_REPLACE( chosenPixelFormat=ChoosePixelFormat(hDevCxt, &pfd) );
 	}
-	else if(dfAA>=MSAAx2 && dfAA<=MSAAx16) 
+	else if(dfAA>=MSAAx2 && dfAA<=MSAAx64) 
 		ChooseMSAntiAliasingPixelFormat(chosenPixelFormat,dfAA);
 	else if(dfAA==CSAA) 
 		ChooseCSAntiAliasingPixelFormat(chosenPixelFormat,4);
