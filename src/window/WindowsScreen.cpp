@@ -110,6 +110,9 @@ void WindowsScreen::__initWindow(const char* appname,uint bites,AntiAliasing dfA
 	DEBUG_ASSERT_REPLACE( wglMakeCurrent( hDevCxt, hGLCxt ) );
 	//openGL 2 init
 	initOpenGL2();
+	//enable AA
+	if(dfAA>=MSAAx2 && dfAA<=MSAAx64)
+	    glEnable( GL_MULTISAMPLE );
 	//return
 }
 void WindowsScreen::__destroyWindow(){
