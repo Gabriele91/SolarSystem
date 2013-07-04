@@ -1,6 +1,10 @@
 #include <stdafx.h>
 #include <Math2D.h>
-/* SolarSystem */
+#include "Math2D_SSE2.h"
+#include "Math2D_neon.h"
+#include "Math2D_vfp.h"
+
+/* Easy2D */
 using namespace SolarSystem;
 /* VECTOR2D */
 Vector2D Vector2D::ZERO;
@@ -483,6 +487,8 @@ void Matrix4x4::identity(){
 void Matrix4x4::zero(){
 	memset(entries,0,sizeof(float)*16);
 }
+
+
 Matrix4x4 Matrix4x4::mul(const Matrix4x4 &m4x4) const {
 
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
@@ -493,6 +499,10 @@ Matrix4x4 Matrix4x4::mul(const Matrix4x4 &m4x4) const {
                 Matrix4Mul( this->entries ,m4x4.entries, out_m4x4.entries);
         #endif
         return out_m4x4;
+#elif defined( SIMD_SSE2 )
+	 Matrix4x4 out_m4x4;
+		SSE2_Matrix4Mul(out_m4x4,m4x4);
+	 return out_m4x4;
 #else
 	return Matrix4x4(entries[0]*m4x4.entries[0]+entries[4]*m4x4.entries[1]+entries[8]*m4x4.entries[2]+entries[12]*m4x4.entries[3],
 					 entries[1]*m4x4.entries[0]+entries[5]*m4x4.entries[1]+entries[9]*m4x4.entries[2]+entries[13]*m4x4.entries[3],
@@ -525,6 +535,10 @@ Matrix4x4 Matrix4x4::mul2D(const Matrix4x4 &m4x4) const {
                 Matrix4Mul( this->entries ,m4x4.entries, out_m4x4.entries);
         #endif
         return out_m4x4;
+#elif defined( SIMD_SSE2 )
+	 Matrix4x4 out_m4x4;
+		SSE2_Matrix4Mul(out_m4x4,m4x4);
+	 return out_m4x4;
 #else
 	/*
 
@@ -643,6 +657,8 @@ DFORCEINLINE bool gluInvertMatrix(const float m[16],float invOut[16]){
 void Matrix4x4::inverse(){
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
 	Matrix4Invert(&(this->entries[0]),&(this->entries[0]));
+#elif defined( SIMD_SSE2 )
+	SSE2_Matrix4Inv(*this);
 #else
 	gluInvertMatrix(&(this->entries[0]),&(this->entries[0]));
 #endif
@@ -664,13 +680,17 @@ void Matrix4x4::inverse2D(){
 #endif
 }
 Matrix4x4 Matrix4x4::getInverse() const{
-Matrix4x4 out;
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
+	Matrix4x4 out;
 	Matrix4Invert(&(entries[0]),&(out.entries[0]));
+#elif defined( SIMD_SSE2 )
+	Matrix4x4 out(*this);
+	SSE2_Matrix4Inv(out);
 #else
+	Matrix4x4 out;
 	gluInvertMatrix(&(entries[0]),&(out.entries[0]));
 #endif
-	return out;
+return out;
 }
 Matrix4x4 Matrix4x4::getInverse2D() const{
 	///@code
@@ -790,6 +810,11 @@ void Matrix4x4::addScale(const Vector3D &v3){
 	entries[4]*=v3.x;	entries[5]*=v3.y;	entries[6]*=v3.z;
 	entries[8]*=v3.x;	entries[9]*=v3.y;	entries[10]*=v3.z;
 }
+void Matrix4x4::addScale(const Vector2D &v2){
+	entries[0]*=v2.x;	entries[1]*=v2.y;
+	entries[4]*=v2.x;	entries[5]*=v2.y;
+	entries[8]*=v2.x;	entries[9]*=v2.y;
+}
 void Matrix4x4::setScale(const Vector3D *v3){
         identity();
                 entries[0]=v3->x;
@@ -800,6 +825,11 @@ void Matrix4x4::addScale(const Vector3D *v3){
 	entries[0]*=v3->x;	entries[1]*=v3->y;	entries[2]*=v3->z;
 	entries[4]*=v3->x;	entries[5]*=v3->y;	entries[6]*=v3->z;
 	entries[8]*=v3->x;	entries[9]*=v3->y;	entries[10]*=v3->z;
+}
+void Matrix4x4::addScale(const Vector2D *v2){
+	entries[0]*=v2->x;	entries[1]*=v2->y;
+	entries[4]*=v2->x;	entries[5]*=v2->y;
+	entries[8]*=v2->x;	entries[9]*=v2->y;
 }
 void Matrix4x4::setScale(const Vector2D &v2){
 	identity();

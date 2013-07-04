@@ -45,7 +45,6 @@ namespace SolarSystem {
 		float scaleSun;
 		float scalePlanets;	
 		RenderTexture blackTexture;
-		Table configfile; 
 		bool enableBloom,enableGodRays;
 		Vec3 attenuation;
 		///////////////////////////////
@@ -166,9 +165,9 @@ namespace SolarSystem {
 
 	public:
 		
-		PlanetsManager(const Utility::Path& path,
-					   Camera *camera,
-					   SolarRender *render);
+		PlanetsManager(Camera *camera,
+					   SolarRender *render,
+					   const Table& configfile);
 		virtual ~PlanetsManager();
 
 		DFORCEINLINE void setScaleEllipses(float scale){

@@ -25,16 +25,22 @@ namespace SolarSystem {
 		float incDaysDt;
 
 	public:
-		SolarMain(const Utility::Path& config):
-			MainInstance("Solar System",1280,720,32,60,false,Screen::MSAAx16)
-			,system(config,&camera,&render)
+		SolarMain(Table& config):
+			MainInstance("Solar System",
+						 (int)config.getFloat("width",640),
+						 (int)config.getFloat("height",480),
+						 (int)config.getFloat("bits",32),
+						 (int)config.getFloat("fps",60),
+						 config.getString("fullscreen","false")=="true",
+						 (int)config.getFloat("MSAA",0))
+			,system(&camera,&render,config.getTable("configureFile"))
 			,cameraCtrl(&camera)
 		{}
 		virtual void start(){
 		//input
-		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
-		Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
-		Application::instance()->getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
+		getInput()->addHandler((Input::KeyboardHandler*)this);
+		getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+		getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
 		//init render
 		render.init();
 		//setup camera
@@ -53,10 +59,10 @@ namespace SolarSystem {
 		/////////////////////////////////////////////
 		}
 		virtual void run(float dt){
-			incDaysDt+=(Application::instance()->getInput()->getKeyDown(Key::R)?0.2:0.0);
-			incDaysDt-=(Application::instance()->getInput()->getKeyDown(Key::T)?0.2:0.0);
-			incDaysDt+=(Application::instance()->getInput()->getKeyHit(Key::F)?0.1:0.0);
-			incDaysDt-=(Application::instance()->getInput()->getKeyHit(Key::G)?0.1:0.0);
+			incDaysDt+=(getInput()->getKeyDown(Key::R)?0.2:0.0);
+			incDaysDt-=(getInput()->getKeyDown(Key::T)?0.2:0.0);
+			incDaysDt+=(getInput()->getKeyHit(Key::F)?0.1:0.0);
+			incDaysDt-=(getInput()->getKeyHit(Key::G)?0.1:0.0);
 			days+=incDaysDt*dt;
 			//font buffer
 			system.setData(days);
@@ -77,8 +83,8 @@ namespace SolarSystem {
 				cameraCtrl.setMoveVelocity(Vec3(1000.0,1000.0,1000.0));
 			else if(key==Key::P){
 				auto img=Image::getImageFromScreen(
-					Application::instance()->getScreen()->getWidth(),
-					Application::instance()->getScreen()->getHeight()
+					getScreen()->getWidth(),
+					getScreen()->getHeight()
 					);					
 					Utility::Path filePath("Screen/screen.tga");
 					for(int i=0;filePath.existsFile();++i){

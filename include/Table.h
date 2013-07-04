@@ -317,7 +317,7 @@ namespace SolarSystem{
 		/** serialize table into a string */
 		String serialize(int countspace=0) const;
 		/** return  deserialize erros */
-		const String& getDeserializeErros(){
+		const String& getDeserializeErros() const{
 			return dErrors.toString();
 		}
 		/** return path where is loaded */
@@ -410,7 +410,7 @@ namespace SolarSystem{
 			void clear(){
 				errors;
 			}
-			const String& toString(){
+			const String& toString() const{
 				return errors;
 			}
 			bool hasErrors(){ return errors.size()>0; }

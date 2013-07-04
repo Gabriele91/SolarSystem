@@ -123,6 +123,9 @@
     <ClCompile Include="src\window\WGL_ARB_multisample.cpp">
       <Filter>File di origine\window</Filter>
     </ClCompile>
+    <ClCompile Include="src\Math2D_SSE2.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="src\window\WGL_ARB_multisample.h">
       <Filter>File di origine\window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math2D_SSE2.h">
+      <Filter>File di origine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

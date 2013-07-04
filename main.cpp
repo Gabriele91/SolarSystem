@@ -5,9 +5,9 @@
 using namespace SolarSystem;
 
 int main(int argc,const char** args){
-	String configfile(argc>=2?args[1]:"SolarSystem.conf");
 	Application::create();
-	Application::instance()->exec(new SolarMain(configfile));
+	Table configureTable("SolarSystem.conf");
+	Application::instance()->exec(new SolarMain(configureTable));
 	delete Application::instance()->getMainInstance();
 	Application::close();
 	return 0; 

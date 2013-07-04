@@ -3,10 +3,13 @@
 
 #include <Config.h>
 #include <Types.h>
-#include <Screen.h>
 #include <EString.h>
 
 namespace SolarSystem {
+	
+	class Screen;
+	class Audio;
+	class Input;
 
     /** 
     * Abstract class, represent the main application instance 
@@ -22,13 +25,14 @@ namespace SolarSystem {
 					 uint FreamPerSecond=60,
 					 bool fullscreen=false,
 					 int AntiAliasing=0);
-
 		virtual ~MainInstance(){};
 		virtual void start()=0;
 		virtual void run(float dt)=0;
 		virtual void end()=0;
 
-	private:
+		Screen* getScreen();
+		Input* getInput();
+		Audio* getAudio();
 
 	};
 

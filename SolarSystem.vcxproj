@@ -89,6 +89,7 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MainInstance.cpp" />
     <ClCompile Include="src\Math2D.cpp" />
+    <ClCompile Include="src\Math2D_SSE2.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="SolarSystem\SolarSky.h" />
     <ClInclude Include="src\Image\Image.h" />
     <ClInclude Include="src\Image\lodepng.h" />
+    <ClInclude Include="src\Math2D_SSE2.h" />
     <ClInclude Include="src\Thread\Mutex.h" />
     <ClInclude Include="src\Thread\MutexConf.h" />
     <ClInclude Include="src\Thread\Thread.h" />

@@ -1,0 +1,13 @@
+
+{    
+    
+    scaleEllipses=0.03
+    scalePlanets=0.2
+    scaleSun=0.90	
+	enableFxaa="true"	
+	skybox=<sky/skybox.e2d>	
+    sun=<sun.e2d>
+    material=<defaultMaterial.e2d>
+    planets=<planets.e2d>
+	shadows=<shadows.e2d>
+}

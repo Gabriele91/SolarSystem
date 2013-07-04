@@ -5,10 +5,10 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-PlanetsManager::PlanetsManager(const Utility::Path& path,
-							   Camera *camera,
-							   SolarRender *render)
-	:sun(0),camera(camera),render(render),configfile(path)
+PlanetsManager::PlanetsManager(Camera *camera,
+							   SolarRender *render,
+							   const Table& configfile)
+	:sun(0),camera(camera),render(render)
 	,blackTexture(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight())
 	,worldTexture(Application::instance()->getScreen()->getWidth(),
@@ -53,11 +53,11 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	DEBUG_ASSERT_MSG(configfile.existsAsType("sun",Table::TABLE),"PlanetsManager error : not found sun table");
 	DEBUG_ASSERT_MSG(configfile.existsAsType("planets",Table::TABLE),"PlanetsManager error : not found planets table");
 	//get tables
-	const Table& sun=configfile.getTable("sun");
-	const Table& planets=configfile.getTable("planets");
+	const Table& sun=configfile.getConstTable("sun");
+	const Table& planets=configfile.getConstTable("planets");
 	//get skybox textures
 	if(configfile.existsAsType("skybox",Table::TABLE)){
-		const Table& skybox=configfile.getTable("skybox");
+		const Table& skybox=configfile.getConstTable("skybox");
 		String pathFilesSkybox=skybox.getTablePath().getDirectory()+"/";
 		DEBUG_ASSERT_MSG(skybox.existsAsType("top",Table::STRING)&&
 						 skybox.existsAsType("bottom",Table::STRING)&&
@@ -133,7 +133,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	Vec4 emissionMat(Vec3::ZERO,1.0f);
 	float shininessMat=1.0;
 	if(configfile.existsAsType("material",Table::TABLE)){
-		const Table& material=configfile.getTable("material");
+		const Table& material=configfile.getConstTable("material");
 		ambienMat=material.getVector4D("ambien",ambienMat);
 		diffuseMat=material.getVector4D("diffuse",diffuseMat);
 		specularMat=material.getVector4D("specular",specularMat);
@@ -229,7 +229,7 @@ PlanetsManager::PlanetsManager(const Utility::Path& path,
 	}
 	//////////////////////////////////////////////////////////////
 	if(configfile.existsAsType("shadows",Table::TABLE)){
-		const Table& planets=configfile.getTable("shadows");
+		const Table& planets=configfile.getConstTable("shadows");
 		for(auto& table:planets){
 			if(table.second->asType(Table::TABLE)){
 				SolarShadowObjects sdo;
