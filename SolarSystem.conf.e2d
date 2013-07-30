@@ -5,8 +5,9 @@
 	height=720
 	bits=32
 	fps=30
-	//fullscreen="true"
-	MSAA=8
+	fullscreen="true"
+	MSAA=4
 	solarSystem=<img/SolarSystem.e2d>
 	menu=<img/menu/SolarMenu.e2d>
+	startMenu=<img/startmenu/SolarMenu.e2d>
 }

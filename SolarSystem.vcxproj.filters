@@ -138,6 +138,9 @@
     <ClCompile Include="SolarGui\SolarMenu.cpp">
       <Filter>SolarGui</Filter>
     </ClCompile>
+    <ClCompile Include="SolarGui\SolarStartMenu.cpp">
+      <Filter>SolarGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -266,6 +269,9 @@
     <ClInclude Include="SolarGui\SolarMenu.h">
       <Filter>SolarGui</Filter>
     </ClInclude>
+    <ClInclude Include="SolarGui\SolarStartMenu.h">
+      <Filter>SolarGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Image\Image.inl">
@@ -294,9 +300,6 @@
     </None>
     <None Include="shader\sunLight.vs">
       <Filter>shader</Filter>
-    </None>
-    <None Include="SolarSystem.conf">
-      <Filter>File di risorse</Filter>
     </None>
     <None Include="shader\bloom.ps">
       <Filter>shader</Filter>
@@ -330,6 +333,9 @@
     </None>
     <None Include="shader\fxaa.ps">
       <Filter>shader</Filter>
+    </None>
+    <None Include="SolarSystem.conf.e2d">
+      <Filter>File di risorse</Filter>
     </None>
   </ItemGroup>
 </Project>

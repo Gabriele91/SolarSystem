@@ -76,6 +76,7 @@
     <ClCompile Include="SolarGui\SolarButton.cpp" />
     <ClCompile Include="SolarGui\SolarDialog.cpp" />
     <ClCompile Include="SolarGui\SolarMenu.cpp" />
+    <ClCompile Include="SolarGui\SolarStartMenu.cpp" />
     <ClCompile Include="SolarSystem\Planet.cpp" />
     <ClCompile Include="SolarSystem\PlanetsManager.cpp" />
     <ClCompile Include="SolarSystem\SolarFly.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="SolarGui\SolarButton.h" />
     <ClInclude Include="SolarGui\SolarDialog.h" />
     <ClInclude Include="SolarGui\SolarMenu.h" />
+    <ClInclude Include="SolarGui\SolarStartMenu.h" />
     <ClInclude Include="SolarSystem\Planet.h" />
     <ClInclude Include="SolarSystem\PlanetsManager.h" />
     <ClInclude Include="SolarSystem\SolarFly.h" />
@@ -172,7 +174,7 @@
     <None Include="shader\sunLightAtmosphere.vs" />
     <None Include="shader\sunLightClouds.ps" />
     <None Include="shader\sunLightClouds.vs" />
-    <None Include="SolarSystem.conf" />
+    <None Include="SolarSystem.conf.e2d" />
     <None Include="src\Image\Image.inl" />
     <None Include="src\Thread\MutexWin32.inl" />
     <None Include="src\Thread\ThreadWin32.inl" />
