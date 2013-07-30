@@ -31,6 +31,9 @@
     <Filter Include="shader">
       <UniqueIdentifier>{6fa42da3-4375-4aa8-b703-8adf77f5af13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolarGui">
+      <UniqueIdentifier>{0124fa38-d85f-43d5-805e-bcc38afb559a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -125,6 +128,15 @@
     </ClCompile>
     <ClCompile Include="src\Math2D_SSE2.cpp">
       <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarGui\SolarButton.cpp">
+      <Filter>SolarGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarGui\SolarDialog.cpp">
+      <Filter>SolarGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarGui\SolarMenu.cpp">
+      <Filter>SolarGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="src\Math2D_SSE2.h">
       <Filter>File di origine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarGui\SolarButton.h">
+      <Filter>SolarGui</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarGui\SolarDialog.h">
+      <Filter>SolarGui</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarGui\SolarMenu.h">
+      <Filter>SolarGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

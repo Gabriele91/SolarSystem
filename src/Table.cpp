@@ -320,7 +320,9 @@ int Table::__deserialize(const String& intextfile,int* lenRead,unsigned int* stl
 				setPt(key,fl);
 				break;
 			case TK_TABLE_START:
-				if(!(fl=(float)(tmp=&createTablePt(key))->__deserialize(prtC,&i,(unsigned int*)(&cntEL)))){
+				tmp=&createTablePt(key);
+				tmp->pathTable=this->pathTable;
+				if(!(fl=(float)(tmp)->__deserialize(prtC,&i,(unsigned int*)(&cntEL)))){
 					dErrors.push(cntEL,*prtC,"error sub table: not valid:\n"+tmp->getDeserializeErros());
 					return false;
 				}

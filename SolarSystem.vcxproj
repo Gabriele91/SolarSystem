@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -61,7 +61,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -73,6 +73,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SolarGui\SolarButton.cpp" />
+    <ClCompile Include="SolarGui\SolarDialog.cpp" />
+    <ClCompile Include="SolarGui\SolarMenu.cpp" />
     <ClCompile Include="SolarSystem\Planet.cpp" />
     <ClCompile Include="SolarSystem\PlanetsManager.cpp" />
     <ClCompile Include="SolarSystem\SolarFly.cpp" />
@@ -130,6 +133,9 @@
     <ClInclude Include="include\window\WindowsApp.h" />
     <ClInclude Include="include\window\WindowsInput.h" />
     <ClInclude Include="include\window\WindowsScreen.h" />
+    <ClInclude Include="SolarGui\SolarButton.h" />
+    <ClInclude Include="SolarGui\SolarDialog.h" />
+    <ClInclude Include="SolarGui\SolarMenu.h" />
     <ClInclude Include="SolarSystem\Planet.h" />
     <ClInclude Include="SolarSystem\PlanetsManager.h" />
     <ClInclude Include="SolarSystem\SolarFly.h" />

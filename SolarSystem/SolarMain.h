@@ -9,6 +9,7 @@
 #include <Planet.h>
 #include <PlanetsManager.h>
 #include <SolarFly.h>
+#include <SolarMenu.h>
 #define NOT_INCLUDE_INL
 #include "../src/Image/Image.h"
 
@@ -18,6 +19,7 @@ namespace SolarSystem {
 							Input::KeyboardHandler{
 		SolarFly	   cameraCtrl;
 		SolarRender    render;
+		SolarMenu      menu;
 		PlanetsManager system;
 		Camera camera;
 		Object obj;
@@ -33,7 +35,8 @@ namespace SolarSystem {
 						 (int)config.getFloat("fps",60),
 						 config.getString("fullscreen","false")=="true",
 						 (int)config.getFloat("MSAA",0))
-			,system(&camera,&render,config.getTable("configureFile"))
+			,menu(config.getTable("menu"))
+			,system(&camera,&render,config.getTable("solarSystem"))
 			,cameraCtrl(&camera)
 		{}
 		virtual void start(){
@@ -57,16 +60,32 @@ namespace SolarSystem {
 		days=900;
 		incDaysDt=0.2;
 		/////////////////////////////////////////////
+		menu.addOnClick("earth",[this](){
+			this->camera.setTranslation(Vec3(0,0,300));
+		});
+		menu.addOnClick("sun",[this](){
+			this->camera.setTranslation(Vec3(0,0,1300));
+		});
+		menu.addOnClick("moon",[this](){
+			this->camera.setTranslation(Vec3(0,0,-300));
+		});
+
 		}
 		virtual void run(float dt){
+			//debug input
 			incDaysDt+=(getInput()->getKeyDown(Key::R)?0.2:0.0);
 			incDaysDt-=(getInput()->getKeyDown(Key::T)?0.2:0.0);
 			incDaysDt+=(getInput()->getKeyHit(Key::F)?0.1:0.0);
 			incDaysDt-=(getInput()->getKeyHit(Key::G)?0.1:0.0);
+			//game logic
 			days+=incDaysDt*dt;
-			//font buffer
 			system.setData(days);
+			menu.update(dt);
+			//draw solar
 			system.draw();
+			//draw gui
+			menu.draw(&render);
+			//font buffer
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}
