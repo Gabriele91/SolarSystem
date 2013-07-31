@@ -34,6 +34,9 @@
     <Filter Include="SolarGui">
       <UniqueIdentifier>{0124fa38-d85f-43d5-805e-bcc38afb559a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolarAudio">
+      <UniqueIdentifier>{faf89ccd-9bb6-4d8f-abdf-2ecc84f8dbb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -140,6 +143,18 @@
     </ClCompile>
     <ClCompile Include="SolarGui\SolarStartMenu.cpp">
       <Filter>SolarGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarAudio\Sound.cpp">
+      <Filter>SolarAudio</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarAudio\APIAudio.cpp">
+      <Filter>SolarAudio</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarAudio\AbstractSource.cpp">
+      <Filter>SolarAudio</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarAudio\WavLoader.cpp">
+      <Filter>SolarAudio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +286,18 @@
     </ClInclude>
     <ClInclude Include="SolarGui\SolarStartMenu.h">
       <Filter>SolarGui</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarAudio\Sound.h">
+      <Filter>SolarAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarAudio\AbstractSource .h">
+      <Filter>SolarAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarAudio\AudioLoader.h">
+      <Filter>SolarAudio</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarAudio\APIAudio.h">
+      <Filter>SolarAudio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

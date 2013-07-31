@@ -6,6 +6,7 @@
 	bits=32
 	fps=30
 	fullscreen="true"
+	sound="sound/main.wav"
 	MSAA=4
 	solarSystem=<img/SolarSystem.e2d>
 	menu=<img/menu/SolarMenu.e2d>

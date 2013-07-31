@@ -1,6 +1,13 @@
 *.7z
 *.exe
 
+#ingnore media file
+sound*/
+img*/
+
+#ingnore dependences
+dependences-*/
+
 #print screen
 [Ss]creen*/*.tga
 

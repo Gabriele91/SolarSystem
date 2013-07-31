@@ -38,19 +38,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(ProjectDir)dependences-win32\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(ProjectDir)dependences-win32\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;dependences-win32/include/;SolarAudio/</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>openGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -61,18 +66,22 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;dependences-win32/include/;SolarAudio/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openGL32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SolarAudio\AbstractSource.cpp" />
+    <ClCompile Include="SolarAudio\APIAudio.cpp" />
+    <ClCompile Include="SolarAudio\Sound.cpp" />
+    <ClCompile Include="SolarAudio\WavLoader.cpp" />
     <ClCompile Include="SolarGui\SolarButton.cpp" />
     <ClCompile Include="SolarGui\SolarDialog.cpp" />
     <ClCompile Include="SolarGui\SolarMenu.cpp" />
@@ -134,6 +143,10 @@
     <ClInclude Include="include\window\WindowsApp.h" />
     <ClInclude Include="include\window\WindowsInput.h" />
     <ClInclude Include="include\window\WindowsScreen.h" />
+    <ClInclude Include="SolarAudio\AbstractSource .h" />
+    <ClInclude Include="SolarAudio\APIAudio.h" />
+    <ClInclude Include="SolarAudio\AudioLoader.h" />
+    <ClInclude Include="SolarAudio\Sound.h" />
     <ClInclude Include="SolarGui\SolarButton.h" />
     <ClInclude Include="SolarGui\SolarDialog.h" />
     <ClInclude Include="SolarGui\SolarMenu.h" />

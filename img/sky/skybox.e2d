@@ -1,9 +1,0 @@
-{
-	color=(0.4 0.4 0.4 1.0)
-	top="top.png"
-	bottom="bottom.png"
-	front="front.png"
-	back="back.png"
-	left="left.png"
-	right="right.png"
-}

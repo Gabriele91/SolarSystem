@@ -36,8 +36,8 @@
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <window/OpenGLWindow.h>
-	//#include <AL/al.h>
-	//#include <AL/alc.h>
+	#include <AL/al.h>
+	#include <AL/alc.h>
 #elif defined(__linux__)
 	#define PLATFORM_LINUX
 	#define PLATFORM_UNIX
@@ -81,7 +81,9 @@
 #ifdef _MSC_VER
 	#define DFORCEINLINE __forceinline
 	#define DINLINE __inline
-	#define COMPILER_VISUAL_STUDIO
+	#define COMPILER_VISUAL_STUDIO	
+	#define ASPACKED( __Declaration__ ) __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop) )
+	#define ALIGNED( size, __Declaration__ ) __declspec(align(size)) __Declaration__
 
 	#if _MSC_VER == 1600
 		#include <utility>
@@ -92,7 +94,10 @@
 #elif __GNUC__>=4 && __GNUC_MINOR__ >=6
 	#define DFORCEINLINE __attribute__ ((always_inline))
 	#define DINLINE inline
-	#define COMPILER_GCC
+	#define COMPILER_GCC    
+	#define ASPACKED( __Declaration__ ) __Declaration__ __attribute__((__packed__))
+	#define ALIGNED( size, __Declaration__ )  __Declaration__ __attribute__ ((aligned(size)))
+
 #else
 	#error "compiler not supported"
 #endif
