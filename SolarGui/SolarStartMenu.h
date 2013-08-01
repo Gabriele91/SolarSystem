@@ -20,7 +20,6 @@ namespace SolarSystem {
 
 		Texture		   *credits;
 		Matrix4x4      creditsMatrix;
-		float		   creditsOffset;
 
 		/* background or skybox */
 		Texture		   *background;
@@ -77,21 +76,20 @@ namespace SolarSystem {
 			Utility::Path creditspath=pathConfig+startMenu.getString("credits","credits.png");
 			credits=new Texture(creditspath);					
 
-			creditsOffset=startMenu.getFloat("creditsOffset",0);
 			//query
 			Screen *screen=Application::instance()->getScreen();
 			Vec2 windowSize(screen->getWidth(),screen->getHeight());
 			Vec2 windowCenter=windowSize*0.5;
 			//init logo matrix
-			Vec2 logoscale(512,512);
+			Vec2 logoscale=startMenu.getVector2D("logoSize",Vec2(512,512));
 			logoMatrix.setScale(logoscale);
 			logoMatrix[12]=windowCenter.x;
-			logoMatrix[13]=windowCenter.y;
+			logoMatrix[13]=windowCenter.y+startMenu.getFloat("logoOffset",0.0);
 			//init crediti matrix
-			Vec2 creditsscale(256,256);
+			Vec2 creditsscale=startMenu.getVector2D("creditsSize",Vec2(256,256));
 			creditsMatrix.setScale(creditsscale);
 			creditsMatrix[12]=windowCenter.x;
-			creditsMatrix[13]=windowCenter.y+creditsOffset;
+			creditsMatrix[13]=windowCenter.y+startMenu.getFloat("creditsOffset",0);
 
 
 			if(startBackground.existsAsType("skybox",Table::TABLE)){

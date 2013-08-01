@@ -18,11 +18,11 @@ namespace SolarSystem{
 			soundMenu=NULL;
 			soundSystem=NULL;
 			timeChange=config.getFloat("soundChange",1000.0f);
-			//load sound
-			if(config.existsAsType("soundMenu",Table::STRING)) 
-				soundMenu=new Sound(config.getString("soundMenu"));
-			if(config.existsAsType("soundSystem",Table::STRING)) 
-				soundSystem=new Sound(config.getString("soundSystem"));
+			//load sound			
+			DEBUG_ASSERT_MSG(config.existsAsType("soundMenu",Table::STRING),"SolarSound: parameter soundMenu must to be setted");
+			soundMenu=new Sound(config.getString("soundMenu"));
+			DEBUG_ASSERT_MSG(config.existsAsType("soundSystem",Table::STRING),"SolarSound: parameter soundSystem must to be setted");
+			soundSystem=new Sound(config.getString("soundSystem"));
 		};	
 		virtual ~SolarSound(){	
 			if(soundSystem) delete soundSystem;
