@@ -4,11 +4,21 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
+Table::Table():index(0),pathTable(""){}
+Table::Table(const Table& cptable)
+	:index(cptable.index),
+	 pathTable(cptable.pathTable){
+	//copy values
+	for(auto value:cptable){
+		Value *newvalue=(value.second)->clone();
+		this->table[value.first]=newvalue;
+	}
+
+}
 Table::Table(const Utility::Path& pathfile):index(0),pathTable("")
 {
 	loadFromFile(pathfile);
 }
-Table::Table():index(0),pathTable(""){}
 
 
 bool Table::loadFromFile(const Utility::Path& pathfile){

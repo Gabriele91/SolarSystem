@@ -26,6 +26,8 @@ namespace SolarSystem {
 
 		bool		   closeApp;
 
+		Table		   config;
+
 	public:
 
 		SolarStartMenu(Table& config):
@@ -38,8 +40,21 @@ namespace SolarSystem {
 						 (int)config.getFloat("MSAA",0))
 			,menu(config.getTable("startMenu"))
 			,closeApp(true)
+			,config(config)
 		{
-			
+		}
+
+
+		bool doCloseApp(){
+			return closeApp;
+		}
+		
+		void drawTexture(Texture* texture,const Matrix4x4& tranform);
+
+		void start(){
+			//init render
+			render.init();
+			//load
 			Utility::Path logopath=config.getTable("startMenu").getTablePath().getDirectory()+"/"+
 								   config.getTable("startMenu").getString("logo","logo.png");
 			logo=new Texture(logopath);
@@ -53,18 +68,6 @@ namespace SolarSystem {
 			background=new Texture(backgroundpath);
 
 			creditsOffset=config.getTable("startMenu").getFloat("creditsOffset",0);
-		}
-
-
-		bool doCloseApp(){
-			return closeApp;
-		}
-		
-		void drawTexture(Texture* texture,const Matrix4x4& tranform);
-
-		void start(){
-			//init render
-			render.init();
 			//query
 			Screen *screen=Application::instance()->getScreen();
 			Vec2 windowSize(screen->getWidth(),screen->getHeight());

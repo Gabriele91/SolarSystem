@@ -1,13 +1,13 @@
 {
-	//width=1920
-	//height=1080
-	width=1280
-	height=720
+	width=1920
+	height=1080
+	//width=1280
+	//height=720
 	bits=32
 	fps=30
 	fullscreen="true"
 	sound="sound/main.wav"
-	MSAA=4
+	MSAA=8
 	solarSystem=<img/SolarSystem.e2d>
 	menu=<img/menu/SolarMenu.e2d>
 	startMenu=<img/startmenu/SolarMenu.e2d>

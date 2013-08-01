@@ -21,7 +21,7 @@ void SolarStartMenu::drawTexture(Texture* texture,const Matrix4x4& tranform){
 	glLoadMatrixf(projection);
 	glMatrixMode(GL_MODELVIEW);
 	//draw
-	static const float
+	float
 	xyUV[]={
 			-0.5,-0.5,0.0,0.0,
 			-0.5, 0.5,0.0,1.0,
@@ -31,6 +31,7 @@ void SolarStartMenu::drawTexture(Texture* texture,const Matrix4x4& tranform){
 	//disable vbo
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    glDisableClientState(GL_NORMAL_ARRAY);
 	//matrix logo
 	glLoadMatrixf(tranform);
 	//texture
@@ -42,4 +43,5 @@ void SolarStartMenu::drawTexture(Texture* texture,const Matrix4x4& tranform){
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	//restore state
 	render.enableZBuffer();
+    glEnableClientState(GL_NORMAL_ARRAY);
 }

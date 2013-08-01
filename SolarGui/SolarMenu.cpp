@@ -121,6 +121,7 @@ void SolarMenu::draw(SolarRender* render){
 	//disable vbo
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    glDisableClientState(GL_NORMAL_ARRAY);
 
 	for(auto button:buttons){
 		//matrix button
@@ -134,6 +135,7 @@ void SolarMenu::draw(SolarRender* render){
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 	//restore state
+    glEnableClientState(GL_NORMAL_ARRAY);
 	render->enableZBuffer();
 	render->setBlendState(blendState);
 	render->setMatrixsState(matrixsState);

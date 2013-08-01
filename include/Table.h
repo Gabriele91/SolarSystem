@@ -135,6 +135,7 @@ namespace SolarSystem{
 
 		/* costructor */
 		Table();
+		Table(const Table& cptable);
 		Table(const Utility::Path& pathfile);
 		/* load table from file */
 		bool loadFromFile(const Utility::Path& pathfile);
