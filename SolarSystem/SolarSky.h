@@ -6,6 +6,7 @@
 #include <Utility.h>
 #include <Camera.h>
 #include <SolarRender.h>
+#include <Table.h>
 
 namespace SolarSystem {
 
@@ -13,12 +14,19 @@ namespace SolarSystem {
 		//
 		SolarRender *render;
 		//
-		Texture top,
-				bottom,
-				front,
-				back,
-				left,
-				right;
+		Texture *top,
+				*bottom,
+				*front,
+				*back,
+				*left,
+				*right;
+		void loadTextures(
+				 const Utility::Path& top,
+				 const Utility::Path& bottom,
+				 const Utility::Path& front,
+				 const Utility::Path& back,
+				 const Utility::Path& left,
+				 const Utility::Path& right);
 		//opengl info
 		struct BuffersSkybox{
 			uint top,
@@ -42,6 +50,10 @@ namespace SolarSystem {
 				 const Utility::Path& back,
 				 const Utility::Path& left,
 				 const Utility::Path& right);
+
+		SolarSky(SolarRender *render,
+				 const Table& skybox);
+				 
 
 		DFORCEINLINE void setColor(const Vec4& argcolor){
 			color=argcolor;

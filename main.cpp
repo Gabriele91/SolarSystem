@@ -2,28 +2,22 @@
 #include <Application.h>
 #include <SolarMain.h>
 #include <SolarStartMenu.h>
-#include <APIAudio.h>
-#include <Sound.h>
+#include <SolarSound.h>
 
 using namespace SolarSystem;
 
 int main(int argc,const char** args){
 	//open audio device
 	APIAudio::init();
-	Sound *music=NULL;
 
 	//open an application instance
 	Application::create();
 
 	//load table
 	Table configureTable("SolarSystem.conf.e2d");
-	//load sound
-	if(configureTable.existsAsType("sound",Table::STRING)) {
-		music=new Sound(configureTable.getString("sound"));
-		music->loop();
-	}
-
+	SolarSound *solarMusic=new SolarSound(configureTable);
 	//start menu
+	solarMusic->loopMenu();
 	SolarStartMenu *solarmenu=new SolarStartMenu(configureTable);
 	Application::instance()->exec(solarmenu);
 	bool isNotClose=!solarmenu->doCloseApp();
@@ -31,7 +25,8 @@ int main(int argc,const char** args){
 	Application::close();
 
 	//start application solar
-	if(isNotClose){		
+	if(isNotClose){			
+		solarMusic->loopSystem();	
 		Application::create();
 		SolarMain *solarmain=new SolarMain(configureTable);
 		Application::instance()->exec(solarmain);
@@ -40,7 +35,7 @@ int main(int argc,const char** args){
 	}
 	
 	//close audio device
-	if(music) delete music;
+	delete solarMusic;
 	APIAudio::exit();
 	return 0; 
 }

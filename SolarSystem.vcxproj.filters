@@ -299,6 +299,9 @@
     <ClInclude Include="SolarAudio\APIAudio.h">
       <Filter>SolarAudio</Filter>
     </ClInclude>
+    <ClInclude Include="SolarAudio\SolarSound.h">
+      <Filter>SolarAudio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Image\Image.inl">

@@ -146,6 +146,7 @@
     <ClInclude Include="SolarAudio\AbstractSource .h" />
     <ClInclude Include="SolarAudio\APIAudio.h" />
     <ClInclude Include="SolarAudio\AudioLoader.h" />
+    <ClInclude Include="SolarAudio\SolarSound.h" />
     <ClInclude Include="SolarAudio\Sound.h" />
     <ClInclude Include="SolarGui\SolarButton.h" />
     <ClInclude Include="SolarGui\SolarDialog.h" />

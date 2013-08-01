@@ -56,27 +56,8 @@ PlanetsManager::PlanetsManager(Camera *camera,
 	const Table& sun=configfile.getConstTable("sun");
 	const Table& planets=configfile.getConstTable("planets");
 	//get skybox textures
-	if(configfile.existsAsType("skybox",Table::TABLE)){
-		const Table& skybox=configfile.getConstTable("skybox");
-		String pathFilesSkybox=skybox.getTablePath().getDirectory()+"/";
-		DEBUG_ASSERT_MSG(skybox.existsAsType("top",Table::STRING)&&
-						 skybox.existsAsType("bottom",Table::STRING)&&
-						 skybox.existsAsType("front",Table::STRING)&&
-						 skybox.existsAsType("back",Table::STRING)&&
-						 skybox.existsAsType("left",Table::STRING)&&
-						 skybox.existsAsType("right",Table::STRING),
-						 "PlanetsManager error : not found top, bottom, front, back, left, right in skybox")
-		this->skybox=new SolarSky(render,
-								  pathFilesSkybox+skybox.getString("top"),
-								  pathFilesSkybox+skybox.getString("bottom"),
-								  pathFilesSkybox+skybox.getString("front"),
-								  pathFilesSkybox+skybox.getString("back"),
-								  pathFilesSkybox+skybox.getString("left"),
-								  pathFilesSkybox+skybox.getString("right"));
-		//color skybox
-		this->skybox->setColor(skybox.getVector4D("color",Vec4(1.0,1.0,1.0,1.0)));
-
-	}
+	if(configfile.existsAsType("skybox",Table::TABLE))
+		this->skybox=new SolarSky(render,configfile.getConstTable("skybox"));
 	//enable bloom
 	if(enableBloom=(sun.getString("enableBloom","true")=="true")){
 		//BLOOM 
