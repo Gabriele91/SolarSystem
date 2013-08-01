@@ -44,8 +44,8 @@ ALuint OpenALReadWav(const Utility::Path& path,int & outformat,float & leng){
 		ushort audioFormat;
 		ushort numChannels;
 		uint sampleRate;
-		uint byteRate;
-		ushort blockAlign;
+		uint byteRate;// SampleRate * NumChannels * BitsPerSample/8
+		ushort blockAlign;//  NumChannels * BitsPerSample/8
 		ushort bitsPerSample;
 	});
 
@@ -88,8 +88,7 @@ ALuint OpenALReadWav(const Utility::Path& path,int & outformat,float & leng){
 	alBufferData(buffer, format, rawData->data, rawData->subchunk2Size, wavRIFFHeader->sampleRate);
  	DEBUG_ASSERT_MSG(alGetError() == AL_NO_ERROR, "LoadWav: Could not load buffer data");
 	//return len sound	
-	leng=((float)rawData->subchunk2Size/(float)wavRIFFHeader->sampleRate)/(float)wavRIFFHeader->numChannels;
-	if(wavRIFFHeader->bitsPerSample == 16) leng/=2;
+	leng=((float)rawData->subchunk2Size/(float)wavRIFFHeader->byteRate);
 	//dealloc
 	free(data);
 	//return buffer id
