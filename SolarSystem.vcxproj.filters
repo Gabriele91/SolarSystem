@@ -168,6 +168,9 @@
     <ClCompile Include="SolarAudio\SolarSound.cpp">
       <Filter>SolarAudio</Filter>
     </ClCompile>
+    <ClCompile Include="SolarApp.cpp">
+      <Filter>File di risorse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">

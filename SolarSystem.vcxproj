@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SolarApp.cpp" />
     <ClCompile Include="SolarAudio\AbstractSource.cpp" />
     <ClCompile Include="SolarAudio\APIAudio.cpp" />
     <ClCompile Include="SolarAudio\SolarSound.cpp" />

@@ -9,8 +9,15 @@
 	fullscreen="false"
 	MSAA=4
 	
+	//loading screen	
+	//loadingScreen=<string>
+	//loadingScreenSize=(x y)(512 512)
+	//loadingScreenOffset=<float>
+	loadingScreen="img/please_wait.png"
+	loadingScreenOffset=40
+	
 	//sound area
-	soundChange=4000
+	soundChange=2000
 	soundMenu="sound/menu.wav"
 	soundSystem="sound/solar.wav"
 	

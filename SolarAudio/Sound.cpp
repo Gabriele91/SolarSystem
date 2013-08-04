@@ -44,7 +44,7 @@ void Sound::enableLoop(){
 }
 //suona
 void Sound::play(){
- alSourceRewind(source);
+ alSourceRewind(source); //alSourcei(source, AL_BYTE_OFFSET, 0);
  alSourcePlay (source);
 }
 //suona loop

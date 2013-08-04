@@ -39,9 +39,7 @@ namespace SolarSystem {
 		{}
 		virtual void start(){
 		//input
-		getInput()->addHandler((Input::KeyboardHandler*)this);
-		getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
-		getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
+		enableEvents();
 		//init render
 		render.init();
 		//setup camera
@@ -87,12 +85,20 @@ namespace SolarSystem {
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}
-		virtual void end(){
-            
+		void enableEvents(){
+			//input
+			getInput()->addHandler((Input::KeyboardHandler*)this);
+			getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+			getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);			
+		}
+		void disableEvents(){
             //input
             getInput()->removeHandler((Input::KeyboardHandler*)this);
             getInput()->removeHandler((Input::KeyboardHandler*)&cameraCtrl);
-            getInput()->removeHandler((Input::MouseHandler*)&cameraCtrl);
+            getInput()->removeHandler((Input::MouseHandler*)&cameraCtrl);		
+		}
+		virtual void end(){
+			disableEvents();
         }
 		
 		virtual void onKeyPress(Key::Keyboard key) {
