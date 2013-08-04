@@ -52,6 +52,7 @@
 		E06E01D617AE94740082D70D /* SolarSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01D517AE94740082D70D /* SolarSound.cpp */; };
 		E06E01D917AE966B0082D70D /* ThreadPOSIX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01D717AE966B0082D70D /* ThreadPOSIX.cpp */; };
 		E06E01DD17AE9C3E0082D70D /* ApplicationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01DB17AE9C3D0082D70D /* ApplicationState.cpp */; };
+		E08B252E17AEFB6400FCBCC5 /* SolarApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08B252D17AEFB6400FCBCC5 /* SolarApp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -162,6 +163,7 @@
 		E06E01DA17AE9BBA0082D70D /* ApplicationState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationState.h; sourceTree = "<group>"; };
 		E06E01DB17AE9C3D0082D70D /* ApplicationState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ApplicationState.cpp; sourceTree = "<group>"; };
 		E06E01DE17AE9E240082D70D /* SolarApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolarApp.h; sourceTree = "<group>"; };
+		E08B252D17AEFB6400FCBCC5 /* SolarApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolarApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 		E021E5A517AE799E0075C30D = {
 			isa = PBXGroup;
 			children = (
+				E08B252D17AEFB6400FCBCC5 /* SolarApp.cpp */,
 				E06E01DE17AE9E240082D70D /* SolarApp.h */,
 				E06E01D017AE892E0082D70D /* main.cpp */,
 				E06E01D117AE892E0082D70D /* stdafx.h */,
@@ -451,6 +454,7 @@
 				E06E01D617AE94740082D70D /* SolarSound.cpp in Sources */,
 				E06E01D917AE966B0082D70D /* ThreadPOSIX.cpp in Sources */,
 				E06E01DD17AE9C3E0082D70D /* ApplicationState.cpp in Sources */,
+				E08B252E17AEFB6400FCBCC5 /* SolarApp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
