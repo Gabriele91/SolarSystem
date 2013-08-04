@@ -46,29 +46,43 @@
 	#include <GL/gl.h>
 	#include <linux/OpenGLLinux.h>
 	#include <AL/al.h>
-	#include <AL/alc.h>
+    #include <AL/alc.h>
+    #include <signal.h>
+    #include <unistd.h>
 #elif defined(__APPLE__)
-    #include "TargetConditionals.h"
-	#define PLATFORM_UNIX
-	#define ENABLE_VAOS
+    #include <TargetConditionals.h>
+    #define PLATFORM_UNIX
+    #define ENABLE_VAOS
 
     #if TARGET_OS_IPHONE
-		#define PLATFORM_IPHONE
+    #define PLATFORM_IPHONE
 
     #elif TARGET_IPHONE_SIMULATOR
-		#define PLATFORM_IPHONE_SIMULATOR
+    #define PLATFORM_IPHONE_SIMULATOR
 
     #elif TARGET_OS_MAC
-		#define PLATFORM_MAC_OS_X
-
+        #define PLATFORM_MAC_OS_X
+        #define PLATFORM_OSX
+        #define PLATFORM_UNIX
+        #define DCPP_11
+        #define ENABLE_VAOS
+        #include <signal.h>
+        #include <unistd.h>
+        #include <OpenGL/gl.h>
+        #include <OpenGL/glu.h>
+        #include <OpenGL/glext.h>
+        #include <OpenAL/al.h>
+        #include <OpenAL/alc.h>
     #endif
 #elif defined(__ANDROID__)
 	#define PLATFORM_ANDROID
 	#define PLATFORM_UNIX
 	#define DCPP_X0
-	#define DISABLE_VAOS
-	#include <stdint.h>
-	#include <AL/al.h>
+    #define DISABLE_VAOS
+    #include <signal.h>
+    #include <stdint.h>
+    #include <unistd.h>
+    #include <AL/al.h>
 	#include <AL/alc.h>
 	#include <android/log.h>
 	#include <android/native_activity.h>
@@ -91,7 +105,7 @@
 		  std::identity<decltype(__VA_ARGS__)>::type
 	#endif
 
-#elif __GNUC__>=4 && __GNUC_MINOR__ >=6
+#elif __GNUC__>=4 && __GNUC_MINOR__ >=6  || defined(__llvm__)
 	#define DFORCEINLINE __attribute__ ((always_inline))
 	#define DINLINE inline
 	#define COMPILER_GCC    

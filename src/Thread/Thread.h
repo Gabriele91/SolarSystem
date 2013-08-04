@@ -3,6 +3,8 @@
 
 #include "ThreadConf.h"
 
+namespace SolarSystem{
+    
 class Thread{
 
 	public:
@@ -44,11 +46,6 @@ class Thread{
 
 };
 
-#if defined(__DEF_THREAD_WIN32)
-	#include "ThreadWin32.inl"
-#else
-	#include "ThreadPOSIX.inl"
-#endif
-
+}
 
 #endif

@@ -3,6 +3,7 @@
 #include <ETime.h>
 #if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )
+#include <CocoaApp.h>
 #elif defined( PLATFORM_WINDOW )
 #include <WindowsApp.h>
 #elif defined( PLATFORM_LINUX )
@@ -33,6 +34,7 @@ Application *Application::create(){
 
 #if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )
+    appSingleton=new CocoaApp();
 #elif defined( PLATFORM_WINDOW )
 	appSingleton=new WindowsApp();
 #elif defined( PLATFORM_LINUX )

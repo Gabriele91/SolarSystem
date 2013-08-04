@@ -17,15 +17,3 @@ Application::instance()
 			 ->getScreen() 
 			 ->createWindow(app.c_str(),width,height,bites,freamPerSecond,fullscreen,(Screen::AntiAliasing)dfAA);
 }
-
-Screen* MainInstance::getScreen(){
-	return Application::instance()->getScreen();
-}
-
-Audio* MainInstance::getAudio(){
-	return Application::instance()->getAudio();
-}
-
-Input* MainInstance::getInput(){
-	return Application::instance()->getInput();
-}

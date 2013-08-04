@@ -44,27 +44,25 @@ void Sound::enableLoop(){
 }
 //suona
 void Sound::play(){
+ alSourceRewind(source);
  alSourcePlay (source);
 }
 //suona loop
 void Sound::loop(){
-
-	ALint status;
-	alGetSourcei (source, AL_SOURCE_STATE, &status);
-
-	if ( status != AL_PLAYING && status != AL_PAUSED ){
-			alSourcePlay (source);
-			alSourcei(source, AL_LOOPING,  AL_TRUE  );
-	}
+    if(!isPlay()) play();
+    if(!isLoop()) alSourcei(source, AL_LOOPING,  AL_TRUE  );
 }
 //metti in pausa
 void Sound::pause(){
-	alSourcePause(source);
+    if(isPlay())
+        alSourcePause(source);
 }
 //ferma ripsoduzione
 void Sound::stop(){
-	alSourcei(source, AL_LOOPING,  AL_FALSE );
-	alSourceStop(source);
+    if(isPlay()){
+        alSourcei(source, AL_LOOPING,  AL_FALSE );
+        alSourceStop(source);
+    }
 }
 //imposta volume (0...1)
 void Sound::volume(float volume){

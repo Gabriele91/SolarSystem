@@ -2,7 +2,8 @@
 #define MUTEX_H
 
 #include "MutexConf.h"
-
+namespace SolarSystem{
+    
 class Mutex{
 
 public:
@@ -17,10 +18,7 @@ private:
 	mxrd_t mutex;
 
 };
+    
+}
 
-#if defined(__DEF_MUTEX_WIN32)
-	#include "MutexWin32.inl"
-#else
-	#include "MutexPOSIX.inl"
-#endif
 #endif

@@ -1,3 +1,6 @@
+#include <stdafx.h>
+#include "Mutex.h"
+using namespace SolarSystem;
 
 Mutex::Mutex(){
 	pthread_mutexattr_t attr;
@@ -9,15 +12,11 @@ Mutex::~Mutex(){
 	pthread_mutex_destroy(&mutex);
 }
 bool Mutex::lock(bool block){
-	if(mutex){
-		if(block)
-			return pthread_mutex_lock(&mutex) == 0;
-		else
-			return pthread_mutex_trylock(&mutex) == 0;	
-	}
-	return false;	
+    if(block)
+        return pthread_mutex_lock(&mutex) == 0;
+	else
+        return pthread_mutex_trylock(&mutex) == 0;	
 }
 void Mutex::unlock(){
-	if(mutex)
 		pthread_mutex_unlock(&mutex);
 } 

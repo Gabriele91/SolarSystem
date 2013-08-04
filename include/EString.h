@@ -99,13 +99,16 @@ namespace SolarSystem{
 };
 
 namespace std{
-	 template<>
-     struct DNOSTDHASH< SolarSystem::String > {
-			public:
-			size_t operator()(const SolarSystem::String& val) {
-			  return DNOSTDHASH<std::string>()(val);
-			}
-	 };
+    template<>
+    struct DNOSTDHASH< SolarSystem::String > {
+    public:
+        size_t operator()(const SolarSystem::String& val) const {
+            return DNOSTDHASH<std::string>()(val);
+        }
+        size_t operator()(const SolarSystem::String* val) const {
+            return DNOSTDHASH<std::string>()(*val);
+        }
+    };
 };
 
 #endif

@@ -4,18 +4,16 @@
 #include <Config.h>
 #include <Types.h>
 #include <EString.h>
+#include <ApplicationState.h>
+
 
 namespace SolarSystem {
 	
-	class Screen;
-	class Audio;
-	class Input;
-
     /** 
     * Abstract class, represent the main application instance 
 	* @class MainInstance <MainInstance.h>
     */
-	class MainInstance {
+	class MainInstance : public ApplicationState {
 	public:
 
 		MainInstance(const String& name,
@@ -26,13 +24,6 @@ namespace SolarSystem {
 					 bool fullscreen=false,
 					 int AntiAliasing=0);
 		virtual ~MainInstance(){};
-		virtual void start()=0;
-		virtual void run(float dt)=0;
-		virtual void end()=0;
-
-		Screen* getScreen();
-		Input* getInput();
-		Audio* getAudio();
 
 	};
 

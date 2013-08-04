@@ -144,7 +144,7 @@ SolarSky::SolarSky(SolarRender *render,
 						skybox.existsAsType("back",Table::STRING)&&
 						skybox.existsAsType("left",Table::STRING)&&
 						skybox.existsAsType("right",Table::STRING),
-						"SolarSky error : not found top, bottom, front, back, left, right in skybox")
+                        "SolarSky error : not found top, bottom, front, back, left, right in skybox");
 	loadTextures(pathFilesSkybox+skybox.getString("top"),
 				pathFilesSkybox+skybox.getString("bottom"),
 				pathFilesSkybox+skybox.getString("front"),

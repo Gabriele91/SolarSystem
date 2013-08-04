@@ -1,3 +1,5 @@
+#ifndef SOLARMAIN_H
+#define SOLARMAIN_H
 #include <Config.h>
 #include <Application.h>
 #include <MainInstance.h>
@@ -10,12 +12,13 @@
 #include <PlanetsManager.h>
 #include <SolarFly.h>
 #include <SolarMenu.h>
+#include <ApplicationState.h>
 #define NOT_INCLUDE_INL
 #include "../src/Image/Image.h"
 
 namespace SolarSystem {
 
-	class SolarMain: public MainInstance,
+	class SolarMain: public ApplicationState,
 							Input::KeyboardHandler{
 		SolarFly	   cameraCtrl;
 		SolarRender    render;
@@ -25,19 +28,14 @@ namespace SolarSystem {
 		Object obj;
 		float days;
 		float incDaysDt;
+        bool  returnToMenu;
 
 	public:
-		SolarMain(Table& config):
-			MainInstance("Solar System",
-						 (int)config.getFloat("width",640),
-						 (int)config.getFloat("height",480),
-						 (int)config.getFloat("bits",32),
-						 (int)config.getFloat("fps",60),
-						 config.getString("fullscreen","false")=="true",
-						 (int)config.getFloat("MSAA",0))
-			,menu(config.getTable("menu"))
-			,system(&camera,&render,config.getTable("solarSystem"))
-			,cameraCtrl(&camera)
+		SolarMain(Table& config)
+            :menu(config.getTable("menu"))
+            ,system(&camera,&render,config.getTable("solarSystem"))
+            ,cameraCtrl(&camera)
+            ,returnToMenu(false)
 		{}
 		virtual void start(){
 		//input
@@ -89,7 +87,13 @@ namespace SolarSystem {
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}
-		virtual void end(){}
+		virtual void end(){
+            
+            //input
+            getInput()->removeHandler((Input::KeyboardHandler*)this);
+            getInput()->removeHandler((Input::KeyboardHandler*)&cameraCtrl);
+            getInput()->removeHandler((Input::MouseHandler*)&cameraCtrl);
+        }
 		
 		virtual void onKeyPress(Key::Keyboard key) {
 			if(key==Key::N1)
@@ -135,8 +139,14 @@ namespace SolarSystem {
 		virtual void onKeyRelease(Key::Keyboard key) {
 			//exit event
 			if(key==Key::ESCAPE)
-				Application::instance()->exit();
+				returnToMenu=true;
 		}
+        bool doReturnToMenu(){
+            bool returnToMenu_tmp=returnToMenu;
+            returnToMenu=false;
+            return returnToMenu_tmp;
+        }
 	
 	};
 };
+#endif

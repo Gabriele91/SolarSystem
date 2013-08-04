@@ -7,10 +7,10 @@
 	bits=32
 	fps=60
 	fullscreen="false"
-	MSAA=2
+	MSAA=4
 	
 	//sound area
-	soundChange=10000
+	soundChange=4000
 	soundMenu="sound/menu.wav"
 	soundSystem="sound/solar.wav"
 	

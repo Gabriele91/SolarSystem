@@ -7,10 +7,11 @@
 #include <SolarMenu.h>
 #include <Texture.h>
 #include <SolarSky.h>
+#include <ApplicationState.h>
 
 namespace SolarSystem {
 
-	class SolarStartMenu: public MainInstance {
+	class SolarStartMenu: public ApplicationState {
 		
 		SolarRender    render;
 		SolarMenu      menu;
@@ -31,29 +32,34 @@ namespace SolarSystem {
 		Vec3	       cameraTurn;
 		Vec3	       cameraIncTurn;
 
-		bool		   closeApp;
+		bool		   playApp,closeApp;
 
 		Table		   config;
 
 	public:
 
-		SolarStartMenu(Table& config):
-			MainInstance("Solar System",
-						 (int)config.getFloat("width",640),
-						 (int)config.getFloat("height",480),
-						 (int)config.getFloat("bits",32),
-						 (int)config.getFloat("fps",60),
-						 config.getString("fullscreen","false")=="true",
-						 (int)config.getFloat("MSAA",0))
-			,menu(config.getTable("startMenu"))
-			,closeApp(true)
+		SolarStartMenu(Table& config)
+        :menu(config.getTable("startMenu"))
+            ,playApp(false)
+            ,closeApp(false)
 			,config(config)
+            ,logo(NULL)
+            ,credits(NULL)
+            ,background(NULL)
+            ,skybox(NULL)
 		{
 		}
 
 
 		bool doCloseApp(){
-			return closeApp;
+            bool closeApp_tmp=closeApp;
+            closeApp=false;
+			return closeApp_tmp;
+		}
+		bool doPlayApp(){
+            bool playApp_tmp=playApp;
+            playApp=false;
+			return playApp_tmp;
 		}
 		
 		void drawTexture(Texture* texture,const Matrix4x4& tranform);
@@ -94,7 +100,7 @@ namespace SolarSystem {
 
 			if(startBackground.existsAsType("skybox",Table::TABLE)){
 				//load skybox
-				this->skybox=new SolarSky(&render,startBackground.getConstTable("skybox"));			
+				skybox=new SolarSky(&render,startBackground.getConstTable("skybox"));			
 				//enable camera
 				float wfactor=(float)Application::instance()->getScreen()->getHeight()/Application::instance()->getScreen()->getWidth();
 				camera.setPerspective(-0.5, 0.5,-0.5*wfactor,0.5*wfactor, 1.0f,100000.0f);
@@ -124,12 +130,10 @@ namespace SolarSystem {
 
 			//events
 			menu.addOnClick("start",[this](){
-				this->closeApp=false;
-				Application::instance()->exit();
+				this->playApp=true;
 			});
 			menu.addOnClick("exit",[this](){
 				this->closeApp=true;
-				Application::instance()->exit();
 			});
 		}
 		void run(float dt){	
@@ -163,7 +167,10 @@ namespace SolarSystem {
 		void end(){
 			delete logo;
 			delete credits;
-			delete background;
+            if(background)
+                delete background;
+            if(skybox)
+                delete skybox;
 		}
 
 	};

@@ -196,7 +196,8 @@ PlanetsManager::PlanetsManager(Camera *camera,
 			DEBUG_ASSERT_MSG(atmosphere.existsAsType(0,Table::STRING)&&
 							 atmosphere.existsAsType(1,Table::STRING)&&
 							 atmosphere.existsAsType(2,Table::STRING),
-							 "PlanetsManager error : in "<<namePlanet<<", atmosphere table must contain 3 strings")																			
+							 "PlanetsManager error : in "<<namePlanet<<", atmosphere table must contain 3 strings");
+            
 			ptr->setAtmosphereTexture(pathFilesPlanet+atmosphere.getString(0),
 									  pathFilesPlanet+atmosphere.getString(1),
 									  pathFilesPlanet+atmosphere.getString(2));
