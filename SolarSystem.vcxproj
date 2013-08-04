@@ -80,6 +80,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SolarAudio\AbstractSource.cpp" />
     <ClCompile Include="SolarAudio\APIAudio.cpp" />
+    <ClCompile Include="SolarAudio\SolarSound.cpp" />
     <ClCompile Include="SolarAudio\Sound.cpp" />
     <ClCompile Include="SolarAudio\WavLoader.cpp" />
     <ClCompile Include="SolarGui\SolarButton.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="SolarSystem\SolarShadow.cpp" />
     <ClCompile Include="SolarSystem\SolarSky.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\ApplicationState.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\EString.cpp" />
@@ -108,6 +110,8 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Table.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Thread\MutexWin32.cpp" />
+    <ClCompile Include="src\Thread\ThreadWin32.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Utility.cpp" />
     <ClCompile Include="src\window\OpenGLWindow.cpp" />
@@ -122,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\ApplicationState.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Debug.h" />
@@ -143,6 +148,7 @@
     <ClInclude Include="include\window\WindowsApp.h" />
     <ClInclude Include="include\window\WindowsInput.h" />
     <ClInclude Include="include\window\WindowsScreen.h" />
+    <ClInclude Include="SolarApp.h" />
     <ClInclude Include="SolarAudio\AbstractSource .h" />
     <ClInclude Include="SolarAudio\APIAudio.h" />
     <ClInclude Include="SolarAudio\AudioLoader.h" />
@@ -190,8 +196,6 @@
     <None Include="shader\sunLightClouds.vs" />
     <None Include="SolarSystem.conf.e2d" />
     <None Include="src\Image\Image.inl" />
-    <None Include="src\Thread\MutexWin32.inl" />
-    <None Include="src\Thread\ThreadWin32.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

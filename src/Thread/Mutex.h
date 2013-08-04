@@ -2,6 +2,7 @@
 #define MUTEX_H
 
 #include "MutexConf.h"
+
 namespace SolarSystem{
     
 class Mutex{

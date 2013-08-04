@@ -1,3 +1,6 @@
+#include <stdafx.h>
+#include "Thread.h"
+using namespace SolarSystem;
 
 Thread::Thread(actionOnDelete cad)
 		   :thisThFun(NULL)

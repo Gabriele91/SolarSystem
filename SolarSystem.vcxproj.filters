@@ -156,6 +156,18 @@
     <ClCompile Include="SolarAudio\WavLoader.cpp">
       <Filter>SolarAudio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Thread\MutexWin32.cpp">
+      <Filter>File di origine\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Thread\ThreadWin32.cpp">
+      <Filter>File di origine\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ApplicationState.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarAudio\SolarSound.cpp">
+      <Filter>SolarAudio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -302,16 +314,16 @@
     <ClInclude Include="SolarAudio\SolarSound.h">
       <Filter>SolarAudio</Filter>
     </ClInclude>
+    <ClInclude Include="include\ApplicationState.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarApp.h">
+      <Filter>File di risorse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Image\Image.inl">
       <Filter>File di origine\Image</Filter>
-    </None>
-    <None Include="src\Thread\MutexWin32.inl">
-      <Filter>File di origine\Thread</Filter>
-    </None>
-    <None Include="src\Thread\ThreadWin32.inl">
-      <Filter>File di origine\Thread</Filter>
     </None>
     <None Include="shader\blackMesh.ps">
       <Filter>shader</Filter>
