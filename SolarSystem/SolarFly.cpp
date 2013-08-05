@@ -44,18 +44,20 @@ void SolarFly::onMouseDown(Vec2 mousePosition, Key::Mouse button){
 				
 		Vec2 center(Application::instance()->getScreen()->getWidth()*0.5,
 					Application::instance()->getScreen()->getHeight()*0.5);
-		Application::instance()->getScreen()->setPositionCursor(center);
 		//get direction and intensity
-		Vec2 dir=mousePosition-center;	
-		float leng=dir.length();	
-		dir/=leng;//normalize
+		Vec2 dir=Application::instance()->getInput()->getMouse()-center;
+		float leng=dir.length();
+        if(leng>0.0f){
+            dir/=leng;//normalize
 
-		Quaternion rot;
-		if(dir.x>0) rot.setFromEulero(0,Math::torad(-1)*leng*turnVel.y,0);
-		if(dir.x<0) rot.setFromEulero(0,Math::torad(1)*leng*turnVel.y,0);
-		camera->setTurn(rot);
-		if(dir.y>0) rot.setFromEulero(Math::torad(-1)*leng*turnVel.x,0,0);
-		if(dir.y<0) rot.setFromEulero(Math::torad(1)*leng*turnVel.x,0,0);
-		camera->setTurn(rot);
+            Quaternion rot;
+            if(dir.x>0) rot.setFromEulero(0,Math::torad(-1)*leng*turnVel.y,0);
+            if(dir.x<0) rot.setFromEulero(0,Math::torad(1)*leng*turnVel.y,0);
+            camera->setTurn(rot);
+            if(dir.y>0) rot.setFromEulero(Math::torad(-1)*leng*turnVel.x,0,0);
+            if(dir.y<0) rot.setFromEulero(Math::torad(1)*leng*turnVel.x,0,0);
+            camera->setTurn(rot);
+        }
+		Application::instance()->getScreen()->setPositionCursor(center);
 	}
 }
