@@ -131,7 +131,6 @@ namespace SolarSystem {
 			//events
 			menu.addOnClick("start",[this](){
 				this->playApp=true;
-                this->menu.lock();
 			});
 			menu.addOnClick("exit",[this](){
 				this->closeApp=true;

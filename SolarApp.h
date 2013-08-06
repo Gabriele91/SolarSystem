@@ -96,6 +96,7 @@ namespace SolarSystem {
                 //go to solar system
                 state=SOLAR_STATE;
                 solarMusic->loopSystem();
+				solarmenu->lock();
                 if(!solarmain){
 					loading();
                     solarmain=new SolarMain(*configureTable);
