@@ -171,6 +171,9 @@
     <ClCompile Include="SolarApp.cpp">
       <Filter>File di risorse</Filter>
     </ClCompile>
+    <ClCompile Include="SolarSystem\SolarSystemMenu.cpp">
+      <Filter>SolarSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Image\Image.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="SolarApp.h">
       <Filter>File di risorse</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystem\SolarSystemMenu.h">
+      <Filter>SolarSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

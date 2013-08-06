@@ -27,6 +27,7 @@ namespace SolarSystem {
 		std::function<void()> onClick;
 		String name;
         bool islocked;
+		int id;
 
 		//mouse in box
 		bool mouseInBox(const Vec2& mouse);
@@ -49,6 +50,9 @@ namespace SolarSystem {
 		}
 		Texture* getCurrentTexture(){
 			return textures[state];
+		}
+		int getID(){
+			return id;
 		}
         
         void lock();

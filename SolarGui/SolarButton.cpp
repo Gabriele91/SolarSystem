@@ -34,6 +34,8 @@ SolarButton::SolarButton(const String& name,const Table& config):state(NORMAL),n
 	textures[NORMAL]=new Texture(config.getTablePath().getDirectory()+"/"+config.getString("normal"));
 	textures[OVERED]=new Texture(config.getTablePath().getDirectory()+"/"+config.getString("overed"));
 	textures[ACTIVE]=new Texture(config.getTablePath().getDirectory()+"/"+config.getString("active"));
+	//get id
+	id=(int)config.getFloat("id",0.0f);
 	//add handler input
 	Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
     islocked=false;

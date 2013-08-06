@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include <Application.h>
 #include <SolarMenu.h>
+#include <Algorithm>
 
 ///////////////////////
 using namespace SolarSystem;
@@ -44,6 +45,10 @@ SolarMenu::SolarMenu(const Table& config){
 								" isn't a table");
 		}
 	}
+	//sort
+	std::sort(buttons.begin(),buttons.end(),[](SolarButton* lb,SolarButton* rb)->bool{
+		return lb->getID()<rb->getID();
+	});
 	//set position
 	Vec2 realsize=sizeBottons+paddingBottons;
 	Vec2 realsizeH=realsize*0.5;

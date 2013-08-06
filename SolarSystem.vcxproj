@@ -95,6 +95,7 @@
     <ClCompile Include="SolarSystem\SolarRings.cpp" />
     <ClCompile Include="SolarSystem\SolarShadow.cpp" />
     <ClCompile Include="SolarSystem\SolarSky.cpp" />
+    <ClCompile Include="SolarSystem\SolarSystemMenu.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationState.cpp" />
     <ClCompile Include="src\Camera.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="SolarSystem\SolarRings.h" />
     <ClInclude Include="SolarSystem\SolarShadow.h" />
     <ClInclude Include="SolarSystem\SolarSky.h" />
+    <ClInclude Include="SolarSystem\SolarSystemMenu.h" />
     <ClInclude Include="src\Image\Image.h" />
     <ClInclude Include="src\Image\lodepng.h" />
     <ClInclude Include="src\Math2D_SSE2.h" />
