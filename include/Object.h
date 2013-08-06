@@ -51,7 +51,7 @@ namespace SolarSystem{
 
 	protected:
 
-		const Matrix4x4& _getGlobalMatrixCamera();
+		 Matrix4x4 _getGlobalMatrixCamera();
 
 	private:
 		

@@ -131,12 +131,21 @@ namespace SolarSystem {
 			//events
 			menu.addOnClick("start",[this](){
 				this->playApp=true;
+                this->menu.lock();
 			});
 			menu.addOnClick("exit",[this](){
 				this->closeApp=true;
 			});
 		}
-		void run(float dt){	
+        void lock(){
+            //lock menu
+            menu.lock();
+        }
+        void unlock(){
+            //unlock menu
+            menu.unlock();
+        }
+		void run(float dt){
 			//clear
 			render.setClearColor(Vec4(Vec3::ZERO,1.0f));
 			//update menu

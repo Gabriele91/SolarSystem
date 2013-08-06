@@ -44,7 +44,7 @@ namespace SolarSystem {
 		DFORCEINLINE const Mat4& getViewProjMatrix(){
 			return mViewProjMatrix;
 		}
-		DFORCEINLINE const Mat4& getGlobalMatrix(){
+		DFORCEINLINE  Mat4 getGlobalMatrix(){
 			return _getGlobalMatrixCamera();
 		}
 		Vec2 getPointIn3DSpace(const Vec3& point);

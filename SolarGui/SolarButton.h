@@ -26,6 +26,7 @@ namespace SolarSystem {
 		Texture *textures[3];
 		std::function<void()> onClick;
 		String name;
+        bool islocked;
 
 		//mouse in box
 		bool mouseInBox(const Vec2& mouse);
@@ -36,6 +37,7 @@ namespace SolarSystem {
 		virtual void onMouseDown(Vec2 mousePosition, Key::Mouse button);
 		virtual void onMouseRelease(Vec2 mousePosition, Key::Mouse button);
 		virtual void onMouseScroll(short scrollDelta);
+        
 
 	public:
 
@@ -48,6 +50,9 @@ namespace SolarSystem {
 		Texture* getCurrentTexture(){
 			return textures[state];
 		}
+        
+        void lock();
+        void unlock();
 		void update(SolarMenu *menu,float dt);
 
 	};

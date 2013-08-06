@@ -52,6 +52,7 @@
 		E06E01D617AE94740082D70D /* SolarSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01D517AE94740082D70D /* SolarSound.cpp */; };
 		E06E01D917AE966B0082D70D /* ThreadPOSIX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01D717AE966B0082D70D /* ThreadPOSIX.cpp */; };
 		E06E01DD17AE9C3E0082D70D /* ApplicationState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06E01DB17AE9C3D0082D70D /* ApplicationState.cpp */; };
+		E08B10EA17B007CC00DD8B01 /* SolarSystemMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08B10E817B007CC00DD8B01 /* SolarSystemMenu.cpp */; };
 		E08B252E17AEFB6400FCBCC5 /* SolarApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08B252D17AEFB6400FCBCC5 /* SolarApp.cpp */; };
 /* End PBXBuildFile section */
 
@@ -163,6 +164,8 @@
 		E06E01DA17AE9BBA0082D70D /* ApplicationState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationState.h; sourceTree = "<group>"; };
 		E06E01DB17AE9C3D0082D70D /* ApplicationState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ApplicationState.cpp; sourceTree = "<group>"; };
 		E06E01DE17AE9E240082D70D /* SolarApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolarApp.h; sourceTree = "<group>"; };
+		E08B10E817B007CC00DD8B01 /* SolarSystemMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolarSystemMenu.cpp; sourceTree = "<group>"; };
+		E08B10E917B007CC00DD8B01 /* SolarSystemMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolarSystemMenu.h; sourceTree = "<group>"; };
 		E08B252D17AEFB6400FCBCC5 /* SolarApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolarApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -287,6 +290,8 @@
 		E06E017317AE7B480082D70D /* SolarSystem */ = {
 			isa = PBXGroup;
 			children = (
+				E08B10E817B007CC00DD8B01 /* SolarSystemMenu.cpp */,
+				E08B10E917B007CC00DD8B01 /* SolarSystemMenu.h */,
 				E06E017417AE7B480082D70D /* Planet.cpp */,
 				E06E017517AE7B480082D70D /* Planet.h */,
 				E06E017617AE7B480082D70D /* PlanetOldSystem.zip */,
@@ -455,6 +460,7 @@
 				E06E01D917AE966B0082D70D /* ThreadPOSIX.cpp in Sources */,
 				E06E01DD17AE9C3E0082D70D /* ApplicationState.cpp in Sources */,
 				E08B252E17AEFB6400FCBCC5 /* SolarApp.cpp in Sources */,
+				E08B10EA17B007CC00DD8B01 /* SolarSystemMenu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

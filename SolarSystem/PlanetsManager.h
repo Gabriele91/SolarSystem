@@ -214,6 +214,17 @@ namespace SolarSystem {
 		Planet& getPlanet(const String& name){
 			return *(planets[name]);
 		}
+		Planet& getSun(){
+			return *(sun);
+		}
+        
+        DUNORDERED_MAP<String,Planet*>::iterator begin(){
+          return  planets.begin();
+        }
+        DUNORDERED_MAP<String,Planet*>::iterator end(){
+            return planets.end();
+        }
+        
 	};
 
 };

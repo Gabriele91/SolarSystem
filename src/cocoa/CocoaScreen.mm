@@ -201,8 +201,8 @@ CocoaScreen::CocoaScreen()
 {
     NSRect screenRect;
     NSArray *screens=[NSScreen screens];
-    unsigned cntScreens=[screens count];
-    for(int i=0;i<cntScreens;++i){
+    long cntScreens=[screens count];
+    for(long i=0;i<cntScreens;++i){
         screenRect=[[screens objectAtIndex:i] visibleFrame];
     }
     nativeWidth=screenRect.size.width;

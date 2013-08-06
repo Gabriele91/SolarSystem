@@ -88,11 +88,12 @@ namespace SolarSystem {
             else
                 solarmain->run(dt);
             
-            //event menu
+            //events menu
             if(solarmenu->doCloseApp())
                Application::instance()->exit();
             
             if(solarmenu->doPlayApp()){
+                //go to solar system
                 state=SOLAR_STATE;
                 solarMusic->loopSystem();
                 if(!solarmain){
@@ -101,14 +102,16 @@ namespace SolarSystem {
                     solarmain->start();
                 }
 				else
-					solarmain->enableEvents();
+					solarmain->unlock();
             }
             //event solar
             if(state==SOLAR_STATE){
                 if(solarmain->doReturnToMenu()){
+                    //return to menu
                     state=MENU_STATE;
                     solarMusic->loopMenu();
-					solarmain->disableEvents();
+                    solarmenu->unlock();
+					solarmain->lock();
                 }
             }
             

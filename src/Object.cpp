@@ -189,10 +189,11 @@ const Matrix4x4& Object::getGlobalMatrix(){
 return globalMat;
 }
 
-const Matrix4x4& Object::_getGlobalMatrixCamera(){
-	if(changeValue==true){
+ Matrix4x4 Object::_getGlobalMatrixCamera(){
+	//if(changeValue==true){
 		//
-		globalMat.identity();
+        getGlobalMatrix();
+        Mat4 globalMat;//.identity();
 		//
 		if(parent){
 			//
@@ -231,7 +232,7 @@ const Matrix4x4& Object::_getGlobalMatrixCamera(){
 		}
 		//
 		changeValue=false;
-	 }
+	 //}
 
 return globalMat;
 }

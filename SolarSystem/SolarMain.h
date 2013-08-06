@@ -13,6 +13,7 @@
 #include <SolarFly.h>
 #include <SolarMenu.h>
 #include <ApplicationState.h>
+#include <SolarSystemMenu.h>
 #define NOT_INCLUDE_INL
 #include "../src/Image/Image.h"
 
@@ -22,49 +23,47 @@ namespace SolarSystem {
 							Input::KeyboardHandler{
 		SolarFly	   cameraCtrl;
 		SolarRender    render;
-		SolarMenu      menu;
 		PlanetsManager system;
-		Camera camera;
+        Camera camera;
 		Object obj;
 		float days;
 		float incDaysDt;
         bool  returnToMenu;
+        SolarSystemMenu menu;
 
+                                
 	public:
 		SolarMain(Table& config)
-            :menu(config.getTable("menu"))
-            ,system(&camera,&render,config.getTable("solarSystem"))
+            :system(&camera,&render,config.getTable("solarSystem"))
             ,cameraCtrl(&camera)
             ,returnToMenu(false)
+            ,menu(&camera,&system,config.getTable("menu"))
 		{}
 		virtual void start(){
 		//input
-		enableEvents();
+        unlock();
 		//init render
 		render.init();
+        //start day
+        days=900;
+        incDaysDt=0.1;
+        system.setData(days);
 		//setup camera
 		//wfactor
 		float wfactor=(float)Application::instance()->getScreen()->getHeight()/Application::instance()->getScreen()->getWidth();
 		camera.setPerspective(-0.5, 0.5,-0.5*wfactor,0.5*wfactor, 1.0f,100000.0f);
-		Quaternion quad;
-		//quad.setFromEulero(Math::torad(-90),0,0);
-		//camera.setPosition(Vec3(0,-10000,0));
-		quad.setFromEulero(Math::torad(0),0,0);
-		camera.setPosition(Vec3(0,0,-15000));
-		camera.setRotation(quad);
+		//start pos camera
+        float maxleng=0.0;
+        for(auto planet:system)
+            maxleng=Math::max(maxleng,planet.second->getPosition(true).length());
+        Quaternion quad;
+		quad.setFromEulero(Math::torad(-45),0,0);
+		camera.setPosition(Vec3(0,-maxleng,-maxleng));
+        camera.setRotation(quad);
 		//start day
 		days=900;
-		incDaysDt=0.2;
+		incDaysDt=0.1;
 		/////////////////////////////////////////////
-		menu.addOnClick("earth",[this](){
-			this->camera.setTranslation(Vec3(0,0,300));
-		});
-		menu.addOnClick("sun",[this](){
-			this->camera.setTranslation(Vec3(0,0,1300));
-		});
-		menu.addOnClick("moon",[this](){
-			this->camera.setTranslation(Vec3(0,0,-300));
-		});
 
 		}
 		virtual void run(float dt){
@@ -76,6 +75,7 @@ namespace SolarSystem {
 			//game logic
 			days+=incDaysDt*dt;
 			system.setData(days);
+			//game logic
 			menu.update(dt);
 			//draw solar
 			system.draw();
@@ -85,20 +85,24 @@ namespace SolarSystem {
 			//get errors...
 			CHECK_GPU_ERRORS();
 		}
-		void enableEvents(){
+		void unlock(){
 			//input
 			getInput()->addHandler((Input::KeyboardHandler*)this);
-			getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
-			getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);			
+			//getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+			//getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
+            //enable menu
+            menu.unlock();
 		}
-		void disableEvents(){
+		void lock(){
             //input
             getInput()->removeHandler((Input::KeyboardHandler*)this);
-            getInput()->removeHandler((Input::KeyboardHandler*)&cameraCtrl);
-            getInput()->removeHandler((Input::MouseHandler*)&cameraCtrl);		
+            //getInput()->removeHandler((Input::KeyboardHandler*)&cameraCtrl);
+            //getInput()->removeHandler((Input::MouseHandler*)&cameraCtrl);
+            //menu look
+            menu.lock();
 		}
 		virtual void end(){
-			disableEvents();
+			lock();
         }
 		
 		virtual void onKeyPress(Key::Keyboard key) {

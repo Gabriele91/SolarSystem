@@ -24,7 +24,8 @@ namespace SolarSystem {
 		bool addOnClick(const String& name,const std::function<void()>& onClick);
 		void draw(SolarRender* render);
 		void update(float dt);
-
+        void lock();
+        void unlock();
 		const Vec2& getPadding() const{
 			return paddingBottons;
 		}

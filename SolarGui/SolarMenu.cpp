@@ -6,6 +6,13 @@
 using namespace SolarSystem;
 ///////////////////////
 
+void SolarMenu::lock(){
+    for(auto button:buttons) button->lock();
+}
+void SolarMenu::unlock(){
+    for(auto button:buttons) button->unlock();
+}
+
 SolarMenu::SolarMenu(const Table& config){
     //get default values
 	sizeBottons=config.getVector2D("size",Vec2(50,50));

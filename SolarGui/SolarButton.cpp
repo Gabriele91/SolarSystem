@@ -8,6 +8,18 @@
 using namespace SolarSystem;
 ///////////////////////
 
+void SolarButton::lock(){
+    //delete handler input
+    if(!islocked)
+        Application::instance()->getInput()->removeHandler((Input::MouseHandler*)this);
+    islocked=true;
+}
+void SolarButton::unlock(){
+    //add input
+    if(islocked)
+        Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
+    islocked=false;
+}
 
 SolarButton::SolarButton(const String& name,const Table& config):state(NORMAL),name(name),onClick([](){}){
 	//chack textures parameters exists
@@ -24,13 +36,14 @@ SolarButton::SolarButton(const String& name,const Table& config):state(NORMAL),n
 	textures[ACTIVE]=new Texture(config.getTablePath().getDirectory()+"/"+config.getString("active"));
 	//add handler input
 	Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
+    islocked=false;
 
 }
 SolarButton::~SolarButton(){
 		for(auto texture:textures)
 			delete texture;	
 		//delete handler input
-		Application::instance()->getInput()->removeHandler((Input::MouseHandler*)this);
+        lock();
 }
 
 bool SolarButton::mouseInBox(const Vec2& mouse){
