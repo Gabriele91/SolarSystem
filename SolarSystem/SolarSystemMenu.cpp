@@ -14,8 +14,8 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
                                  ,menu(menuConfig){
 
     timeCounting=0;
-    timeRotation=menuConfig.getFloat("timeRotation",1000)*0.001;
-    timeMove=menuConfig.getFloat("timeMove",2500)*0.001;
+    timeRotation=menuConfig.getFloat("timeRotation",1000.0f)*0.001;
+    timeMove=menuConfig.getFloat("timeMove",2500.0f)*0.001;
     startAngle=menuConfig.getFloat("startAngle",20);
     turnAngle=0;
     keyAngle=0;
@@ -77,9 +77,11 @@ void SolarSystemMenu::pointToPlanet(float dt){
     //next state
     if(timeCounting>timeRotation){
         state.state=GO_TO_PLANET;
+        state.campos=camera->getPosition(true);
         timeCounting=0;
     }
 }
+
 void SolarSystemMenu::goToPlanet(float dt){
     
     //calc point pos
@@ -97,11 +99,19 @@ void SolarSystemMenu::goToPlanet(float dt){
     
     Vec3 dirOffset=dirrotation*state.planet->getScale(true)*4;
     Vec3 endpos=plaPos+dirOffset+sunPos;
-    
-    
+    //http://forums.epicgames.com/threads/892836-Xerp-(non-linear-interpolations)
+    //http://wiki.unity3d.com/index.php?title=Mathfx
+    #define hermite(t,v) float t=( v * v * (3.0f - 2.0f * v))
+    #define coserp(t,v) float t=1.0f - std::cos(v * Math::PI * 0.5f)
+    #define sinerp(t,v) float t=std::sin(v * Math::PI * 0.5f)
+    #define quad(t,v) float t=(v*2.0)-(v*v)
     //interpolation
     float t=timeCounting/timeMove;
-    Vec3 camPos(Math::lerp(camera->getPosition(true), -endpos, t));
+    sinerp(s,t);
+    sinerp(s2,s);
+    sinerp(s3,s2);
+    
+    Vec3 camPos(Math::lerp(state.campos, -endpos, s3)); //lerp quad(quad(quad))
     camera->setPosition(camPos);
     
     //calc rotation points
@@ -116,6 +126,7 @@ void SolarSystemMenu::goToPlanet(float dt){
     //next state
     if(timeCounting>timeMove){
         state.state=ON_PLANET;
+        state.campos=camera->getPosition(true);
         timeCounting=0;
         turnAngle=0;
         keyAngle=0;

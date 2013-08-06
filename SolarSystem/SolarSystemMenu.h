@@ -28,6 +28,7 @@ namespace SolarSystem {
         struct State{
             StateValues state;
             Planet* planet;
+            Vec3    campos;
         };
         
         
