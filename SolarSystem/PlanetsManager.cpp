@@ -289,7 +289,7 @@ void PlanetsManager::setData(float day){
 }
 void PlanetsManager::draw(){	
 	//all word draw in a texture (n.b. fxaa)
-	if(enableFxaa) worldTexture.enableRender();
+	worldTexture.enableRender();
 	////////////////////////////////////////////////////////////////
 	camera->update();
 	////////////////////////////////////////////////////////////////
@@ -390,18 +390,21 @@ void PlanetsManager::draw(){
 	}
 	////////////////////////////////////////////////////////////////////////
 	//draw texture to window framebuffer
+    worldTexture.disableRender(); //enable framebuffer
+    
+    //enable fxaa
 	if(enableFxaa){
-		worldTexture.disableRender(); //enable framebuffer
-		//enable fxaa
 		fxaa.shader.bind();
 		fxaa.uniforming();
-		//draw texture
-		render->disableZBuffer();
-		worldTexture.draw();
-		render->enableZBuffer();
-		//disable fxaa
-		fxaa.shader.bind();
 	}
+    
+    //draw texture
+    render->disableZBuffer();
+    worldTexture.draw();
+    render->enableZBuffer();
+    
+    //disable fxaa
+	if(enableFxaa) fxaa.shader.bind();
 
 }
 void PlanetsManager::drawPlanetssClouds(){
