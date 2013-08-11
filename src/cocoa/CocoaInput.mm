@@ -162,7 +162,11 @@ using namespace SolarSystem;
 	easy2Dinput->emouse.__init();
 }
 -(void) mouseMoved:(NSEvent *) theEvent{
-    NSPoint point=[theEvent locationInWindow];
+   // NSPoint point=[theEvent locationInWindow];
+    
+    NSView *view = [easy2Dwindow contentView];
+    NSPoint point = [view convertPoint:[theEvent locationInWindow] fromView:nil];
+    
     easy2Dinput->emouse.pos.x=(int)point.x;
     easy2Dinput->emouse.pos.y=(Application::instance()->getScreen()->getHeight()-(int)(point.y));
     easy2Dinput->__callOnMouseMove(easy2Dinput->emouse.pos);

@@ -112,7 +112,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarApp.h"
-         timestampString = "397326979.929025"
+         timestampString = "397907215.177079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "88"
@@ -138,7 +138,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarApp.h"
-         timestampString = "397327016.425675"
+         timestampString = "397907215.177079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "82"
@@ -177,7 +177,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "src/cocoa/CocoaScreen.mm"
-         timestampString = "397392606.131653"
+         timestampString = "397902193.083983"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "296"
+         endingLineNumber = "296"
+         landmarkName = "CocoaScreen::setPositionCursor(const Vec2&amp; pos)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/cocoa/CocoaScreen.mm"
+         timestampString = "397902193.083983"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "292"
+         endingLineNumber = "292"
+         landmarkName = "CocoaScreen::setPositionCursor(const Vec2&amp; pos)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/cocoa/CocoaScreen.mm"
+         timestampString = "397902193.083983"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "295"
@@ -189,38 +215,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/cocoa/CocoaScreen.mm"
-         timestampString = "397392442.816402"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "291"
-         endingLineNumber = "291"
-         landmarkName = "CocoaScreen::setPositionCursor(const Vec2&amp; pos)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/cocoa/CocoaScreen.mm"
-         timestampString = "397392606.131653"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "294"
-         endingLineNumber = "294"
-         landmarkName = "CocoaScreen::setPositionCursor(const Vec2&amp; pos)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "SolarSystem/PlanetsManager.cpp"
-         timestampString = "397412361.771302"
+         timestampString = "397907643.065903"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "408"
-         endingLineNumber = "408"
+         startingLineNumber = "411"
+         endingLineNumber = "411"
          landmarkName = "PlanetsManager::drawPlanetssClouds()"
          landmarkType = "5">
       </FileBreakpoint>
@@ -324,9 +324,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "84"
-         endingLineNumber = "84"
-         landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
-         landmarkType = "5">
+         endingLineNumber = "84">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -372,7 +370,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarApp.h"
-         timestampString = "397418789.245367"
+         timestampString = "397907215.177079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "89"
@@ -385,7 +383,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarApp.h"
-         timestampString = "397418790.285419"
+         timestampString = "397907215.177079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "87"
@@ -398,7 +396,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarApp.h"
-         timestampString = "397418819.026864"
+         timestampString = "397907215.177079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "90"

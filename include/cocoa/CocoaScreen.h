@@ -114,6 +114,8 @@ namespace SolarSystem {
         void __initOpenGL();
         ///////////////////////////////////
 		//datas:
+        uint selectFullScreenWidth;
+        uint selectFullScreenHeight;
 		uint nativeWidth;
 		uint nativeHeight;
 		uint screenWidth;

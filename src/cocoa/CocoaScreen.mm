@@ -102,8 +102,8 @@ void CocoaScreen::__openWindow(int w,int h,const char *title){
 	[pool release];
     
     //set screen size
-    screenWidth=w;
-    screenHeight=h;
+    selectFullScreenWidth=screenWidth=w;
+    selectFullScreenHeight=screenHeight=h;
     
     //save object
     cocoaWindow=(void*)window;
@@ -203,10 +203,11 @@ CocoaScreen::CocoaScreen()
     NSArray *screens=[NSScreen screens];
     long cntScreens=[screens count];
     for(long i=0;i<cntScreens;++i){
-        screenRect=[[screens objectAtIndex:i] visibleFrame];
+        screenRect=[[screens objectAtIndex:i] frame];
     }
-    nativeWidth=screenRect.size.width;
-    nativeHeight=screenRect.size.height;
+    //screen size
+    nativeWidth=screenRect.origin.x+screenRect.size.width;
+    nativeHeight=screenRect.origin.y+screenRect.size.height;
 }
 CocoaScreen::~CocoaScreen(){
     __deleteContext();
@@ -312,6 +313,26 @@ bool CocoaScreen::getCursor(){
  * enable or disable full screen
  */
 void CocoaScreen::setFullscreen(bool fullscreen){
+    
+    TOCOCOAWINDOW
+    //this
+    this->fullscreen=fullscreen;
+    //get view
+    NSView* view=window.contentView;
+    //enable fullscreen
+    if(fullscreen){
+        [view enterFullScreenMode:[NSScreen mainScreen] withOptions:nil];
+        [[view window] setAcceptsMouseMovedEvents:YES];
+        //change size screen
+        screenWidth=nativeWidth;
+        screenHeight=nativeHeight;
+    }
+    else{
+        [view exitFullScreenModeWithOptions:nil];
+        //change size screen
+        screenWidth=selectFullScreenWidth;
+        screenHeight=selectFullScreenHeight;
+    }
 }
 /**
  * return if fullscreen is enable return true
@@ -348,6 +369,8 @@ void CocoaScreen::createWindow(const char* appname,
     acquireContext();    
     //init openGL
     __initOpenGL();
+    //fullscreen
+    setFullscreen(fullscreen);
     //enable AA
     if(dfAA!=NOAA)
         glEnable( GL_MULTISAMPLE );

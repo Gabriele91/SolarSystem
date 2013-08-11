@@ -6,7 +6,7 @@
 	height=720
 	bits=32
 	fps=60
-	fullscreen="false"
+	fullscreen="true"
 	MSAA=4
 	
 	//loading screen	
