@@ -11,27 +11,63 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
                                  const Table& menuConfig)
                                  :camera(camera)
                                  ,planets(planets)
-                                 ,menu(menuConfig){
+                                 ,menu(menuConfig)
+                                 ,font(NULL){
 
     timeCounting=0;
     timeRotation=menuConfig.getFloat("timeRotation",1000.0f)*0.001;
     timeMove=menuConfig.getFloat("timeMove",2500.0f)*0.001;
-    startAngle=menuConfig.getFloat("startAngle",20);
     turnAngle=0;
     keyAngle=0;
     state.state=FREE_SYSTEM;
     state.planet=NULL;
+    if(menuConfig.existsAsType("font", Table::STRING)){
+        font=new Font(menuConfig.getTablePath().getDirectory()+"/"+menuConfig.getString("font"));
+    }
                                      
     Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
     isunlock=true;
                                      
+    //default values
+    float  startAngle=menuConfig.getFloat("startAngle",20);
+    float  cameraHigth=menuConfig.getFloat("cameraHigth",0);
+    String textPlanet=menuConfig.getString("text");
+    Vec2   textPos=menuConfig.getVector2D("textPos",Vec2::ONE*0.5);
+    Vec3   textColor=menuConfig.getVector3D("textColor",Vec3(255.0f,255.0f,255.0f));
+    float  textTime=menuConfig.getFloat("textTime",1000.0f)*0.001;
+
+                                    
     for(auto planet:*planets){
         Planet *thisPlanet=planet.second;
+        //temp data
+        float angle=startAngle;
+        float camh=cameraHigth;
+        String text=textPlanet;
+        Vec2   tpos=textPos;
+        Vec3   tcolor=textColor;
+        float  ttime=textTime;
+        //get info
+        if(menuConfig.getConstTable("info").existsAsType(planet.first,Table::TABLE)){
+            const Table& infoPlanet=menuConfig.getConstTable("info").getConstTable(planet.first);
+            angle=infoPlanet.getFloat("startAngle",startAngle);
+            camh=infoPlanet.getFloat("cameraHigth",cameraHigth);
+            text=infoPlanet.getString("text",textPlanet);
+            tpos=infoPlanet.getVector2D("textPos",textPos);
+            tcolor=infoPlanet.getVector3D("textColor",textColor);
+            ttime=infoPlanet.getFloat("textTime",1000.0f)*0.001;
+        }
+        //add info
         menu.addOnClick(planet.first,
-                        [this,thisPlanet](){
+                        [this,thisPlanet,angle,camh,text,tpos,tcolor,ttime](){
                             if(state.planet!=thisPlanet ){
                                 state.state=POIN_TO_PLANET;
                                 state.planet=thisPlanet;
+                                state.startAngle=angle;
+                                state.cameraHigth=camh;
+                                state.text=text;
+                                state.textPos=tpos;
+                                state.textColor=Color(tcolor.r,tcolor.g,tcolor.b,255);
+                                state.textTime=ttime;
                                 timeCounting=0.0f;
                             }
                         });
@@ -44,6 +80,11 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
                          timeCounting=0.0f;
                       }
                     });
+}
+
+SolarSystemMenu::~SolarSystemMenu(){
+    if(font)
+        delete font;
 }
 
 void SolarSystemMenu::pointToPlanet(float dt){
@@ -93,12 +134,14 @@ void SolarSystemMenu::goToPlanet(float dt){
     if(lengdir>0.0) dir/=lengdir; else dir=Vec3::ONE;
     
     Vec3 dirrotation;
-    float angle=Math::torad(startAngle);
+    float angle=Math::torad(state.startAngle);
     dirrotation.x= dir.x*std::cos(angle)+dir.z*std::sin(angle);
     dirrotation.z=-dir.x*std::sin(angle)+dir.z*std::cos(angle);
     
     Vec3 dirOffset=dirrotation*state.planet->getScale(true)*4;
     Vec3 endpos=plaPos+dirOffset+sunPos;
+    //camera offset
+    endpos.y+=state.cameraHigth;
     //http://forums.epicgames.com/threads/892836-Xerp-(non-linear-interpolations)
     //http://wiki.unity3d.com/index.php?title=Mathfx
     #define hermite(t,v) float t=( v * v * (3.0f - 2.0f * v))
@@ -107,11 +150,10 @@ void SolarSystemMenu::goToPlanet(float dt){
     #define quad(t,v) float t=(v*2.0)-(v*v)
     //interpolation
     float t=timeCounting/timeMove;
-    sinerp(s,t);
-    sinerp(s2,s);
-    sinerp(s3,s2);
+    for(int i=0;i<3;++i)  t=std::sin(t * Math::PI * 0.5f);
     
-    Vec3 camPos(Math::lerp(state.campos, -endpos, s3)); //lerp quad(quad(quad))
+    
+    Vec3 camPos(Math::linear(state.campos, -endpos, t)); //lerp quad(quad(quad))
     camera->setPosition(camPos);
     
     //calc rotation points
@@ -130,6 +172,7 @@ void SolarSystemMenu::goToPlanet(float dt){
         timeCounting=0;
         turnAngle=0;
         keyAngle=0;
+        state.textColor.a=0;
     }
     
 }
@@ -143,13 +186,15 @@ void SolarSystemMenu::onPlanet(float dt){
     if(lengdir>0.0) dir/=lengdir; else dir=Vec3::ONE;
     
     Vec3 dirrotation;
-    float angle=Math::torad(startAngle+turnAngle);
+    float angle=Math::torad(state.startAngle+turnAngle);
     dirrotation.x= dir.x*std::cos(angle)+dir.z*std::sin(angle);
     dirrotation.z=-dir.x*std::sin(angle)+dir.z*std::cos(angle);
     turnAngle+=keyAngle*dt;
     
     Vec3 dirOffset=dirrotation*state.planet->getScale(true)*4;
     Vec3 endpos=plaPos+dirOffset+sunPos;
+    //camera offset
+    endpos.y+=state.cameraHigth;
     
     //cam pos
     Vec3 camPos(-endpos);
@@ -161,6 +206,12 @@ void SolarSystemMenu::onPlanet(float dt){
                                   -camPos,
                                   Vec3(0,1,0));
     camera->setRotation(pointToPlanet);
+    //text color
+    if(timeCounting<state.textTime){
+        timeCounting+=dt;
+        float tTime=timeCounting/state.textTime;
+        state.textColor.a=(uchar)Math::min(255.0f*tTime,255.0f);
+    }
 
 }
 
@@ -185,5 +236,10 @@ void SolarSystemMenu::update(float dt){
 
 void SolarSystemMenu::draw(SolarRender *render){
     menu.draw(render);
+    if(state.text.size() && font && state.state==ON_PLANET){
+        Vec2 screenPos(Application::instance()->getScreen()->getWidth(),
+                       Application::instance()->getScreen()->getHeight());
+        font->text(screenPos*state.textPos,state.text,state.textColor);
+    }
 }
 

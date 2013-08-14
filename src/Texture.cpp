@@ -51,6 +51,54 @@ Texture::Texture(const Vec4& floatColor,uint newWidth,uint newheight)
 	//create a gpu texture
 	buildTexture(image.bytes,image.type);
 }
+
+Texture::Texture(
+        std::vector<uchar>& bytes,
+        uint argWidth,
+        uint argHeight,
+        uint format,
+        uint type,
+        bool mipmaps,
+        bool bilinear)
+        :bBilinear(bilinear)
+        ,chBlr(true)
+        ,bMipmaps(mipmaps)
+        ,chMps(true)
+        ,width(0)
+        ,height(0)
+        ,gpuid(0){
+	/////////////////////////////////////////////////////////////////////
+	//gen gpu
+	//create an GPU texture
+	glGenTextures( 1, &gpuid );
+	//build
+	bind();
+	//save width end height
+	width=argWidth;
+	height=argHeight;
+	//resize
+	//create a gpu texture
+	glTexImage2D(
+                 GL_TEXTURE_2D,
+                 0,
+                 format,
+                 width,
+                 height,
+                 0,
+                 type,
+                 GL_UNSIGNED_BYTE,
+                 NULL );
+	//create mipmaps
+	glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, bMipmaps );
+	//send to GPU
+    glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0,
+                    width,
+                    height,
+                    type,
+                    GL_UNSIGNED_BYTE,
+                    &bytes[0] );
+
+}
 //send texture to gpu
 void Texture::buildTexture(void *data,uint type){
 	//gen gpu

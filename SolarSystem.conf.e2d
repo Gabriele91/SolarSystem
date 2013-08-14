@@ -5,8 +5,8 @@
 	width=1280
 	height=720
 	bits=32
-	fps=60
-	fullscreen="true"
+	fps=35
+	fullscreen="false"
 	MSAA=4
 	
 	//loading screen	

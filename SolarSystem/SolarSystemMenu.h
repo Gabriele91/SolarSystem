@@ -8,6 +8,7 @@
 #include <Camera.h>
 #include <PlanetsManager.h>
 #include <SolarRender.h>
+#include <font.h>
 
 namespace SolarSystem {
 
@@ -16,6 +17,7 @@ namespace SolarSystem {
 		SolarMenu         menu;
         Camera           *camera;
         PlanetsManager   *planets;
+        Font             *font;
         bool              isunlock;
         
         enum StateValues{
@@ -29,6 +31,12 @@ namespace SolarSystem {
             StateValues state;
             Planet* planet;
             Vec3    campos;
+            float startAngle;
+            float cameraHigth;
+            String text;
+            Vec2   textPos;
+            Color  textColor;
+            float  textTime;
         };
         
         
@@ -36,7 +44,6 @@ namespace SolarSystem {
         float timeRotation;
         float timeMove;
         
-        float startAngle;
         float turnAngle;
         float keyAngle;
         
@@ -50,6 +57,7 @@ namespace SolarSystem {
 		SolarSystemMenu(Camera* camera,
                         PlanetsManager* planets,
                         const Table& menuConfig);
+		virtual ~SolarSystemMenu();
         void update(float dt);
         void draw(SolarRender *render);
         

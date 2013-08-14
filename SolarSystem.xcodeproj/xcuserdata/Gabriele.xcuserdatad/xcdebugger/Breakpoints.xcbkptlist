@@ -229,11 +229,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397460700.100727"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "29"
-         endingLineNumber = "29"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
          landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -242,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397460700.100727"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "33"
-         endingLineNumber = "33"
+         startingLineNumber = "63"
+         endingLineNumber = "63"
          landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -255,11 +255,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397460700.100727"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "52"
-         endingLineNumber = "52"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
          landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397460700.100727"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "76"
-         endingLineNumber = "76"
+         startingLineNumber = "117"
+         endingLineNumber = "117"
          landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -281,11 +281,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397460700.100727"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "74"
-         endingLineNumber = "74"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -294,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397478826.617942"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "79"
-         endingLineNumber = "79"
+         startingLineNumber = "120"
+         endingLineNumber = "120"
          landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397485859.254161"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "176"
-         endingLineNumber = "176"
+         startingLineNumber = "227"
+         endingLineNumber = "227"
          landmarkName = "SolarSystemMenu::update(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -320,22 +320,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397480670.472426"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "84"
-         endingLineNumber = "84">
+         startingLineNumber = "125"
+         endingLineNumber = "125">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397478826.617942"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
+         startingLineNumber = "122"
+         endingLineNumber = "122"
          landmarkName = "SolarSystemMenu::pointToPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -435,11 +435,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397485859.254161"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "151"
-         endingLineNumber = "151"
+         startingLineNumber = "194"
+         endingLineNumber = "194"
          landmarkName = "SolarSystemMenu::onPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -448,11 +448,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397485859.254161"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "151"
-         endingLineNumber = "151"
+         startingLineNumber = "194"
+         endingLineNumber = "194"
          landmarkName = "SolarSystemMenu::onPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -526,11 +526,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397485859.254161"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "140"
-         endingLineNumber = "140"
+         startingLineNumber = "183"
+         endingLineNumber = "183"
          landmarkName = "SolarSystemMenu::onPlanet(float dt)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -552,11 +552,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.h"
-         timestampString = "397478826.617942"
+         timestampString = "397996628.03317"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56">
+         startingLineNumber = "64"
+         endingLineNumber = "64">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -589,20 +589,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397479402.269571"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "17"
-         endingLineNumber = "17"
-         landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397479404.131196"
+         timestampString = "397939051.266756"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "18"
@@ -615,12 +602,129 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SolarSystem/SolarSystemMenu.cpp"
-         timestampString = "397479405.44573"
+         timestampString = "397939051.266756"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "19"
          endingLineNumber = "19"
          landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SolarSystem/SolarSystemMenu.cpp"
+         timestampString = "397996628.03317"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "54"
+         endingLineNumber = "54"
+         landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SolarSystem/SolarSystemMenu.cpp"
+         timestampString = "397996628.03317"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "242"
+         endingLineNumber = "242"
+         landmarkName = "SolarSystemMenu::draw(SolarRender *render)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/FreeTypeFontLoader.cpp"
+         timestampString = "397939961.674468"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "192"
+         endingLineNumber = "192"
+         landmarkName = "FreeTypeFontLoader::fastLoadPage( Font&amp; font, const Vec2 pageSize, int count, uint&amp; startChar, const uint&amp; endChar, void* _face)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/FreeTypeFontLoader.cpp"
+         timestampString = "397939961.674468"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "191"
+         endingLineNumber = "191"
+         landmarkName = "FreeTypeFontLoader::fastLoadPage( Font&amp; font, const Vec2 pageSize, int count, uint&amp; startChar, const uint&amp; endChar, void* _face)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/FreeTypeFontLoader.cpp"
+         timestampString = "397939961.674468"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "164"
+         endingLineNumber = "164"
+         landmarkName = "FreeTypeFontLoader::fastLoadPage( Font&amp; font, const Vec2 pageSize, int count, uint&amp; startChar, const uint&amp; endChar, void* _face)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SolarSystem/SolarSystemMenu.cpp"
+         timestampString = "397944781.238813"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "25"
+         endingLineNumber = "25"
+         landmarkName = "SolarSystemMenu::SolarSystemMenu(Camera* camera, PlanetsManager* planets, const Table&amp; menuConfig)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Font.cpp"
+         timestampString = "397944951.284693"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "23"
+         endingLineNumber = "23"
+         landmarkName = "Font::Font(const String&amp; path)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Font.cpp"
+         timestampString = "397945068.151502"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "41"
+         endingLineNumber = "41"
+         landmarkName = "Font::Font(const String&amp; path)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/Font.cpp"
+         timestampString = "397947209.21701"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "113"
+         endingLineNumber = "113"
+         landmarkName = "Font::text(const Vec2&amp; _pos, const String&amp; textDraw, const Color&amp; color)"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

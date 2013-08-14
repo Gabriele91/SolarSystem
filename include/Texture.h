@@ -30,6 +30,13 @@ namespace SolarSystem {
 		Texture(const Vec4& floatColor,
 				uint newWidth,
 				uint newheight);
+		Texture(std::vector<uchar>& bytes,
+                uint width,
+                uint height,
+                uint format,
+                uint type,
+                bool mipmaps=true,
+                bool bilinear=true);
 		//destructor
 		virtual ~Texture();
 		//bind and unbind
