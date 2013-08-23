@@ -5,6 +5,16 @@ SolarSystem
   
   ![ScreenShot](https://raw.github.com/Gabriele91/SolarSystem/master/Readme.png?raw=true)
 
+---
+
+ [Depedences-win32](https://dl.dropboxusercontent.com/u/26656895/SolarSystem/dependences-win32.zip)
+ 
+ [Depedences-linux64](https://dl.dropboxusercontent.com/u/26656895/Easy2D/dependences-linux64.zip)
+ 
+ [Depedences-OS X 64](https://dl.dropboxusercontent.com/u/26656895/Easy2D/dependences-osx64.zip)
+ 
+ [assets](https://dl.dropboxusercontent.com/u/26656895/SolarSystem/SolarSystem.zip)
+
 ##LICENSES:
 
     MIT
