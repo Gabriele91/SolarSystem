@@ -1,13 +1,13 @@
 {
 	//screen area
-	//width=1920
-	//height=1080
-	width=1280
-	height=720
+	width=1920
+	height=1080
+	//width=1280
+	//height=720
 	bits=32
-	fps=35
-	fullscreen="false"
-	MSAA=4
+	fps=40
+	fullscreen="true"
+	MSAA=16
 	
 	//loading screen	
 	//loadingScreen=<string>

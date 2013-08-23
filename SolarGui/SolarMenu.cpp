@@ -1,7 +1,7 @@
 #include <stdafx.h>
 #include <Application.h>
 #include <SolarMenu.h>
-#include <Algorithm>
+#include <algorithm>
 
 ///////////////////////
 using namespace SolarSystem;
@@ -21,13 +21,13 @@ SolarMenu::SolarMenu(const Table& config){
 	paddingBottons=config.getVector2D("padding",Vec2(25.0f,10.0f));
 	pixelPerSecond=config.getVector2D("velocity",(maxSizeBottons-sizeBottons)*0.5);
 	//get table buttons
-	if(!config.existsAsType("buttons",Table::TABLE)){		
+	if(!config.existsAsType("buttons",Table::TABLE)){
 			DEBUG_ASSERT_MSG(0,"SolarMenu error : "
 							   "buttons must to be a table");
 	}
 	//get buttons
 	for(auto val: config.getConstTable("buttons")){
-		if(!val.first.isString()){		
+		if(!val.first.isString()){
 			DEBUG_ASSERT_MSG(0,"SolarMenu.buttons error : "
 							   "must to be only associative table");
 		}
@@ -106,7 +106,7 @@ void SolarMenu::draw(SolarRender* render){
 	SolarRender::BlendState blendState;
 	SolarRender::MatrixsState matrixsState;
 	blendState=render->getBlendState();
-	render->getMatrixsState(matrixsState);	
+	render->getMatrixsState(matrixsState);
 	glGetFloatv(GL_VIEWPORT,&globalViewport.x);
 	render->disableZBuffer();
 	//query
@@ -115,7 +115,7 @@ void SolarMenu::draw(SolarRender* render){
 	//draw objects
 	//disable shader
     glUseProgram(0);
-	//ortogonal mode (2d)	
+	//ortogonal mode (2d)
     glViewport(0,0,windowSize.x,windowSize.y);
 	Matrix4x4 projection;
 	projection.setOrtho(0,windowSize.x,0,windowSize.y,0.0,1.0);

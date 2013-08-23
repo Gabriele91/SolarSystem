@@ -336,7 +336,7 @@
 1368315704 /home/gabriele/github/SolarSystem//stdafx.h
 	<Config.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/Config.h
+1377256352 /home/gabriele/github/SolarSystem/include/Config.h
 	<cmath>
 	<cassert>
 	<cstdlib>
@@ -358,12 +358,25 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<window/OpenGLWindow.h>
+	<AL/al.h>
+	<AL/alc.h>
 	<GL/gl.h>
 	<linux/OpenGLLinux.h>
 	<AL/al.h>
 	<AL/alc.h>
-	"TargetConditionals.h"
+	<signal.h>
+	<unistd.h>
+	<TargetConditionals.h>
+	<signal.h>
+	<unistd.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<OpenGL/glext.h>
+	<OpenAL/al.h>
+	<OpenAL/alc.h>
+	<signal.h>
 	<stdint.h>
+	<unistd.h>
 	<AL/al.h>
 	<AL/alc.h>
 	<android/log.h>
@@ -382,8 +395,8 @@
 1368315704 /home/gabriele/github/SolarSystem/include/window/OpenGLWindow.h
 	<gletx_header.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/linux/OpenGLLinux.h
-	<GL/glx.h>
+1377257286 /home/gabriele/github/SolarSystem/include/linux/OpenGLLinux.h
+	<GL/gl.h>
 	<GL/glext.h>
 
 1368782078 /home/gabriele/github/SolarSystem/SolarSystem/Planet.h
@@ -399,32 +412,32 @@
 	<Config.h>
 	<EString.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/EString.h
+1377256352 /home/gabriele/github/SolarSystem/include/EString.h
 	<Config.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/Object.h
+1377256352 /home/gabriele/github/SolarSystem/include/Object.h
 	<Config.h>
 	<Math2D.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/Math2D.h
+1377256352 /home/gabriele/github/SolarSystem/include/Math2D.h
 	<Config.h>
 	<EString.h>
 
-1368782078 /home/gabriele/github/SolarSystem/include/Texture.h
+1377256352 /home/gabriele/github/SolarSystem/include/Texture.h
 	<Config.h>
 	<Math2D.h>
 	<Utility.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/Camera.h
+1377256352 /home/gabriele/github/SolarSystem/include/Camera.h
 	<Config.h>
 	<Object.h>
 
-1369473568 source:/home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.cpp
 	<stdafx.h>
 	<PlanetsManager.h>
 	<Application.h>
 
-1368782078 /home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.h
+1377256352 /home/gabriele/github/SolarSystem/SolarSystem/PlanetsManager.h
 	<Config.h>
 	<Utility.h>
 	<Object.h>
@@ -444,7 +457,7 @@
 	<Utility.h>
 	<Texture.h>
 
-1369473568 /home/gabriele/github/SolarSystem/include/Table.h
+1377256352 /home/gabriele/github/SolarSystem/include/Table.h
 	<Config.h>
 	<Math2D.h>
 	<EString.h>
@@ -463,11 +476,11 @@
 	<Input.h>
 	<MainInstance.h>
 
-1369473568 /home/gabriele/github/SolarSystem/include/MainInstance.h
+1377256352 /home/gabriele/github/SolarSystem/include/MainInstance.h
 	<Config.h>
 	<Types.h>
-	<Screen.h>
 	<EString.h>
+	<ApplicationState.h>
 
 1369473568 /home/gabriele/github/SolarSystem/include/Screen.h
 	<Config.h>
@@ -480,8 +493,9 @@
 	<Debug.h>
 	<Math2D.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/Debug.h
+1377256352 /home/gabriele/github/SolarSystem/include/Debug.h
 	<Config.h>
+	<EString.h>
 	<ostream>
 
 1368782078 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarRender.cpp
@@ -489,12 +503,12 @@
 	<SolarRender.h>
 	<Application.h>
 
-1368782078 source:/home/gabriele/github/SolarSystem/main.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/main.cpp
 	<stdafx.h>
 	<Application.h>
-	<SolarMain.h>
+	<SolarApp.h>
 
-1369473568 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
+1377256352 /home/gabriele/github/SolarSystem/SolarSystem/SolarMain.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
@@ -506,12 +520,16 @@
 	<Planet.h>
 	<PlanetsManager.h>
 	<SolarFly.h>
+	<SolarMenu.h>
+	<ApplicationState.h>
+	<SolarSystemMenu.h>
 	"../src/Image/Image.h"
 
-1368782078 source:/home/gabriele/github/SolarSystem/src/Application.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Application.cpp
 	<stdafx.h>
 	<Application.h>
 	<ETime.h>
+	<CocoaApp.h>
 	<WindowsApp.h>
 	<LinuxApp.h>
 
@@ -529,7 +547,7 @@
 	<Camera.h>
 	<Application.h>
 
-1368315704 source:/home/gabriele/github/SolarSystem/src/Debug.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Debug.cpp
 	<stdafx.h>
 	<Debug.h>
 	<EString.h>
@@ -565,15 +583,21 @@
 	<stdafx.h>
 	<Input.h>
 
-1369473568 source:/home/gabriele/github/SolarSystem/src/MainInstance.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/MainInstance.cpp
 	<stdafx.h>
+	<Application.h>
+	<Screen.h>
+	<Input.h>
 	<MainInstance.h>
 
-1368351914 source:/home/gabriele/github/SolarSystem/src/Math2D.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Math2D.cpp
 	<stdafx.h>
 	<Math2D.h>
+	"Math2D_SSE2.h"
+	"Math2D_neon.h"
+	"Math2D_vfp.h"
 
-1368351930 source:/home/gabriele/github/SolarSystem/src/Object.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Object.cpp
 	<stdafx.h>
 	<Object.h>
 
@@ -587,11 +611,11 @@
 	<Application.h>
 	<Debug.h>
 
-1369473568 source:/home/gabriele/github/SolarSystem/src/Table.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Table.cpp
 	<Table.h>
 	<Application.h>
 
-1368782078 source:/home/gabriele/github/SolarSystem/src/Texture.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/src/Texture.cpp
 	<stdafx.h>
 	<Texture.h>
 	<Application.h>
@@ -638,17 +662,23 @@
 	<sys/time.h>
 	<unistd.h>
 
-1369474226 /home/gabriele/github/SolarSystem/include/linux/LinuxScreen.h
+1377257323 /home/gabriele/github/SolarSystem/include/linux/LinuxScreen.h
 	<X11/Xlib.h>
 	<X11/Xatom.h>
 	<X11/keysym.h>
 	<X11/extensions/xf86vmode.h>
+	<GL/glx.h>
 	<Config.h>
 	<LinuxApp.h>
 	<EString.h>
 	<Screen.h>
 
-1368315704 /home/gabriele/github/SolarSystem/include/linux/LinuxInput.h
+1377257371 /home/gabriele/github/SolarSystem/include/linux/LinuxInput.h
+	<X11/Xlib.h>
+	<X11/Xatom.h>
+	<X11/keysym.h>
+	<X11/extensions/xf86vmode.h>
+	<GL/glx.h>
 	<Config.h>
 	<Math2D.h>
 	<Input.h>
@@ -664,19 +694,21 @@
 1369474618 source:/home/gabriele/github/SolarSystem/src/linux/LinuxScreen.cpp
 	<LinuxScreen.h>
 
-1368315704 source:/home/gabriele/github/SolarSystem/src/linux/OpenGLLinux.cpp
+1377257421 source:/home/gabriele/github/SolarSystem/src/linux/OpenGLLinux.cpp
 	<stdafx.h>
 	<OpenGLLinux.h>
+	<GL/glx.h>
 	<Debug.h>
 
-1368315704 /home/gabriele/github/SolarSystem/SolarSystem/SolarSky.h
+1377256352 /home/gabriele/github/SolarSystem/SolarSystem/SolarSky.h
 	<Config.h>
 	<Texture.h>
 	<Utility.h>
 	<Camera.h>
 	<SolarRender.h>
+	<Table.h>
 
-1368315704 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarSky.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarSky.cpp
 	<stdafx.h>
 	<SolarSky.h>
 	<Debug.h>
@@ -687,7 +719,7 @@
 	<Math2D.h>
 	<Camera.h>
 
-1368315704 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarFly.cpp
+1377256352 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarFly.cpp
 	<stdafx.h>
 	<SolarFly.h>
 
@@ -1075,4 +1107,230 @@
 	<stdafx.h>
 	<SolarRings.h>
 	<Debug.h>
+
+1377256352 /home/gabriele/github/SolarSystem/include/ApplicationState.h
+	<Config.h>
+	<Types.h>
+	<EString.h>
+
+1377288134 source:/home/gabriele/github/SolarSystem/SolarAudio/APIAudio.cpp
+	<stdafx.h>
+	<APIAudio.h>
+	<EString.h>
+	<string.h>
+	<Debug.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarAudio/APIAudio.h
+	<Config.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarAudio/AbstractSource.cpp
+	<stdafx.h>
+	<AbstractSource .h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarAudio/AbstractSource .h
+	<Config.h>
+	<EString.h>
+	<Utility.h>
+	<string>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarAudio/SolarSound.cpp
+	<stdafx.h>
+	"../src/Thread/Thread.h"
+	<SolarSound.h>
+	<Debug.h>
+
+1377256352 /home/gabriele/github/SolarSystem/src/Thread/Thread.h
+	"ThreadConf.h"
+
+1368315704 /home/gabriele/github/SolarSystem/src/Thread/ThreadConf.h
+	<windows.h>
+	<process.h>
+	<pthread.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarAudio/SolarSound.h
+	<APIAudio.h>
+	<Table.h>
+	<Sound.h>
+	<Timer.h>
+	"../src/Thread/Thread.h"
+	"../src/Thread/Mutex.h"
+
+1377256352 /home/gabriele/github/SolarSystem/SolarAudio/Sound.h
+	<Config.h>
+	<AbstractSource .h>
+
+1377256352 /home/gabriele/github/SolarSystem/src/Thread/Mutex.h
+	"MutexConf.h"
+
+1368315704 /home/gabriele/github/SolarSystem/src/Thread/MutexConf.h
+	<windows.h>
+	<pthread.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarAudio/Sound.cpp
+	<stdafx.h>
+	<Application.h>
+	<Sound.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarAudio/WavLoader.cpp
+	<stdafx.h>
+	<Config.h>
+	<stdlib.h>
+	<string.h>
+	<Application.h>
+	<Debug.h>
+	<EString.h>
+	<Utility.h>
+	<Types.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarGui/SolarButton.cpp
+	<stdafx.h>
+	<SolarButton.h>
+	<SolarMenu.h>
+	<Application.h>
+	<Debug.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarGui/SolarButton.h
+	<functional>
+	<Config.h>
+	<Texture.h>
+	<Table.h>
+	<EString.h>
+	<Object.h>
+	<Input.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarGui/SolarMenu.h
+	<Config.h>
+	<Debug.h>
+	<Table.h>
+	<SolarButton.h>
+	<SolarRender.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarGui/SolarDialog.cpp
+	<stdafx.h>
+	<SolarDialog.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarGui/SolarDialog.h
+	<Config.h>
+
+1377256960 source:/home/gabriele/github/SolarSystem/SolarGui/SolarMenu.cpp
+	<stdafx.h>
+	<Application.h>
+	<SolarMenu.h>
+	<algorithm>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarGui/SolarStartMenu.cpp
+	<stdafx.h>
+	<SolarStartMenu.h>
+
+1377256352 /home/gabriele/github/SolarSystem/SolarGui/SolarStartMenu.h
+	<Config.h>
+	<Application.h>
+	<MainInstance.h>
+	<SolarRender.h>
+	<SolarMenu.h>
+	<Texture.h>
+	<SolarSky.h>
+	<ApplicationState.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarSystem/SolarSystemMenu.cpp
+	<stdafx.h>
+	<SolarSystemMenu.h>
+
+1377257044 /home/gabriele/github/SolarSystem/SolarSystem/SolarSystemMenu.h
+	<Config.h>
+	<Input.h>
+	<Application.h>
+	<SolarMenu.h>
+	<Camera.h>
+	<PlanetsManager.h>
+	<SolarRender.h>
+	<Font.h>
+
+1377256352 /home/gabriele/github/SolarSystem/include/Font.h
+	<Config.h>
+	<Color.h>
+	<Utility.h>
+	<Texture.h>
+	<EString.h>
+
+1377256352 /home/gabriele/github/SolarSystem/include/Color.h
+
+1377256352 /home/gabriele/github/SolarSystem//SolarApp.h
+	<Config.h>
+	<Application.h>
+	<SolarMain.h>
+	<SolarStartMenu.h>
+	<SolarSound.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/ApplicationState.cpp
+	<stdafx.h>
+	<Application.h>
+	<ApplicationState.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/BMFontLoader.cpp
+	<stdafx.h>
+	<BMFontLoader.h>
+	<Application.h>
+	<Debug.h>
+	<Texture.h>
+
+1377256352 /home/gabriele/github/SolarSystem/include/BMFontLoader.h
+	<Config.h>
+	<Font.h>
+	<Texture.h>
+	<Utility.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/Font.cpp
+	<stdafx.h>
+	<Config.h>
+	<Debug.h>
+	<Color.h>
+	<Font.h>
+	<Types.h>
+	<Screen.h>
+	<Application.h>
+	<BMFontLoader.h>
+	<FreeTypeFontLoader.h>
+
+1377256352 /home/gabriele/github/SolarSystem/include/FreeTypeFontLoader.h
+	<Config.h>
+	<Table.h>
+	<Font.h>
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/FreeTypeFontLoader.cpp
+	<stdafx.h>
+	<ft2build.h>
+	<FreeTypeFontLoader.h>
+	<Debug.h>
+	<Application.h>
+
+1237038326 /home/gabriele/github/SolarSystem/dependences-linux64/include/ft2build.h
+	<freetype/config/ftheader.h>
+
+1369774803 /home/gabriele/github/SolarSystem/dependences-linux64/include/freetype/config/ftheader.h
+
+1377256352 /home/gabriele/github/SolarSystem/src/Math2D_SSE2.h
+	<Config.h>
+	<Math2D.h>
+
+1377256352 /home/gabriele/github/SolarSystem/src/Math2D_neon.h
+
+1377256352 /home/gabriele/github/SolarSystem/src/Math2D_vfp.h
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/Math2D_SSE2.cpp
+	<stdafx.h>
+	"Math2D_SSE2.h"
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/Thread/MutexPOSIX.cpp
+	<stdafx.h>
+	"Mutex.h"
+
+1377256352 source:/home/gabriele/github/SolarSystem/src/Thread/ThreadPOSIX.cpp
+	<stdafx.h>
+	"Thread.h"
+
+1377256352 source:/home/gabriele/github/SolarSystem/SolarApp.cpp
+	<stdafx.h>
+	<Application.h>
+	<SolarApp.h>
 

@@ -92,32 +92,26 @@ void SolarSystem::APIAudio::init(){
 	GetDevices(devices);
 	for(unsigned int i=0;i<devices.size();++i)
 		DEBUG_MESSAGE( "audio device:"<<devices[i] );
-	//
+
+    // Clear Error Code (so we can catch any new errors)
+    alGetError();
 	int error = AL_NO_ERROR;
 	// Initialization
 	alcMakeContextCurrent(NULL);
-    device = alcOpenDevice(NULL); // select the "preferred device"
+	// select the "preferred device"
+    device = alcOpenDevice(alcGetString(NULL,ALC_DEFAULT_DEVICE_SPECIFIER));
 	DEBUG_MESSAGE("alcOpenDevice = "<<device);
 	DEBUG_ASSERT_MSG( device, "openAL can't open device");
 	//
 	if(!device)
 		DEBUG_MESSAGE("openALc open device error:" << GetALCErrorString(alcGetError(device)) );
-	//
-    error = alGetError();
-	DEBUG_ASSERT_MSG( error == AL_NO_ERROR , "openAL error:" << GetALErrorString(error) );
-	//
-    if (device) {
+	else {
 
 				if(!(context = alcCreateContext(device,NULL)))
 					DEBUG_MESSAGE("openALc create context error:" << GetALCErrorString(alcGetError(device)) );
-				
-
-                error = alGetError();
-				DEBUG_ASSERT_MSG( error == AL_NO_ERROR , "openAL error:" << GetALErrorString(error) );
 
 				if(!alcMakeContextCurrent(context))
 					DEBUG_MESSAGE( "openALc make current error:" << GetALCErrorString(alcGetError(device)) );
-				
 
 				error = alGetError();
 				DEBUG_ASSERT_MSG( error == AL_NO_ERROR , "openAL error:" << GetALErrorString(error) );

@@ -9,6 +9,7 @@
 			<Target title="Debug Linux">
 				<Option platforms="Unix;" />
 				<Option output="bin/Debug/sphere" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../SolarSystem" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -22,6 +23,9 @@
 					<Add directory="include" />
 					<Add directory="include/linux" />
 					<Add directory="SolarSystem" />
+					<Add directory="SolarGui" />
+					<Add directory="SolarAudio" />
+					<Add directory="dependences-linux64/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-lX11" />
@@ -29,6 +33,8 @@
 					<Add option="-lGL" />
 					<Add option="-lGLU" />
 					<Add option="-lopenal" />
+					<Add library="dependences-linux64/lib/libfreetype250_gcc48.so" />
+					<Add directory="dependences-linux64/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release Linux">
@@ -60,6 +66,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="SolarApp.cpp" />
+		<Unit filename="SolarApp.h" />
+		<Unit filename="SolarAudio/APIAudio.cpp" />
+		<Unit filename="SolarAudio/APIAudio.h" />
+		<Unit filename="SolarAudio/AbstractSource .h" />
+		<Unit filename="SolarAudio/AbstractSource.cpp" />
+		<Unit filename="SolarAudio/Music.h" />
+		<Unit filename="SolarAudio/SolarSound.cpp" />
+		<Unit filename="SolarAudio/SolarSound.h" />
+		<Unit filename="SolarAudio/Sound.cpp" />
+		<Unit filename="SolarAudio/Sound.h" />
+		<Unit filename="SolarAudio/WavLoader.cpp" />
+		<Unit filename="SolarGui/SolarButton.cpp" />
+		<Unit filename="SolarGui/SolarButton.h" />
+		<Unit filename="SolarGui/SolarDialog.cpp" />
+		<Unit filename="SolarGui/SolarDialog.h" />
+		<Unit filename="SolarGui/SolarMenu.cpp" />
+		<Unit filename="SolarGui/SolarMenu.h" />
+		<Unit filename="SolarGui/SolarStartMenu.cpp" />
+		<Unit filename="SolarGui/SolarStartMenu.h" />
 		<Unit filename="SolarSystem/Planet.cpp" />
 		<Unit filename="SolarSystem/Planet.h" />
 		<Unit filename="SolarSystem/PlanetsManager.cpp" />
@@ -75,13 +101,20 @@
 		<Unit filename="SolarSystem/SolarShadow.h" />
 		<Unit filename="SolarSystem/SolarSky.cpp" />
 		<Unit filename="SolarSystem/SolarSky.h" />
+		<Unit filename="SolarSystem/SolarSystemMenu.cpp" />
+		<Unit filename="SolarSystem/SolarSystemMenu.h" />
 		<Unit filename="include/Application.h" />
+		<Unit filename="include/ApplicationState.h" />
+		<Unit filename="include/BMFontLoader.h" />
 		<Unit filename="include/Camera.h" />
+		<Unit filename="include/Color.h" />
 		<Unit filename="include/Config.h" />
 		<Unit filename="include/Debug.h" />
 		<Unit filename="include/EString.h" />
 		<Unit filename="include/ETime.h" />
 		<Unit filename="include/Easy2D.h" />
+		<Unit filename="include/Font.h" />
+		<Unit filename="include/FreeTypeFontLoader.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/MainInstance.h" />
 		<Unit filename="include/Math2D.h" />
@@ -112,10 +145,14 @@
 		<Unit filename="shader/sunLightClouds.ps" />
 		<Unit filename="shader/sunLightClouds.vs" />
 		<Unit filename="src/Application.cpp" />
+		<Unit filename="src/ApplicationState.cpp" />
+		<Unit filename="src/BMFontLoader.cpp" />
 		<Unit filename="src/Camera.cpp" />
 		<Unit filename="src/Debug.cpp" />
 		<Unit filename="src/EString.cpp" />
 		<Unit filename="src/ETime.cpp" />
+		<Unit filename="src/Font.cpp" />
+		<Unit filename="src/FreeTypeFontLoader.cpp" />
 		<Unit filename="src/Image/Image.h" />
 		<Unit filename="src/Image/Image.inl" />
 		<Unit filename="src/Image/lodepng.cpp" />
@@ -123,6 +160,8 @@
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/MainInstance.cpp" />
 		<Unit filename="src/Math2D.cpp" />
+		<Unit filename="src/Math2D_SSE2.cpp" />
+		<Unit filename="src/Math2D_SSE2.h" />
 		<Unit filename="src/Object.cpp" />
 		<Unit filename="src/Screen.cpp" />
 		<Unit filename="src/Shader.cpp" />
@@ -130,12 +169,10 @@
 		<Unit filename="src/Texture.cpp" />
 		<Unit filename="src/Thread/Mutex.h" />
 		<Unit filename="src/Thread/MutexConf.h" />
-		<Unit filename="src/Thread/MutexPOSIX.inl" />
-		<Unit filename="src/Thread/MutexWin32.inl" />
+		<Unit filename="src/Thread/MutexPOSIX.cpp" />
 		<Unit filename="src/Thread/Thread.h" />
 		<Unit filename="src/Thread/ThreadConf.h" />
-		<Unit filename="src/Thread/ThreadPOSIX.inl" />
-		<Unit filename="src/Thread/ThreadWin32.inl" />
+		<Unit filename="src/Thread/ThreadPOSIX.cpp" />
 		<Unit filename="src/Timer.cpp" />
 		<Unit filename="src/Utility.cpp" />
 		<Unit filename="src/linux/LinuxApp.cpp" />
