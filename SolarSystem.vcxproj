@@ -55,7 +55,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;freetype250_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,7 +73,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>openGL32.lib;glu32.lib;openAL32.lib;freetype250.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -98,10 +98,13 @@
     <ClCompile Include="SolarSystem\SolarSystemMenu.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationState.cpp" />
+    <ClCompile Include="src\BMFontLoader.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Debug.cpp" />
     <ClCompile Include="src\EString.cpp" />
     <ClCompile Include="src\ETime.cpp" />
+    <ClCompile Include="src\Font.cpp" />
+    <ClCompile Include="src\FreeTypeFontLoader.cpp" />
     <ClCompile Include="src\Image\lodepng.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MainInstance.cpp" />
@@ -129,11 +132,15 @@
   <ItemGroup>
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\ApplicationState.h" />
+    <ClInclude Include="include\BMFontLoader.h" />
     <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Debug.h" />
     <ClInclude Include="include\EString.h" />
     <ClInclude Include="include\ETime.h" />
+    <ClInclude Include="include\Font.h" />
+    <ClInclude Include="include\FreeTypeFontLoader.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\MainInstance.h" />
     <ClInclude Include="include\Math2D.h" />

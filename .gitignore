@@ -1,6 +1,9 @@
 *.7z
 *.exe
 
+#mac os x
+__MACOSX*/*
+
 #ingnore media file
 sound*/
 img*/
