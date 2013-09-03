@@ -239,7 +239,8 @@ void SolarSystemMenu::draw(SolarRender *render){
     if(state.text.size() && font && state.state==ON_PLANET){
         Vec2 screenPos(Application::instance()->getScreen()->getWidth(),
                        Application::instance()->getScreen()->getHeight());
-        font->text(screenPos*state.textPos,state.text,state.textColor);
+		Vec2 size=font->sizeText(state.text);
+        font->text(screenPos*state.textPos-size*0.5,state.text,state.textColor);
     }
 }
 

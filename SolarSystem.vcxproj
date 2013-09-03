@@ -192,6 +192,7 @@
     <None Include="shader\bloom.ps" />
     <None Include="shader\bloom.vs" />
     <None Include="shader\fxaa.ps" />
+    <None Include="shader\fxaa.vs" />
     <None Include="shader\godRays.ps" />
     <None Include="shader\godRays.vs" />
     <None Include="shader\shadow.ps" />
@@ -204,6 +205,8 @@
     <None Include="shader\sunLightAtmosphere.vs" />
     <None Include="shader\sunLightClouds.ps" />
     <None Include="shader\sunLightClouds.vs" />
+    <None Include="shader\sunLightRings.ps" />
+    <None Include="shader\sunLightRings.vs" />
     <None Include="SolarSystem.conf.e2d" />
     <None Include="src\Image\Image.inl" />
   </ItemGroup>

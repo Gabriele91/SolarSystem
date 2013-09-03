@@ -94,6 +94,7 @@ Planet::Planet(SolarRender *render,
 			  ,atmRim(NULL)
 			  ,rings(NULL)
 			  ,render(render)
+			  ,rotationNormal(0.0f,1.0f,0.0f)
 			  ,ambient(Vec3::ZERO,1.0f)
 			  ,diffuse(Vec3::ZERO,1.0f)
 			  ,specular(Vec3::ZERO,1.0f)
@@ -141,9 +142,13 @@ void Planet::setAtmosphereTexture(const Utility::Path& grad1,
 }
 void Planet::setRings(const Utility::Path& argtexture,
 					  float nr,
-					  float fr){
+					  float fr,
+					  const Vec3& rotationOffSet){
 	DEBUG_ASSERT(rings==NULL);
 	rings=new SolarRings(render,argtexture,nr,fr);
+	Quaternion q;
+	q.setFromEulero(rotationOffSet.x,rotationOffSet.y,rotationOffSet.z);
+	rings->setRotation(q);
 	addChild(rings,Object::ENABLE_ALL,true);
 }
 //draw
@@ -329,7 +334,8 @@ void Planet::setData(float _day){
 		//calc rotation
 		float rotationDay=day/rotationPeriod*Math::PI2;
 		Quaternion rot;
-		rot.setFromEulero(0,rotationDay,0);
+		Vec3 roation=rotationNormal*rotationDay;
+		rot.setFromEulero(roation.x,roation.y,roation.z);
 		setRotation(rot);
 		//calc offset
 		if((cloudOffset.x+cloudOffset.y+cloudOffset.z)!=0.0f)

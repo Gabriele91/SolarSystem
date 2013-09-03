@@ -202,11 +202,18 @@ PlanetsManager::PlanetsManager(Camera *camera,
 									  pathFilesPlanet+atmosphere.getString(1),
 									  pathFilesPlanet+atmosphere.getString(2));
 		}		
+		if(planet.existsAsType("rotationNormal",Table::VECTOR3D)){
+			ptr->setRotationNormal(planet.getVector3D("rotationNormal"));
+		}
 		if(planet.existsAsType("rings",Table::TABLE)){
-			const Table& rings=planet.getConstTable("rings");	
+			const Table& rings=planet.getConstTable("rings");
+			Vec3 offsetRotation=rings.getVector3D("angle");
 			ptr->setRings(pathFilesPlanet+rings.getString("image"),
 						  rings.getFloat("near",0.5),
-						  rings.getFloat("far",1.0));
+						  rings.getFloat("far",1.0),
+						  Vec3(Math::torad(offsetRotation.x),
+						       Math::torad(offsetRotation.y),
+							   Math::torad(offsetRotation.z)));
 		}
 	}
 	//////////////////////////////////////////////////////////////

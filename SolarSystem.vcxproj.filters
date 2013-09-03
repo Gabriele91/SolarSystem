@@ -409,5 +409,14 @@
     <None Include="SolarSystem.conf.e2d">
       <Filter>File di risorse</Filter>
     </None>
+    <None Include="shader\fxaa.vs">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightRings.ps">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shader\sunLightRings.vs">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -44,6 +44,7 @@ namespace SolarSystem {
 		float day;
 		//planet rotation
 		float rotationPeriod;
+		Vec3 rotationNormal;
 		//cloud offset;
 		Vec3 cloudDayOffset;
 		Vec3 cloudOffset;
@@ -84,6 +85,9 @@ namespace SolarSystem {
 		void setPlanetInfo(const Vec2& radius,
 						   float daysOfYear,
 						   float rotationPeriod);
+		void setRotationNormal(const Vec3& rotNormal){
+			rotationNormal=rotNormal;
+		}
 		//set cloud info
 		void setCloudOffset(const Vec3& cloudOffset);
 		//set material
@@ -105,7 +109,10 @@ namespace SolarSystem {
 		void setAtmosphereTexture(const Utility::Path& grad1,
 								  const Utility::Path& grad2,
 								  const Utility::Path& rim);
-		void setRings(const Utility::Path& texture,float nr=0.5,float fr=1.0);
+		void setRings(const Utility::Path& texture,
+			          float nr=0.5,
+					  float fr=1.0,
+					  const Vec3& rotationOffSet=Vec3::ZERO);
 		/*
 		todo add atmosfere like night and day texture
 		*/

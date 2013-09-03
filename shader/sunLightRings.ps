@@ -32,13 +32,13 @@ void main (void)
 	Idiff*=attenuation;	
 	//////////////////////////////////////////////////////////////
 	//texture color:
-	vec4 dayColor, nightColor;
+	vec4 dayColor;
 	float shadow	= clamp((dot(N,L)+1.0)*0.5, 0.0, 1.0 );
 	dayColor	    = texture1D( ringsTexture, varTexCoord.x );
 	vec4 texcolor   = lerp(vec4(0.0,0.0,0.0,1.0),dayColor,shadow);
 	//////////////////////////////////////////////////////////////
 
 	gl_FragColor.rgb = (Iamb+texcolor*Idiff).rgb; 
-	gl_FragColor.a   = texcolor.a; 
+	gl_FragColor.a   = dayColor.a; 
 
 }

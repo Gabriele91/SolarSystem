@@ -226,6 +226,50 @@ void Font::text(const Vec2& _pos,
 	glColor4fv(old_color);
 }
 
+Vec2 Font::sizeText( const String& textDraw){
+
+	Vec2 outSize;
+	Vec2 cursor;
+	//temp vars
+	int countCharPage=0;
+	Character* chr=NULL;
+	Character* nextChr=getCharacter(textDraw[0]);
+	int pageLast=0;
+
+	for(int i=0;i<textDraw.length();++i){
+		//string's char
+		char c=textDraw[i];
+		char nextC=textDraw[i+1];
+		//image's char
+		chr=nextChr;
+		//next char
+		nextChr=getCharacter(nextC);
+		//is special?
+		lambdaChar charFunction=isASpecialChar(c);
+		if(charFunction)
+				charFunction(fontSize,Vec2::ZERO,cursor);
+		else if(chr){
+			//page
+			pageLast=chr->page;
+			//
+			Vec2 sizePage(pages[chr->page]->getWidth(),
+                          pages[chr->page]->getHeight());
+
+			//opengl uv flipped error on y axis
+			float yerror=isBMFont ? -chr->srcH-chr->yOff : -fontSize-chr->srcH+chr->yOff;
+			Vec2 posChr(cursor+Vec2(chr->xOff,yerror));
+			//get max
+			outSize.x=Math::max(outSize.x,posChr.x+chr->srcW);
+			outSize.y=Math::min(outSize.y,posChr.y+chr->srcH);
+			//count this char
+			++countCharPage;
+			//next pos
+			cursor.x+=chr->xAdv;
+		}
+	}
+	return outSize;
+}
+
 /*
 OLD METHOD
 
