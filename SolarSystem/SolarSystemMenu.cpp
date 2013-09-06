@@ -73,11 +73,34 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
                         });
     
     }
-    menu.addOnClick("sun",[this](){
+     //temp data
+     float angle=startAngle;
+     float camh=cameraHigth;
+     String text=textPlanet;
+     Vec2   tpos=textPos;
+     Vec3   tcolor=textColor;
+     float  ttime=textTime;
+     //get info
+     if(menuConfig.getConstTable("info").existsAsType("sun",Table::TABLE)){
+         const Table& infoPlanet=menuConfig.getConstTable("info").getConstTable("sun");
+         angle=infoPlanet.getFloat("startAngle",startAngle);
+         camh=infoPlanet.getFloat("cameraHigth",cameraHigth);
+         text=infoPlanet.getString("text",textPlanet);
+         tpos=infoPlanet.getVector2D("textPos",textPos);
+         tcolor=infoPlanet.getVector3D("textColor",textColor);
+         ttime=infoPlanet.getFloat("textTime",1000.0f)*0.001;
+     }
+    menu.addOnClick("sun",[this,angle,camh,text,tpos,tcolor,ttime](){
                     if(state.planet!=&this->planets->getSun() ){
-                         state.state=POIN_TO_PLANET;
-                         state.planet=&this->planets->getSun();
-                         timeCounting=0.0f;
+                        state.state=POIN_TO_PLANET;
+                        state.planet=&this->planets->getSun();
+                        state.startAngle=angle;
+                        state.cameraHigth=camh;
+                        state.text=text;
+                        state.textPos=tpos;
+                        state.textColor=Color(tcolor.r,tcolor.g,tcolor.b,255);
+                        state.textTime=ttime;
+                        timeCounting=0.0f;
                       }
                     });
 }
