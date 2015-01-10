@@ -9,7 +9,7 @@ using namespace SolarSystem;
 void Planet::buildMesh(int rings,int sectors){
 	// make planet mesh 
 	verticesSize=rings*sectors;
-	indicesSize=rings*sectors*6;
+	indicesSize=(rings-1)*(sectors-1)*6;
 	GLVertex	 *vertices=new GLVertex[verticesSize];
 	GLushort	 *indices=new GLushort[indicesSize];
 	//set vertices
