@@ -9,6 +9,10 @@ varying float constantAttenuation;
 varying float linearAttenuation;
 varying float quadraticAttenuation;
 
+void output(vec4 color){
+     //sRGB to Linear RGB
+     gl_FragColor = vec4( pow (color.xyz, 1.0 / 2.2), color.w ); 
+}
 
 void main (void)
 {
@@ -32,7 +36,7 @@ void main (void)
 	vec4 Ispec = gl_FrontLightProduct[0].specular * gl_FrontMaterial.specular
 				* pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess);
 	// get and set specular map
-	Ispec*=texture2D( planetSpecularTexture, varTexCoord ).r;
+	Ispec *= texture2D( planetSpecularTexture, varTexCoord ).r;
 	
 	// calculate attenuation
 	float attenuation = 1.0/ ( constantAttenuation + 
@@ -44,14 +48,12 @@ void main (void)
 	
 	//////////////////////////////////////////////////////////////
 	//texture color:
-	vec4 dayColor, nightColor;
-	float shadow	= clamp(max(dot(N,L),0.0), 0.0, 1.0 );
-	dayColor	    = texture2D( planetTexture, varTexCoord );
-	nightColor		= texture2D( planetNightTexture, varTexCoord );
-	vec4 texcolor   = lerp(nightColor,dayColor,shadow);
+	vec4  dayColor, nightColor;
+	float shadow    = max( dot(N,L), 0.0 );
+	dayColor        = texture2D( planetTexture, varTexCoord );
+	nightColor      = texture2D( planetNightTexture, varTexCoord );
+	vec4 texcolor   = lerp( nightColor, dayColor, shadow );
 	//////////////////////////////////////////////////////////////
-
-	gl_FragColor.rgb = (Iamb+texcolor*Idiff+Ispec*shadow).rgb; 
-	gl_FragColor.a   = texcolor.a; 
+    output(vec4((Iamb+texcolor*Idiff+Ispec*shadow).rgb, texcolor.a)); 
 
 }

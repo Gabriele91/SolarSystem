@@ -64,7 +64,7 @@ void SolarShadow::madeShadowMap(Planet *planet,const Vec3& addScale){
 	Mat4 model=planet->getGlobalMatrix();
 	model.addScale(addScale);
 	//calc MV (P in gpu)
-	Mat4 viewmodel=shadowLight.getGlobalMatrix().mul(model);
+    Mat4 viewmodel=shadowLight.getViewMatrix().mul(model);
 	glLoadMatrixf(viewmodel);
 	//draw planet
 	planet->drawSphere();
@@ -98,7 +98,7 @@ void SolarShadow::drawShadow(Camera *camera,Planet *planet,float intesity){
 	Mat4 delphMVP=shadowLight.getViewProjMatrix().mul(model);
 	shadowShader.shader.uniformMatrix4x4(shadowShader.glDelphMVP,  delphMVP );
 	//calc MV (P in gpu)
-	Mat4 viewmodel=camera->getGlobalMatrix().mul(model);
+	Mat4 viewmodel=camera->getViewMatrix().mul(model);
 	glLoadMatrixf(viewmodel);
 	//bind texture
 	texture.bind(0);

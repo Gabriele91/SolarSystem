@@ -2,9 +2,9 @@
 #define OBJECT_H
 
 #include <Config.h>
-#include <Math2D.h>
+#include <Math3D.h>
 
-namespace SolarSystem{
+namespace SolarSystem {
 	
 	class Object
 	{
@@ -23,13 +23,14 @@ namespace SolarSystem{
 		//methods
 		void setScale(const Vector3D &scale,bool global=false);
 		void setPosition(const Vector3D &position,bool global=false);
-		void setRotation(const Quaternion& rotation,bool global=false);
+		void setRotation(const Quaternion& rotation, bool global = false);
+		void setMove(const Vector3D &move, bool global = false);
 		//inc
 		void setTranslation(const Vector3D &translation);
-		void setMove(const Vector3D &move);
 		void setTurn(const Quaternion& rotation);
 		//childs
-		void addChild(Object *child,ParentMode type=ENABLE_ALL,bool hard=true);
+		void addChild(Object *child, bool hard = true);
+		void addChild(Object *child, ParentMode type, bool hard = true);
 		void erseChild(Object *child);
 		void changeParentMode(ParentMode type);
 		//
@@ -37,10 +38,12 @@ namespace SolarSystem{
 		Vector3D getPosition(bool global=false);
 		Quaternion getRotation(bool global=false);
 		ParentMode getParentMode() const;
+        //
+        void copyLocalTransform(const Object& local);
 		//math
 		void change();
-		DFORCEINLINE bool isChange(){ return changeValue; }
-		const Matrix4x4& getGlobalMatrix();
+		bool isChange(){ return changeValue; }
+		virtual const Matrix4x4& getGlobalMatrix();
 		//for each methods
 		std::list<Object*>::iterator begin();
 		std::list<Object*>::iterator end();
@@ -48,13 +51,9 @@ namespace SolarSystem{
 		std::list<Object*>::reverse_iterator rend();
 		//data
 		void *data;
-
-	protected:
-
-		 Matrix4x4 _getGlobalMatrixCamera();
-
+		        
 	private:
-		
+        
 		struct Transform3D{
 			//
 			Transform3D():scale(1.0f,1.0f,1.0f){}
@@ -65,6 +64,9 @@ namespace SolarSystem{
 			//cast
 			operator float*() { return &position.x; }
 			operator const float*() const { return &position.x; }
+			//calc matrix
+			Mat4 getMatrix();
+			Mat4 getMatrixRT();
 		};
 		//local
 		Transform3D transform;

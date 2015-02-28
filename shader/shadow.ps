@@ -15,6 +15,5 @@ void main(){
 	if (shadowCoord.w > 0.0)
 		shadow = distanceFromLight < shadowCoordinateWdivide.z ? intesity : 0.0 ;
 
-	gl_FragColor.rgb =	vec3(0.0);
-	gl_FragColor.a=shadow;
+	gl_FragColor =	vec4( vec3(0.0) , shadow);
 }

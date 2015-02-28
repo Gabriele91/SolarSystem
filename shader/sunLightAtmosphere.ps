@@ -9,6 +9,11 @@ varying float constantAttenuation;
 varying float linearAttenuation;
 varying float quadraticAttenuation;
 
+void output(vec4 color){
+     //gl_FragColor = vec4( sqrt(color.xyz)           , color.w );
+     gl_FragColor = vec4( pow (color.xyz, 1.0 / 2.2), color.w ); 
+}
+
 void main (void)
 {
 
@@ -26,14 +31,25 @@ void main (void)
 							  (linearAttenuation*distL) + 
 							  (quadraticAttenuation*distL*distL) );
 	
+    //black color
+    vec4 black                = vec4(0.0,0.0,0.0,1.0);
 	//sphere color
-	float cameraIntensity = (dot(N,E)+1.0)*0.5;
-	float lightIntensity = (dot(N,L)+1.0)*0.5;
-	float lightCameraAligment = (dot(L,E)+1.0)*0.5;
-	float shadow              = dot(N,L)+1.0*0.25;
-	vec4 color1     = texture1D( atmGrad1, lightIntensity );
-	vec4 color2     = texture1D( atmGrad2, lightIntensity );
-	gl_FragColor    = lerp ( color2, color1, lightCameraAligment)*attenuation;
-	gl_FragColor    = lerp(vec4(0.0,0.0,0.0,1.0),gl_FragColor,shadow);
-	gl_FragColor.a *= texture1D( atmRim, cameraIntensity ).r;
+	float cameraIntensity     = (dot(N,E)+1.0)*0.5;
+	float lightIntensity      = (dot(N,L)+1.0)*0.5;
+  //float lightCameraAligment = (dot(L,E)+1.0)*0.5;
+  //float shadow                = (dot(N,L)+1.0)*0.5;
+	float shadow              = max( dot(N,L), 0.0 );
+    //sfere color
+	vec4   color1     = texture1D( atmGrad1, lightIntensity ) * 0.78;
+           color1     = lerp     ( black, color1, shadow );
+	       color1.a  *= texture1D( atmRim, cameraIntensity ).r;
+    //day to night
+	vec4   color2     = texture1D( atmGrad2, lightIntensity );
+           color2     = lerp     ( black, color2, max( dot(N,L)*8.0, 0.0 ) ) * 0.65;
+    //mix
+	vec4 outcolor     = lerp( color2, color1, min(color2.r, 1.0) ) * attenuation;
+                     // lerp ( color2, color1, lightCameraAligment) * attenuation;
+         
+    //output 
+    output(outcolor);
 }

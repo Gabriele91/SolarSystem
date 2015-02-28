@@ -4,7 +4,7 @@
 #include <Config.h>
 #include <MainInstance.h>
 #include <Application.h>
-#include <Math2D.h>
+#include <Math3D.h>
 
 namespace SolarSystem {
 

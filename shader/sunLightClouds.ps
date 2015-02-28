@@ -6,6 +6,11 @@ varying float constantAttenuation;
 varying float linearAttenuation;
 varying float quadraticAttenuation;
 
+void output(vec4 color){
+     //gl_FragColor = vec4( sqrt(color.xyz)           , color.w );
+     gl_FragColor = vec4( pow (color.xyz, 1.0 / 2.2), color.w ); 
+}
+
 void main (void)
 {
 
@@ -36,10 +41,10 @@ void main (void)
 	Ispec*=attenuation;
 							  
 	// get color texture
-	float shadow	 = dot(N,L)+1.0*0.25;
+	float shadow     = max( dot(N,L), 0.0 );
 	vec4 texcolor    = texture2D( cloudTexture, varTexCoord );
 	vec4 lerpcolor   = lerp(vec4(0.0,0.0,0.0,1.0),texcolor,shadow);
-
-	gl_FragColor.rgb = (Iamb+lerpcolor*Idiff+Ispec*shadow).rgb; 
-	gl_FragColor.a = texcolor.a; 
+    
+    //out color
+	output( vec4( (Iamb+lerpcolor*Idiff+Ispec*shadow).rgb, texcolor.a) ); 
 }

@@ -159,7 +159,7 @@ SolarSky::SolarSky(SolarRender *render,
 
 void SolarSky::draw(Camera& camera){
 	
-	Mat4 viewmodel=camera.getGlobalMatrix();
+	Mat4 viewmodel=camera.getViewMatrix();
 	viewmodel[12]=viewmodel[13]=viewmodel[14]=0.0f;
 	glLoadMatrixf(viewmodel);
 	render->disableZBuffer();

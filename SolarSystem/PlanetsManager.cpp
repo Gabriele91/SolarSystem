@@ -296,7 +296,10 @@ void PlanetsManager::setData(float day){
 }
 void PlanetsManager::draw(){	
 	//all word draw in a texture (n.b. fxaa)
-	worldTexture.enableRender();
+    if(enableFxaa)
+    {
+	    worldTexture.enableRender();
+    }
 	////////////////////////////////////////////////////////////////
 	camera->update();
 	////////////////////////////////////////////////////////////////
@@ -310,7 +313,7 @@ void PlanetsManager::draw(){
 	//enable light
 	render->enableLight();
 	//load view matrix
-	glLoadMatrixf(camera->getGlobalMatrix());
+	glLoadMatrixf(camera->getViewMatrix());
 	//set lights
 	render->setLight(sun->getPosition(), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
 	render->setLightAttenuation(attenuation.x,attenuation.y,attenuation.z);
@@ -364,7 +367,6 @@ void PlanetsManager::draw(){
 		//reset viewport
 		glViewport(oldViewport.x,oldViewport.y,oldViewport.z,oldViewport.w);
 		////////////////////////////////////////////////////////////////////
-
 		//save blend
 		auto blendState=render->getBlendState();
 		//additive blend
@@ -396,23 +398,20 @@ void PlanetsManager::draw(){
 
 	}
 	////////////////////////////////////////////////////////////////////////
-	//draw texture to window framebuffer
-    worldTexture.disableRender(); //enable framebuffer
-    
     //enable fxaa
 	if(enableFxaa){
+        //draw texture to window framebuffer
+        worldTexture.disableRender(); 
+        //enable fxaa
 		fxaa.shader.bind();
-		fxaa.uniforming();
+		fxaa.uniforming();	
+        //draw texture
+        render->disableZBuffer();
+        worldTexture.draw();
+        render->enableZBuffer();
+        //disable fxaa
+        fxaa.shader.unbind();
 	}
-    
-    //draw texture
-    render->disableZBuffer();
-    worldTexture.draw();
-    render->enableZBuffer();
-    
-    //disable fxaa
-	if(enableFxaa) fxaa.shader.bind();
-
 }
 void PlanetsManager::drawPlanetssClouds(){
 	for(auto& planet:planets)

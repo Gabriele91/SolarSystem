@@ -356,16 +356,16 @@ Image* Image::getNormalFromHeight(Image* in,float scale){
 	float  *h = new float[height * width];
 
 	if(in->channels==3)
-		//#pragma omp parallel for
+		#pragma omp parallel for
 		for( i = 0; i < height * width; i++ )
 			h[i] = ((int)datain[i * 3] + (int)datain[i * 3 + 1] + (int)datain[i * 3 + 2]) / 765.0f * scale;
 
 	if(in->channels==4)
-		//#pragma omp parallel for
+		#pragma omp parallel for
 		for( i = 0; i < height * width; i++ )
 			h[i] = ((int)datain[i * 4] + (int)datain[i * 4 + 1] + (int)datain[i * 4 + 2]) / 765.0f * scale;
 
-	//#pragma omp parallel for
+	#pragma omp parallel for
 	for( i = 0; i < height * width; i++ )
 	{
 		float3  normal;

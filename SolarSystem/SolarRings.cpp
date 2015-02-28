@@ -120,7 +120,7 @@ void SolarRings::draw(Camera& camera){
 		//set texture
 		diffuseTexture.bind(0);
 		//set model matrix
-		Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+        Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
 		glLoadMatrixf(viewmodel);
 		//draw
 		bindMesh();

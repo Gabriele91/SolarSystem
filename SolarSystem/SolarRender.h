@@ -2,7 +2,7 @@
 #define SOLARRENDER_H
 
 #include <Config.h>
-#include <Math2D.h>
+#include <Math3D.h>
 #include <Texture.h>
 
 namespace SolarSystem {

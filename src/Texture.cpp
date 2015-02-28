@@ -314,9 +314,15 @@ RenderTexture::RenderTexture(uint argwidth,uint argheight):Texture(),fboid(0),de
 				 0,
 				 GL_RGBA,
 				 GL_UNSIGNED_BYTE,
-				 0);
+				 0);	
+	//////////////////////////////////
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);	
+	// Remove artefact on the edges of the shadowmap
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP  );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP  );	
 	//create mipmaps
-	glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, bMipmaps );
+	//glTexParameteri( GL_TEXTURE_2D, GL_GENERATE_MIPMAP, bMipmaps );
 	//unbind texture
 	glBindTexture( GL_TEXTURE_2D, 0 );
 	//////////////////////////////////

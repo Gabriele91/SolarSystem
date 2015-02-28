@@ -4,12 +4,13 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-
+#define DISTANCE_CAMERA_TO_PLANET 7.0f
 
 SolarSystemMenu::SolarSystemMenu(Camera* camera,
                                  PlanetsManager* planets,
                                  const Table& menuConfig)
                                  :camera(camera)
+                                 ,cameraCtrl(camera)
                                  ,planets(planets)
                                  ,menu(menuConfig)
                                  ,font(NULL){
@@ -24,10 +25,10 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
     if(menuConfig.existsAsType("font", Table::STRING)){
         font=new Font(menuConfig.getTablePath().getDirectory()+"/"+menuConfig.getString("font"));
     }
-                                     
-    Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
-    isunlock=true;
-                                     
+    //attach inputs...
+    isunlock=false;
+    unlock();
+    cameraCtrl.lock();
     //default values
     float  startAngle=menuConfig.getFloat("startAngle",20);
     float  cameraHigth=menuConfig.getFloat("cameraHigth",0);
@@ -103,6 +104,11 @@ SolarSystemMenu::SolarSystemMenu(Camera* camera,
                         timeCounting=0.0f;
                       }
                     });
+    menu.addOnClick("free",[this](){
+        state=State();
+        state.state=FREE_SYSTEM;
+        state.planet=NULL;
+    });
 }
 
 SolarSystemMenu::~SolarSystemMenu(){
@@ -117,25 +123,12 @@ void SolarSystemMenu::pointToPlanet(float dt){
     Vec3 plaPos(state.planet->getGlobalMatrix().getTranslation3D());
     Vec3 camPos(camera->getPosition(true));
     //calc rotation points
-    float endP,endY,endR;
-    Quaternion endrot;
-    endrot.setLookRotation(-plaPos
-                           -camPos,
-                           Vec3(0,1,0));
-    
-    float startP,startY,startR;
     Quaternion startrot=camera->getRotation(true);
-    //get eulero rotarion
-    endrot.getEulero(endP,endY,endR);
-    startrot.getEulero(startP,startY,startR);
+    Quaternion endrot;
+    endrot.setLookRotation(-plaPos + camPos, Vec3(0,1,0));
     //interpolation
     float t=timeCounting/timeRotation;
-    Quaternion intrp;
-    intrp.setFromEulero(Math::lerp(startP, endP, t),
-                        Math::lerp(startY, endY, t),
-                        Math::lerp(startR, endR, t));
-    //set rotation
-    camera->setRotation(intrp);
+    camera->setRotation(startrot.slerp(endrot, t));
     //next frame
     timeCounting+=dt;
     //next state
@@ -161,7 +154,7 @@ void SolarSystemMenu::goToPlanet(float dt){
     dirrotation.x= dir.x*std::cos(angle)+dir.z*std::sin(angle);
     dirrotation.z=-dir.x*std::sin(angle)+dir.z*std::cos(angle);
     
-    Vec3 dirOffset=dirrotation*state.planet->getScale(true)*4;
+    Vec3 dirOffset=dirrotation*state.planet->getScale(true)*DISTANCE_CAMERA_TO_PLANET;
     Vec3 endpos=plaPos+dirOffset+sunPos;
     //camera offset
     endpos.y+=state.cameraHigth;
@@ -176,13 +169,13 @@ void SolarSystemMenu::goToPlanet(float dt){
     for(int i=0;i<3;++i)  t=std::sin(t * Math::PI * 0.5f);
     
     
-    Vec3 camPos(Math::linear(state.campos, -endpos, t)); //lerp quad(quad(quad))
+    Vec3 camPos(Math::linear(state.campos, endpos, t)); //lerp quad(quad(quad))
     camera->setPosition(camPos);
     
     //calc rotation points
     Quaternion pointToPlanet;
     pointToPlanet.setLookRotation(-plaPos
-                                  -camPos,
+                                  +camPos,
                                   Vec3(0,1,0));
     camera->setRotation(pointToPlanet);
     
@@ -199,6 +192,7 @@ void SolarSystemMenu::goToPlanet(float dt){
     }
     
 }
+
 void SolarSystemMenu::onPlanet(float dt){
     //calc point pos
     Vec3 plaPos(state.planet->getGlobalMatrix().getTranslation3D());
@@ -214,19 +208,19 @@ void SolarSystemMenu::onPlanet(float dt){
     dirrotation.z=-dir.x*std::sin(angle)+dir.z*std::cos(angle);
     turnAngle+=keyAngle*dt;
     
-    Vec3 dirOffset=dirrotation*state.planet->getScale(true)*4;
+    Vec3 dirOffset=dirrotation*state.planet->getScale(true)*DISTANCE_CAMERA_TO_PLANET;
     Vec3 endpos=plaPos+dirOffset+sunPos;
     //camera offset
     endpos.y+=state.cameraHigth;
     
     //cam pos
-    Vec3 camPos(-endpos);
+    Vec3 camPos(endpos);
     camera->setPosition(camPos);
     
     //calc rotation points
     Quaternion pointToPlanet;
     pointToPlanet.setLookRotation(-plaPos
-                                  -camPos,
+                                  +camPos,
                                   Vec3(0,1,0));
     camera->setRotation(pointToPlanet);
     //text color
@@ -240,14 +234,23 @@ void SolarSystemMenu::onPlanet(float dt){
 
 void SolarSystemMenu::update(float dt){
     
-    
+    cameraCtrl.update();
     camera->update();
     
     switch (state.state) {
-        case POIN_TO_PLANET: pointToPlanet(dt); break;
-        case GO_TO_PLANET: goToPlanet(dt); break;
-        case ON_PLANET: onPlanet(dt); break;
-        case FREE_SYSTEM: break;
+        case POIN_TO_PLANET:
+            cameraCtrl.lock(); 
+            pointToPlanet(dt);
+            break;
+        case GO_TO_PLANET: 
+            goToPlanet(dt); 
+            break;
+        case ON_PLANET: 
+            onPlanet(dt); 
+            break;
+        case FREE_SYSTEM: 
+            cameraCtrl.unlock();
+            break;
         default:
             break;
     }

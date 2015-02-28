@@ -174,7 +174,7 @@ void Planet::drawCircle(){
 void Planet::drawBase(Camera& camera){
 		//set model matrix
 		Mat4 viewmodel=camera
-			           .getGlobalMatrix()
+                       .getViewMatrix()
 					   .mul(getGlobalMatrix());
 		glLoadMatrixf(viewmodel);
 		//draw
@@ -206,7 +206,7 @@ void Planet::drawPlanet(Camera& camera){
 		//bind texture 
 		texture.bind(0);
 		//set model matrix
-		Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+		Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
 		glLoadMatrixf(viewmodel);
 		//draw
 		bindMesh();
@@ -229,8 +229,8 @@ void Planet::drawCloud(Camera& camera){
 		Mat4 thisMtx=getGlobalMatrix();
 		const Vec3& thisScale=thisMtx.getScale3D();
 		//z-buffer fixed
-		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleCloud=distToCam<400 ? 1.003f : 1.03f;
+		float distToCam=camera.getPosition(true).distance(getPosition(true));
+		float scaleCloud=distToCam < 600 ? 1.003f : ( distToCam<1200 ? 1.015f : 1.03f );
 		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleCloud;
 		//culling
@@ -245,7 +245,7 @@ void Planet::drawCloud(Camera& camera){
 				if((cloudDayOffset.x+cloudDayOffset.y+cloudDayOffset.z)!=0.0f)
 					thisMtx.addEulerRotation(cloudDayOffset);
 				//set matrix
-				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+				Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
 				viewmodel.addScale(Vec3(scaleCloud,scaleCloud,scaleCloud));
 				glLoadMatrixf(viewmodel);
 				//set material
@@ -269,8 +269,8 @@ void Planet::drawAtmosphere(Camera& camera){
 		const Mat4& thisMtx=getGlobalMatrix();
 		const Vec3& thisScale=thisMtx.getScale3D();		
 		//z-buffer fixed
-		float distToCam=camera.getPosition(true).distance(-getPosition(true));
-		float scaleAtmosphere=distToCam<400 ? 1.006f : 1.06f;
+		float distToCam=camera.getPosition(true).distance(getPosition(true));
+		float scaleAtmosphere=distToCam<600 ? 1.006f : ( distToCam<1200 ? 1.03f : 1.06f );
 		//z-buffer fixed
 		float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z))*scaleAtmosphere;
 		//culling
@@ -281,7 +281,7 @@ void Planet::drawAtmosphere(Camera& camera){
 				if(!stateBlend.enable) glEnable( GL_BLEND );   
 				glBlendFunc( GL_SRC_ALPHA, GL_ONE );				
 				//set model matrix
-				Mat4 viewmodel=camera.getGlobalMatrix().mul(thisMtx);
+				Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
 				viewmodel.addScale(Vec3(scaleAtmosphere,scaleAtmosphere,scaleAtmosphere));
 				glLoadMatrixf(viewmodel);
 				//bind textures

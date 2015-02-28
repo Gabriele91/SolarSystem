@@ -51,7 +51,8 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;dependences-win32/include/;SolarAudio/</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -61,13 +62,16 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>./;include/;include/window/;SolarSystem/;SolarGui/;dependences-win32/include/;SolarAudio/</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OpenMPSupport>true</OpenMPSupport>
+      <AdditionalOptions>/arch:SSE2 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,6 +81,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gamepad\Gamepad_private.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Gamepad\Gamepad_windows_dinput.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Gamepad\SolarPad.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SolarApp.cpp" />
     <ClCompile Include="SolarAudio\AbstractSource.cpp" />
@@ -108,8 +121,8 @@
     <ClCompile Include="src\Image\lodepng.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MainInstance.cpp" />
-    <ClCompile Include="src\Math2D.cpp" />
-    <ClCompile Include="src\Math2D_SSE2.cpp" />
+    <ClCompile Include="src\Math3D.cpp" />
+    <ClCompile Include="src\Math3D_SSE2.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -130,6 +143,9 @@
     <ClCompile Include="src\window\WindowsScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Gamepad\Gamepad.h" />
+    <ClInclude Include="Gamepad\Gamepad_private.h" />
+    <ClInclude Include="Gamepad\SolarPad.h" />
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\ApplicationState.h" />
     <ClInclude Include="include\BMFontLoader.h" />
@@ -143,7 +159,7 @@
     <ClInclude Include="include\FreeTypeFontLoader.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\MainInstance.h" />
-    <ClInclude Include="include\Math2D.h" />
+    <ClInclude Include="include\Math3D.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\Shader.h" />
@@ -178,7 +194,7 @@
     <ClInclude Include="SolarSystem\SolarSystemMenu.h" />
     <ClInclude Include="src\Image\Image.h" />
     <ClInclude Include="src\Image\lodepng.h" />
-    <ClInclude Include="src\Math2D_SSE2.h" />
+    <ClInclude Include="src\Math3D_SSE2.h" />
     <ClInclude Include="src\Thread\Mutex.h" />
     <ClInclude Include="src\Thread\MutexConf.h" />
     <ClInclude Include="src\Thread\Thread.h" />

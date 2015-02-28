@@ -125,7 +125,7 @@ void Font::text(const Vec2& _pos,
 	Vec2 viewport(Application::instance()->getScreen()->getWidth(),
 				  Application::instance()->getScreen()->getHeight());
 	//update projection is always the same
-	projection.setOrtho(0,viewport.x, 0,viewport.y, 0,1);
+	projection.setOrthoRHGL(0,viewport.x, 0,viewport.y, 0,1);
 	glViewport( 0, 0, viewport.x, viewport.y );
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(projection);

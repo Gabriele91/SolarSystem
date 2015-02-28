@@ -118,7 +118,7 @@ void SolarMenu::draw(SolarRender* render){
 	//ortogonal mode (2d)
     glViewport(0,0,windowSize.x,windowSize.y);
 	Matrix4x4 projection;
-	projection.setOrtho(0,windowSize.x,0,windowSize.y,0.0,1.0);
+	projection.setOrthoRHGL(0,windowSize.x,0,windowSize.y,0.0,1.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(projection);
 	glMatrixMode(GL_MODELVIEW);

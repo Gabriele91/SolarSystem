@@ -4,7 +4,7 @@
 #mac os x
 __MACOSX*/*
 
-#ingnore media file
+#ignore media file
 sound*/
 img*/
 
@@ -13,6 +13,7 @@ dependences-*/
 
 #print screen
 [Ss]creen*/*.tga
+[Ss]creen*/*.png
 
 #doxy ignore
 [Dd]oxygen*/

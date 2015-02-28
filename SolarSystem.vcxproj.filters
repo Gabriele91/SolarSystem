@@ -37,6 +37,9 @@
     <Filter Include="SolarAudio">
       <UniqueIdentifier>{faf89ccd-9bb6-4d8f-abdf-2ecc84f8dbb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Gamepad">
+      <UniqueIdentifier>{0d14ce75-cb07-4282-bb04-f519e37db6a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -58,9 +61,6 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="src\MainInstance.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Math2D.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="src\Object.cpp">
@@ -129,9 +129,6 @@
     <ClCompile Include="src\window\WGL_ARB_multisample.cpp">
       <Filter>File di origine\window</Filter>
     </ClCompile>
-    <ClCompile Include="src\Math2D_SSE2.cpp">
-      <Filter>File di origine</Filter>
-    </ClCompile>
     <ClCompile Include="SolarGui\SolarButton.cpp">
       <Filter>SolarGui</Filter>
     </ClCompile>
@@ -182,6 +179,21 @@
     </ClCompile>
     <ClCompile Include="src\FreeTypeFontLoader.cpp">
       <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3D.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3D_SSE2.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Gamepad\SolarPad.cpp">
+      <Filter>Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="Gamepad\Gamepad_private.c">
+      <Filter>Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="Gamepad\Gamepad_windows_dinput.c">
+      <Filter>Gamepad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +254,6 @@
     <ClInclude Include="include\MainInstance.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="include\Math2D.h">
-      <Filter>File di intestazione</Filter>
-    </ClInclude>
     <ClInclude Include="include\Object.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
@@ -299,9 +308,6 @@
     <ClInclude Include="src\window\WGL_ARB_multisample.h">
       <Filter>File di origine\window</Filter>
     </ClInclude>
-    <ClInclude Include="src\Math2D_SSE2.h">
-      <Filter>File di origine</Filter>
-    </ClInclude>
     <ClInclude Include="SolarGui\SolarButton.h">
       <Filter>SolarGui</Filter>
     </ClInclude>
@@ -349,6 +355,21 @@
     </ClInclude>
     <ClInclude Include="include\FreeTypeFontLoader.h">
       <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3D_SSE2.h">
+      <Filter>File di origine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math3D.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamepad\Gamepad.h">
+      <Filter>Gamepad</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamepad\Gamepad_private.h">
+      <Filter>Gamepad</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamepad\SolarPad.h">
+      <Filter>Gamepad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

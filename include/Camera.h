@@ -19,13 +19,29 @@ namespace SolarSystem {
 		};
 		//planes
 		Plane planes[6];
+        bool  mComputePlane;
+        void  computePlane();
 		//matrix
 		Mat4 mProjMatrix;
+		Mat4 mViewMatrix;
 		Mat4 mViewProjMatrix;
+		Mat4 mModelProjMatrix;
+        //update matrixs
+        void updateMatrix()
+        {
+            if(isChange())
+            {
+                const Mat4& model= Object::getGlobalMatrix();
+                mViewMatrix      = model.getInverse();
+                mViewProjMatrix  = mProjMatrix.mul(mViewMatrix);
+                mModelProjMatrix = mProjMatrix.mul(model);
+                mComputePlane    = true;
+            }
+        }
 		//
 	public:
 		//
-		Camera():Object(){}
+		Camera():Object(),mComputePlane(true){}
 		//set prospetive
 		void setPerspective(float angle,float n,float f);
 		void setPerspective(float angle,float spectre,float n,float f);
@@ -38,14 +54,24 @@ namespace SolarSystem {
 		//update camera
 		void update();
 		//return matrix
-		DFORCEINLINE const Mat4& getProjectionMatrix(){
+		const Mat4& getProjectionMatrix(){
 			return mProjMatrix;
 		}
-		DFORCEINLINE const Mat4& getViewProjMatrix(){
+		const Mat4& getViewProjMatrix(){
+            updateMatrix();
 			return mViewProjMatrix;
 		}
-		DFORCEINLINE  Mat4 getGlobalMatrix(){
-			return _getGlobalMatrixCamera();
+		const Mat4& getViewMatrix(){
+            updateMatrix();
+            return mViewMatrix;
+		}
+		const Mat4& getGlobalMatrix(){
+            updateMatrix();
+            return Object::getGlobalMatrix();
+		}
+		const Mat4& getModelProjMatrix(){
+            updateMatrix();
+			return mModelProjMatrix;
 		}
 		Vec2 getPointIn3DSpace(const Vec3& point);
 	};

@@ -8,6 +8,7 @@
 #include <Camera.h>
 #include <PlanetsManager.h>
 #include <SolarRender.h>
+#include <SolarFly.h>
 #include <Font.h>
 
 namespace SolarSystem {
@@ -15,6 +16,7 @@ namespace SolarSystem {
 	class SolarSystemMenu : public Input::KeyboardHandler{
 
 		SolarMenu         menu;
+		SolarFly	      cameraCtrl;
         Camera           *camera;
         PlanetsManager   *planets;
         Font             *font;
@@ -65,23 +67,35 @@ namespace SolarSystem {
             if(Key::LEFT==key || Key::A==key) keyAngle=-30;
             else if(Key::RIGHT==key || Key::D==key) keyAngle=30;
         }
-
         virtual void onKeyRelease(Key::Keyboard key){
             if(Key::LEFT==key || Key::A==key)  keyAngle=0;
             else if(Key::RIGHT==key || Key::D==key) keyAngle=0;
         }
 
-
         void lock(){
             //lock menu
             menu.lock();
-            if(isunlock) Application::instance()->getInput()->removeHandler((Input::KeyboardHandler*)this);
+            cameraCtrl.lock();
+
+            if(isunlock)
+            {
+	            Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+	            Application::instance()->getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
+                Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
+            }
             isunlock=false;
         }
         void unlock(){
             //unlock menu
             menu.unlock();
-            if(!isunlock) Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
+            if(state.state==FREE_SYSTEM) cameraCtrl.unlock();
+
+            if(!isunlock)
+            {
+	            Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)&cameraCtrl);
+	            Application::instance()->getInput()->addHandler((Input::MouseHandler*)&cameraCtrl);
+                Application::instance()->getInput()->addHandler((Input::KeyboardHandler*)this);
+            }
             isunlock=true;
         }
 
