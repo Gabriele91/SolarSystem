@@ -73,7 +73,7 @@ public:
     }
     void removeHandler(uint id)
     {
-        auto& it=hendlers.find(id);
+        auto it=hendlers.find(id);
         if(it!=hendlers.end()) hendlers.erase(id);
     }
     

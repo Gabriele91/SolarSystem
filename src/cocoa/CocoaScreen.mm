@@ -129,7 +129,7 @@ void CocoaScreen::__createContext(int msaa){
     attributes[i++] = NSOpenGLPFAColorSize;
     attributes[i++] = 32.0;
     attributes[i++] = NSOpenGLPFADepthSize;
-    attributes[i++] = 16.0;    
+    attributes[i++] = 32.0;
     //msaa
     if(msaa!=NOAA){
         attributes[i++]=NSOpenGLPFASampleBuffers;

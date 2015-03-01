@@ -8,8 +8,9 @@ __MACOSX*/*
 sound*/
 img*/
 
-#ingnore dependences
+#ignore dependencies
 dependences-*/
+dependencies-*/
 
 #print screen
 [Ss]creen*/*.tga
@@ -69,3 +70,54 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
+
+
+#MAC OS X ignore files:
+.DS_Store
+.Trashes
+*.swp
+*.lock
+*~.nib
+
+#xcode build
+build/
+xcode/build/
+DerivedData/
+xcode/DerivedData/
+
+#Xcode private settings 
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Xcode 4 - semi-personal settings
+xcuserdata
+xcode/xcuserdata
+
+# Xcode 4 - Deprecated classes
+*.moved-aside
+
+
+#mac os x datas
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+.apdisk
+
+
+

@@ -9,10 +9,11 @@ varying float constantAttenuation;
 varying float linearAttenuation;
 varying float quadraticAttenuation;
 
-void output(vec4 color){
-     //sRGB to Linear RGB
-     gl_FragColor = vec4( pow (color.xyz, 1.0 / 2.2), color.w ); 
+void outcolor(vec4 color){
+    //sRGB to Linear RGB
+    gl_FragColor = vec4( pow (color.xyz, vec3(1.0 / 2.2)), color.w );
 }
+
 
 void main (void)
 {
@@ -54,6 +55,6 @@ void main (void)
 	nightColor      = texture2D( planetNightTexture, varTexCoord );
 	vec4 texcolor   = lerp( nightColor, dayColor, shadow );
 	//////////////////////////////////////////////////////////////
-    output(vec4((Iamb+texcolor*Idiff+Ispec*shadow).rgb, texcolor.a)); 
+    outcolor(vec4((Iamb+texcolor*Idiff+Ispec*shadow).rgb, texcolor.a));
 
 }

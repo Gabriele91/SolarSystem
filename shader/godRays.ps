@@ -6,7 +6,7 @@ uniform float weight;
 uniform vec2 lightPositionOnScreen;
 uniform sampler2D screenTexture;
 
-void output(vec4 color){
+void outcolor(vec4 color){
      //no gamma correction in post effect
      gl_FragColor = color;
 }
@@ -32,5 +32,5 @@ void main(){
 	}
 	
 	
-	output(vec4(color*exposure,1.0));
+	outcolor(vec4(color*exposure,1.0));
 }

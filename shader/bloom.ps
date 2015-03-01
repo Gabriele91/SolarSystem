@@ -2,9 +2,11 @@ uniform sampler2D screenTexture;
 uniform vec2 invSizeScreenMulQuality; //(1.0,1.0) / screenSize * quality
 //#define NUM_SAMPLES number of iteration
 
-void output(vec4 color){
-     gl_FragColor = vec4( sqrt(color.xyz), color.w );
+void outcolor(vec4 color){
+    //sRGB to Linear RGB
+    gl_FragColor = vec4( pow (color.xyz, vec3(1.0 / 2.2)), color.w );
 }
+
 
 void main(void){
 
@@ -22,5 +24,5 @@ void main(void){
     }
   }
 
-  output((sum / vec4(NUM_SAMPLES * NUM_SAMPLES)) + source);
+  outcolor((sum / vec4(NUM_SAMPLES * NUM_SAMPLES)) + source);
 }

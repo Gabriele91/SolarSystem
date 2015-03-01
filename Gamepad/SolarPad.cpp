@@ -6,22 +6,22 @@ using namespace SolarSystem;
 
 void GamepadManager::_callbackOnAttach(uint id)
 {
-    auto& it=hendlers.find(id);
+    auto it=hendlers.find(id);
     if(it!=hendlers.end()) it->second->onAttach();
 }
 void GamepadManager::_callbackOnRemove(uint id)
 {
-    auto& it=hendlers.find(id);
+    auto it=hendlers.find(id);
     if(it!=hendlers.end()) it->second->onRemove();
 }
 void GamepadManager::_callbackOnButtonDown(uint id,uint button,double timestamp)
 {
-    auto& it=hendlers.find(id);
+    auto it=hendlers.find(id);
     if(it!=hendlers.end()) it->second->onButtonDown(button,timestamp);
 }
 void GamepadManager::_callbackOnButtonUp(uint id,uint button,double timestamp)
 {
-    auto& it=hendlers.find(id);
+    auto it=hendlers.find(id);
     if(it!=hendlers.end()) it->second->onButtonUp(button,timestamp);
 }
 void GamepadManager::_callbackAxisMove(uint id,
@@ -30,7 +30,7 @@ void GamepadManager::_callbackAxisMove(uint id,
                                        float lastValue, 
                                        double timestamp)
 {
-    auto& it=hendlers.find(id);
+    auto it=hendlers.find(id);
     if(it!=hendlers.end()) it->second->onAxisMove(axisID,value,lastValue,timestamp);
 }
 
