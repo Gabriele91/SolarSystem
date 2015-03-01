@@ -7,7 +7,9 @@ using namespace SolarSystem;
 ///////////////////////
 
 SolarRender::SolarRender():black(Vec4(0.0,0.0,0.0,1.0),16,16)
+                          ,blackAlpha0(Vec4(0.0,0.0,0.0,0.0),16,16)
 						  ,white(Vec4(1.0,1.0,1.0,1.0),16,16)
+						  ,whiteAlpha0(Vec4(1.0,1.0,1.0,0.0),16,16)
 {
 }
 

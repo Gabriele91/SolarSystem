@@ -5,7 +5,43 @@
 ///////////////////////
 using namespace SolarSystem;
 ///////////////////////
-
+//SHADER
+Planet::SunLightALL        Planet::sunLightALL;
+Planet::SunLight           Planet::sunLight;
+Planet::SunLightCloud      Planet::sunLightCloud;
+Planet::SunLightAtmosphere Planet::sunLightAtmosphere;
+Planet::SunLightRings      Planet::sunLightRings;
+void Planet::initShader()
+{
+    //all effects in one
+	sunLightALL.shader.loadShader("shader/sunLightALL.vs","shader/sunLightALL.ps");
+	sunLightALL.glPlanetTexture=sunLightALL.shader.getUniformID("planetTexture");
+	sunLightALL.glPlanetNightTexture=sunLightALL.shader.getUniformID("planetNightTexture");
+	sunLightALL.glPlanetSpecularTexture=sunLightALL.shader.getUniformID("planetSpecularTexture");
+	sunLightALL.glCloudTexture=sunLightALL.shader.getUniformID("cloudTexture");
+	sunLightALL.glAtmGrad1=sunLightALL.shader.getUniformID("atmGrad1");
+	sunLightALL.glAtmGrad2=sunLightALL.shader.getUniformID("atmGrad2");	
+	sunLightALL.atmRim=sunLightALL.shader.getUniformID("atmRim");
+	sunLightALL.textureMat4=sunLightALL.shader.getUniformID("textureMat4");	
+    //load shader sun light (planets):
+	sunLight.shader.loadShader("shader/sunLight.vs","shader/sunLight.ps");
+	sunLight.glPlanetTexture=sunLight.shader.getUniformID("planetTexture");
+	sunLight.glPlanetNightTexture=sunLight.shader.getUniformID("planetNightTexture");
+	sunLight.glPlanetSpecularTexture=sunLight.shader.getUniformID("planetSpecularTexture");
+	//load shader sun light (clouds):
+	sunLightCloud.shader.loadShader("shader/sunLightClouds.vs","shader/sunLightClouds.ps");
+	sunLightCloud.glCloudTexture=sunLightCloud.shader.getUniformID("cloudTexture");
+	sunLightCloud.textureMat4=sunLightCloud.shader.getUniformID("textureMat4");	
+	//shader  light  on rings
+	sunLightRings.shader.loadShader("shader/sunLightRings.vs","shader/sunLightRings.ps");
+	sunLightRings.glRingsTexture=sunLightRings.shader.getUniformID("ringsTexture");
+	//load shader sun light (atmospheres):
+	sunLightAtmosphere.shader.loadShader("shader/sunLightAtmosphere.vs","shader/sunLightAtmosphere.ps");
+	sunLightAtmosphere.glAtmGrad1=sunLightAtmosphere.shader.getUniformID("atmGrad1");
+	sunLightAtmosphere.glAtmGrad2=sunLightAtmosphere.shader.getUniformID("atmGrad2");	
+	sunLightAtmosphere.atmRim=sunLightAtmosphere.shader.getUniformID("atmRim");	
+}        
+///////////////////////
 void Planet::buildMesh(int rings,int sectors){
 	// make planet mesh 
 	verticesSize=rings*sectors;
@@ -151,6 +187,19 @@ void Planet::setRings(const Utility::Path& argtexture,
 	rings->setRotation(q);
 	addChild(rings,Object::ENABLE_ALL,true);
 }
+
+
+void Planet::uniformCloudOffset(Shader& shader,uint id)
+{
+	if((cloudDayOffset.x+cloudDayOffset.y+cloudDayOffset.z)!=0.0f)
+    {
+        Mat4 uvmat;
+        uvmat.setRotZ(cloudDayOffset.y);
+        uvmat[12]=cloudDayOffset.x;
+        uvmat[13]=cloudDayOffset.z;
+        shader.uniformMatrix4x4(id,uvmat);
+    }
+}
 //draw
 void Planet::draw(Camera& camera){
 	drawPlanet(camera);
@@ -172,20 +221,27 @@ void Planet::drawCircle(){
 	}
 }
 void Planet::drawBase(Camera& camera){
+	////////////////////////////////////
+	//get values
+	const Mat4& thisMtx=getGlobalMatrix();
+	const Vec3& thisScale=thisMtx.getScale3D();
+	const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z));
+	//culling
+	if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE)
+    {
 		//set model matrix
-		Mat4 viewmodel=camera
-                       .getViewMatrix()
-					   .mul(getGlobalMatrix());
+		Mat4 viewmodel=camera.getViewMatrix().mul(getGlobalMatrix());
 		glLoadMatrixf(viewmodel);
 		//draw
 		bindMesh();
-		//
+    }
 }
 void Planet::drawBaseRings(Camera& camera){	
 	if(rings){
 		rings->drawBase(camera);
 	}
 }
+/////////////
 void Planet::drawPlanet(Camera& camera){
 	////////////////////////////////////
 	//get values
@@ -240,11 +296,7 @@ void Planet::drawCloud(Camera& camera){
 				//set additive blend
 				if(!stateBlend.enable) glEnable( GL_BLEND );   
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA  );				
-				//set model matrix
-				//calc offset
-				if((cloudDayOffset.x+cloudDayOffset.y+cloudDayOffset.z)!=0.0f)
-					thisMtx.addEulerRotation(cloudDayOffset);
-				//set matrix
+                //set matrix
 				Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
 				viewmodel.addScale(Vec3(scaleCloud,scaleCloud,scaleCloud));
 				glLoadMatrixf(viewmodel);
@@ -299,11 +351,119 @@ void Planet::drawAtmosphere(Camera& camera){
 		}
 	}
 }
+void Planet::drawPlanetALL(Camera& camera)
+{	
+    ////////////////////////////////////
+	//get values
+	const Mat4& thisMtx=getGlobalMatrix();
+	const Vec3& thisScale=thisMtx.getScale3D();
+	const float thisMaxScale=Math::max(thisScale.x,Math::max(thisScale.y,thisScale.z));
+	//culling
+	if(camera.sphereInFrustum(thisMtx.getTranslation3D(),thisMaxScale) != Camera::OUTSIDE) 
+    {	
+        //set material
+		render->setMaterial(ambient,diffuse,specular,emission,shininess);
+        
+        //day texture
+		texture.bind(0);
+        
+        //night texture
+		if(blackTexture) blackTexture->bind(1);
+		else render->getTextureBlack().bind(1);	
+
+        //specular texture
+		if(specularTexture) specularTexture->bind(2);
+		else render->getTextureWhite().bind(2);
+
+        //clouds
+		if(cloudTexture) cloudTexture->bind(3);
+        else render->getTextureBlackAlpha0().bind(3);
+
+        //atmosfere
+		if(atmGrad1) atmGrad1->bind(4);
+        else render->getTextureBlackAlpha0().bind(4);
+		if(atmGrad2) atmGrad2->bind(5);
+        else render->getTextureBlackAlpha0().bind(5);
+		if(atmRim) atmRim->bind(6);
+        else render->getTextureWhite().bind(6);
+        
+		//set model matrix
+		Mat4 viewmodel=camera.getViewMatrix().mul(thisMtx);
+		glLoadMatrixf(viewmodel);
+		//draw
+		bindMesh();
+
+		//unbind textures
+		texture.unbind(0);
+
+		if(blackTexture) blackTexture->unbind(1);
+		else render->getTextureBlack().unbind(1);	
+
+		if(specularTexture) specularTexture->unbind(2);
+		else render->getTextureWhite().unbind(2);
+
+		if(cloudTexture) cloudTexture->unbind(3);
+        else render->getTextureBlackAlpha0().unbind(3);
+
+		if(atmGrad1) atmGrad1->unbind(4);
+        else render->getTextureBlackAlpha0().unbind(4);
+
+		if(atmGrad2) atmGrad2->unbind(5);
+        else render->getTextureBlackAlpha0().unbind(5);
+
+		if(atmRim) atmRim->unbind(6);
+        else render->getTextureWhite().unbind(6);
+    }
+}
+/////////////
 void Planet::drawRings(Camera& camera){
 	if(rings){
 		rings->draw(camera);
 	}
 }
+/////////////
+void Planet::drawPlanetAuto(Camera& camera)
+{
+	float distToCam=camera.getPosition(true).distance(getPosition(true));
+	bool  drawParts=distToCam < 600 ;
+    bool  isOnlyPlanet = !(atmGrad1&&atmGrad2&&atmRim || cloudTexture);
+    //select...
+    if(drawParts || isOnlyPlanet)
+    {
+	    //draw planet
+        Planet::sunLight.shader.bind();
+	    Planet::sunLight.uniforming();	
+		    drawPlanet(camera);	
+	    Planet::sunLight.shader.unbind();
+	    //draw cloud
+        if(cloudTexture)
+        {
+	        Planet::sunLightCloud.shader.bind();
+	        Planet::sunLightCloud.uniforming();	
+                uniformCloudOffset(sunLightCloud.shader,sunLightCloud.textureMat4);
+		        drawCloud(camera);
+	        Planet::sunLightCloud.shader.unbind();	
+        }
+	    //draw atmosphere
+        if(atmGrad1&&atmGrad2&&atmRim)
+        {
+            Planet::sunLightAtmosphere.shader.bind();
+	        Planet::sunLightAtmosphere.uniforming();	
+	            drawAtmosphere(camera);
+	        Planet::sunLightAtmosphere.shader.unbind();
+        }
+    }
+    else
+    {
+        Planet::sunLightALL.shader.bind();
+	    Planet::sunLightALL.uniforming();	
+            uniformCloudOffset(sunLightALL.shader,sunLightALL.textureMat4);
+            drawPlanetALL(camera);
+	    Planet::sunLightALL.shader.unbind();
+    }
+
+}
+
 //set data
 void Planet::setData(float _day){
 	//save

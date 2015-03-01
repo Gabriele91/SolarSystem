@@ -22,24 +22,12 @@ PlanetsManager::PlanetsManager(Camera *camera,
 		DEBUG_MESSAGE(errors);
 		DEBUG_ASSERT_MSG(0,"errors in configure file");
 	}
+
 	//black shader
 	blackMesh.shader.loadShader("shader/blackMesh.vs","shader/blackMesh.ps");
-	//load shader sun light (planets):
-	sunLight.shader.loadShader("shader/sunLight.vs","shader/sunLight.ps");
-	sunLight.glPlanetTexture=sunLight.shader.getUniformID("planetTexture");
-	sunLight.glPlanetNightTexture=sunLight.shader.getUniformID("planetNightTexture");
-	sunLight.glPlanetSpecularTexture=sunLight.shader.getUniformID("planetSpecularTexture");
-	//load shader sun light (clouds):
-	sunLightCloud.shader.loadShader("shader/sunLightClouds.vs","shader/sunLightClouds.ps");
-	sunLightCloud.glCloudTexture=sunLightCloud.shader.getUniformID("cloudTexture");
-	//shader  light  on rings
-	sunLightRings.shader.loadShader("shader/sunLightRings.vs","shader/sunLightRings.ps");
-	sunLightRings.glRingsTexture=sunLightRings.shader.getUniformID("ringsTexture");
-	//load shader sun light (atmospheres):
-	sunLightAtmosphere.shader.loadShader("shader/sunLightAtmosphere.vs","shader/sunLightAtmosphere.ps");
-	sunLightAtmosphere.glAtmGrad1=sunLightAtmosphere.shader.getUniformID("atmGrad1");
-	sunLightAtmosphere.glAtmGrad2=sunLightAtmosphere.shader.getUniformID("atmGrad2");	
-	sunLightAtmosphere.atmRim=sunLightAtmosphere.shader.getUniformID("atmRim");	
+	//load shader planets:
+    Planet::initShader();
+
 	//shader fxaa
 	fxaa.shader.loadShader("shader/fxaa.vs","shader/fxaa.ps");
 	fxaa.glScreenTexture=fxaa.shader.getUniformID("screenTexture");
@@ -310,40 +298,61 @@ void PlanetsManager::draw(){
 	//draw word
 	drawSun();
 	//////////////////////////////////////////////////////////////////
-	//enable light
-	render->enableLight();
 	//load view matrix
 	glLoadMatrixf(camera->getViewMatrix());
+#if 0	
+    //enable light
+	render->enableLight();
 	//set lights
 	render->setLight(sun->getPosition(), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
 	render->setLightAttenuation(attenuation.x,attenuation.y,attenuation.z);
 	//////////////////////////////////////////////////////////////////
 	//draw planets
-	sunLight.shader.bind();
-	sunLight.uniforming();	
+	Planet::sunLight.shader.bind();
+	Planet::sunLight.uniforming();	
 		drawPlanetssCores();	
-	sunLight.shader.unbind();	
+	Planet::sunLight.shader.unbind();	
 	//draw clouds
-	sunLightCloud.shader.bind();
-	sunLightCloud.uniforming();	
+	Planet::sunLightCloud.shader.bind();
+	Planet::sunLightCloud.uniforming();	
 		drawPlanetssClouds();
-	sunLightCloud.shader.unbind();	
+	Planet::sunLightCloud.shader.unbind();	
 	//draw rings
-	sunLightRings.shader.bind();
-	sunLightRings.uniforming();	
-	drawPlanetssRings();
-	sunLightRings.shader.unbind();
+	Planet::sunLightRings.shader.bind();
+	Planet::sunLightRings.uniforming();	
+	    drawPlanetssRings();
+	Planet::sunLightRings.shader.unbind();
 	//////////////////////////////////////////////////////////////////
 	render->disableLight();
 	//draw atmosphere
-	sunLightAtmosphere.shader.bind();
-	sunLightAtmosphere.uniforming();	
+	Planet::sunLightAtmosphere.shader.bind();
+	Planet::sunLightAtmosphere.uniforming();	
 		drawPlanetssAtmosphere();
-	sunLightAtmosphere.shader.unbind();
+	Planet::sunLightAtmosphere.shader.unbind();
+#else
+    //enable light
+	render->enableLight();
+	//set lights
+	render->setLight(sun->getPosition(), sun->getAmbient(), sun->getDiffuse(), sun->getSpecular());
+	render->setLightAttenuation(attenuation.x,attenuation.y,attenuation.z);
+    //draw planets
+    for(auto& planet:planets) 
+    {
+        planet.second->drawPlanetAuto(*camera);
+    }
+	//draw rings
+	Planet::sunLightRings.shader.bind();
+	Planet::sunLightRings.uniforming();	
+	    drawPlanetssRings();
+	Planet::sunLightRings.shader.unbind();
+    //disable  light
+    render->disableLight();
+#endif
 	//draw shadows
-	for(auto& shadow:shadows) 
+	for(auto& shadow:shadows) {
 			shadow.drawShadow(camera);
-	//////////////////////////////////////////////////////////////////
+    }
+    //////////////////////////////////////////////////////////////////
 	if(enableGodRays||enableBloom){
 
 		////////////////////////////////////////////////////////////////////
@@ -420,6 +429,11 @@ void PlanetsManager::drawPlanetssClouds(){
 void PlanetsManager::drawPlanetssAtmosphere(){
 	for(auto& planet:planets)
 		planet.second->drawAtmosphere(*camera);
+}
+void PlanetsManager::drawPlanetssBases(){
+	for(auto& planet:planets){
+        planet.second->drawBase(*camera);
+	}
 }
 void PlanetsManager::drawPlanetssCores(){
 	for(auto& planet:planets){

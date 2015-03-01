@@ -93,59 +93,6 @@ namespace SolarSystem {
 			///////////////
 		}godRays;
 		///////////////////////////////
-		struct SunLight{
-
-			uint glPlanetTexture,
-				 glPlanetNightTexture,
-				 glPlanetSpecularTexture;
-
-			void uniforming(){
-				shader.uniformInt(glPlanetTexture,0);	
-				shader.uniformInt(glPlanetNightTexture,1);	
-				shader.uniformInt(glPlanetSpecularTexture,2);	
-			}
-			///////////////
-			Shader shader;
-			///////////////			
-		}sunLight;
-		struct SunLightCloud{
-
-			uint glCloudTexture;
-
-			void uniforming(){
-				shader.uniformInt(glCloudTexture,0);	
-			}
-			///////////////
-			Shader shader;
-			///////////////			
-		}sunLightCloud;
-		struct SunLightAtmosphere{
-			
-			uint glAtmGrad1,
-				 glAtmGrad2,
-				 atmRim;
-
-			void uniforming(){
-				shader.uniformInt(glAtmGrad1,0);
-				shader.uniformInt(glAtmGrad2,1);
-				shader.uniformInt(atmRim,2);
-			}
-			///////////////
-			Shader shader;
-			///////////////			
-		}sunLightAtmosphere;
-		///////////////////////////////
-		struct SunLightRings{
-
-			uint glRingsTexture;
-
-			void uniforming(){
-				shader.uniformInt(glRingsTexture,0);
-			}
-
-			Shader shader;
-		}sunLightRings;
-		///////////////////////////////
 		struct Fxaa{
 			uint glScreenTexture;
 			uint glTexcoordOffset;
@@ -206,6 +153,7 @@ namespace SolarSystem {
 		void setData(float day);
 		void draw();
 		void drawPlanetssClouds();
+		void drawPlanetssBases();
 		void drawPlanetssCores();
 		void drawPlanetssAtmosphere();
 		void drawPlanetssRings();

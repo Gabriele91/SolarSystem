@@ -5,9 +5,9 @@
 	//width=1280
 	//height=720
 	bits=32
-	fps=30
+	fps=60
 	fullscreen="true"
-	MSAA=4
+	MSAA=8
 	
 	//loading screen	
 	//loadingScreen=<string>

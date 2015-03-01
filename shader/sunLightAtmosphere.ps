@@ -47,9 +47,9 @@ void main (void)
 	vec4   color2     = texture1D( atmGrad2, lightIntensity );
            color2     = lerp     ( black, color2, max( dot(N,L)*8.0, 0.0 ) ) * 0.65;
     //mix
-	vec4 outcolor     = lerp( color2, color1, min(color2.r, 1.0) ) * attenuation;
+	vec4   atmColor   = lerp( color2, color1, min(color2.r, 1.0) ) * attenuation;
                      // lerp ( color2, color1, lightCameraAligment) * attenuation;
          
     //output 
-    outcolor(outcolor);
+    outcolor(atmColor);
 }

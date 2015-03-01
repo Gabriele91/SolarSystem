@@ -10,7 +10,9 @@ namespace SolarSystem {
 	class SolarRender {
 		
 		Texture black;
+		Texture blackAlpha0;
 		Texture white;
+		Texture whiteAlpha0;
 
 	public:
 
@@ -73,8 +75,12 @@ namespace SolarSystem {
 		
 		Texture& getTextureBlack(){ return black; }
 		Texture& getTextureWhite(){ return white; }
+		Texture& getTextureBlackAlpha0(){ return blackAlpha0; }
+		Texture& getTextureWhiteAlpha0(){ return whiteAlpha0; }
 		const Texture& getTextureBlack()const{ return black; }
 		const Texture& getTextureWhite()const{ return white; }
+		const Texture& getTextureBlackAlpha0()const{ return blackAlpha0; }
+		const Texture& getTextureWhiteAlpha0()const{ return whiteAlpha0; }
 	};
 
 };
