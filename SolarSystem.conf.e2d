@@ -7,7 +7,7 @@
 	bits=32
 	fps=60
 	fullscreen="true"
-	MSAA=8
+	MSAA=4
 	
 	//loading screen	
 	//loadingScreen=<string>

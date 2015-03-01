@@ -114,6 +114,8 @@
 		E021E5F117AE7A860075C30D /* ThreadConf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadConf.h; sourceTree = "<group>"; };
 		E021E5F417AE7A860075C30D /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
 		E021E5F517AE7A860075C30D /* Utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utility.cpp; sourceTree = "<group>"; };
+		E045F1451AA356D1006B4A23 /* sunLightALL.ps */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = sunLightALL.ps; sourceTree = "<group>"; };
+		E045F1461AA356D1006B4A23 /* sunLightALL.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sunLightALL.vs; sourceTree = "<group>"; };
 		E046D9251AA2252D00005699 /* Math3D_SSE2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math3D_SSE2.cpp; sourceTree = "<group>"; };
 		E046D9261AA2252D00005699 /* Math3D_SSE2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math3D_SSE2.h; sourceTree = "<group>"; };
 		E046D9271AA2252D00005699 /* Math3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math3D.cpp; sourceTree = "<group>"; };
@@ -681,6 +683,8 @@
 		E0D0CCEF1AA232F0009ABAA0 /* shader */ = {
 			isa = PBXGroup;
 			children = (
+				E045F1451AA356D1006B4A23 /* sunLightALL.ps */,
+				E045F1461AA356D1006B4A23 /* sunLightALL.vs */,
 				E0D0CCF01AA232F0009ABAA0 /* blackMesh.ps */,
 				E0D0CCF11AA232F0009ABAA0 /* blackMesh.vs */,
 				E0D0CCF21AA232F0009ABAA0 /* bloom.ps */,

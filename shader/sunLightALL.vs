@@ -5,7 +5,7 @@ varying vec2 varTexCoordClouds;
 varying float constantAttenuation;
 varying float linearAttenuation;
 varying float quadraticAttenuation;
-uniform mat4  textureMat4 = mat4(1.0);
+uniform mat4  textureMat4;
 
 
 void main(void){
