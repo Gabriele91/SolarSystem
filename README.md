@@ -1,7 +1,7 @@
 SolarSystem
 ===========
 
-  This program is a unrealistic Solar System representation  
+  This program is an unrealistic Solar System representation  
   
   ![ScreenShot](https://raw.github.com/Gabriele91/SolarSystem/master/Readme.png?raw=true)
 
