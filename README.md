@@ -15,7 +15,7 @@ SolarSystem
  
  [assets](https://dl.dropboxusercontent.com/u/26656895/SolarSystem/SolarSystem.zip)
 
-##LICENSES:
+## LICENSE
 
     MIT
     
